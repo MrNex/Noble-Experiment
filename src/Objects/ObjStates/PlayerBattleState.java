@@ -43,6 +43,11 @@ public class PlayerBattleState extends ObjState{
 		while((ch = Directory.inputManager.getNextKeyPressed()) != null){			//getNextKeyPressed dequeues the next key pressed from a queue of all keypresses
 			//If ch is a number or a negative sign
 			if(Character.isDigit(ch) || ch == (int)'-'){
+				//If you start typing an answer and there isn't a target yet, toggle target
+				if(currentTarget == null){
+					toggleTarget();
+				}
+				
 				//Add to the answerString
 				answerString += ch;
 				System.out.println(answerString);
@@ -55,9 +60,9 @@ public class PlayerBattleState extends ObjState{
 
 				//send answer to current target
 				if(currentTarget.submitAnswer(answer, player.getPower())){
-					//Answered correct!
-					System.out.println("Right");
-
+					//Increment profile stats
+					Directory.profile.incrementEquationsSolved();
+					
 					//Clear answerString
 					answerString = "";
 
@@ -68,8 +73,9 @@ public class PlayerBattleState extends ObjState{
 					}
 				}
 				else{
-					//Not answered correct
-					System.out.println("Wrong");
+					//Increment profile stats
+					Directory.profile.incrementWrongAnswers();
+					
 					//Clear the answer string
 					answerString = "";
 				}

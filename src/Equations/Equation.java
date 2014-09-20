@@ -98,7 +98,7 @@ public class Equation {
 		Random rnd = new Random();
 		
 		//Add a first numerical expression to equationList (First thing in an equation must be a number)
-		eList.add(new NumericalExpression(rnd.nextInt(10)));
+		eList.add(new NumericalExpression(rnd.nextInt(10) + 1));
 		
 		//For each proceeding operator
 		for(int i = 0; i < numOperators; i++){
@@ -108,6 +108,8 @@ public class Equation {
 			
 			//Declare a variable for the operator expression
 			OperatorExpression o = null;
+			
+			
 			
 			//Declare variable for second random numerical expression
 			NumericalExpression e2 = null;
@@ -127,17 +129,23 @@ public class Equation {
 				o = new MultiplicationExpression();
 				break;
 			case 3:
-				//If division, generate a random answer to the problem
-				int ans = rnd.nextInt(100);
-				//Create e2
-				e2 = new NumericalExpression(rnd.nextInt(10));
+				//If division, find every factor of the first numerical expression
+				ArrayList<Integer> validDivisors = new ArrayList<Integer>();
+
+				for(int j = 1; j <= eList.get(eList.size() - 1).evaluate(); j++){
+					if(eList.get(eList.size() - 1).evaluate() % j == 0){
+						//If e1 % j == 0, j is a factor of e1 and should be added to the list
+						validDivisors.add(j);
+					}
+				}
 				
-				//reCreate the first numerical expression as product of e2 and random answer
-				eList.remove(eList.size() - 1);
-				eList.add(new NumericalExpression(e2.evaluate() * ans));
-				
-				//set o
+				//Set o
 				o = new DivisionExpression();
+				
+				//CHoose random e2
+				int randE2Index = rnd.nextInt(validDivisors.size());
+				//Create e2
+				e2 = new NumericalExpression(validDivisors.get(randE2Index));
 				
 				break;
 			default:
