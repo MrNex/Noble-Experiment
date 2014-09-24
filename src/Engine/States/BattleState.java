@@ -15,7 +15,7 @@ public class BattleState extends State{
 
 	//Attributes
 	public static int difficulty = 1;
-	private ArrayList<Destructable> destructables;
+	private ArrayList<Entity> entities;
 	
 	
 
@@ -30,13 +30,13 @@ public class BattleState extends State{
 		super.init();
 		
 		//Initialize array list of Destructables
-		destructables = new ArrayList<Destructable>();
+		entities = new ArrayList<Entity>();
 		
 	}
 
 	
-	public ArrayList<Destructable> getDestructables(){
-		return destructables;
+	public ArrayList<Entity> getEntities(){
+		return entities;
 	}
 	
 	//Updates this state
@@ -60,9 +60,9 @@ public class BattleState extends State{
 		{
 			objects.remove(obj);
 			//if obj is a destructable
-			if(obj instanceof Destructable){
+			if(obj instanceof Entity){
 				//Remove from destructables
-				destructables.remove((Destructable)obj);
+				entities.remove((Entity)obj);
 			}
 		}
 		toRemove.removeAll(copyList);
@@ -74,9 +74,9 @@ public class BattleState extends State{
 		{
 			objects.add(obj);
 			//if obj is a destructable
-			if(obj instanceof Destructable){
+			if(obj instanceof Entity){
 				//Add to destructables
-				destructables.add((Destructable)obj);
+				entities.add((Entity)obj);
 			}
 		}
 		toAdd.removeAll(copyList);

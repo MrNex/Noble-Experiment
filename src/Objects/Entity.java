@@ -3,6 +3,7 @@ package Objects;
 import java.awt.Graphics2D;
 
 import Engine.Directory;
+import Equations.Equation;
 
 //Class defines a "living" named game object which has stats
 public class Entity extends GameObject{
@@ -34,6 +35,41 @@ public class Entity extends GameObject{
 
 	}
 
+	public boolean submitAnswer(Equation answer, int pow)
+	{
+		//If correct
+		if(currentEq.attemptSolution(answer.getSolution()))
+		{
+			//Decrement health by power
+			currentHealth -= power;
+			//Check if dead
+			if(currentHealth <= 0){
+				//Set running to false
+				running = false;
+				//Set visible to false
+				visible = false;
+				
+				//SEt state as null so any timers associated with this destructable are stopped
+				setState(null);
+				
+				//Remove from state
+				Directory.engine.getCurrentState().removeObj(this);
+			}
+			
+			//Return true for a correct answer
+			return true;
+		}
+		
+		
+		return false;
+	}
+		
+	
+	public EquationObject getEquationObj()
+	{
+		return currentEq;
+	}
+		
 	public int getCurrentHealth(){
 		return currentHealth;
 	}

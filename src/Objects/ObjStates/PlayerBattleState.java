@@ -2,6 +2,7 @@ package Objects.ObjStates;
 
 import Engine.Directory;
 import Engine.States.BattleState;
+import Equations.Equation;
 import Objects.Destructable;
 import Objects.Entity;
 
@@ -10,7 +11,7 @@ public class PlayerBattleState extends ObjState{
 
 	//attributes
 	private String answerString;
-	private Destructable currentTarget;
+	private Entity currentTarget;
 	private int targetIndex;
 	private Entity player;
 
@@ -59,7 +60,7 @@ public class PlayerBattleState extends ObjState{
 				int answer = Integer.parseInt(answerString);
 
 				//send answer to current target
-				if(currentTarget.submitAnswer(answer, player.getPower())){
+				if(currentTarget.submitAnswer(new Equation(answer), player.getPower())){
 					//Increment profile stats
 					Directory.profile.incrementEquationsSolved();
 					
@@ -67,7 +68,7 @@ public class PlayerBattleState extends ObjState{
 					answerString = "";
 
 					//Check if the destructable was killed
-					if(currentTarget.getHealth() <= 0){
+					if(currentTarget.getCurrentHealth() <= 0){
 						//Toggle target
 						toggleTarget();
 					}
@@ -105,9 +106,9 @@ public class PlayerBattleState extends ObjState{
 	private void toggleTarget(){
 		//Change targets
 		//If the current target isn't null and it is selected
-		if(currentTarget != null && currentTarget.isSelected()){
+		if(currentTarget != null && currentTarget.getEquationObj().isSelected()){
 			//Toggle selected attribute of current target(deselect)
-			currentTarget.toggleSelected();
+			currentTarget.getEquationObj().toggleSelected();
 		}
 
 		//Increment target index
@@ -118,10 +119,10 @@ public class PlayerBattleState extends ObjState{
 
 		//If targetIndex is within the bounds of the 
 		//battlestate's array of destructables assign the next index as the current target
-		if(targetIndex < gameState.getDestructables().size()){
-			currentTarget = gameState.getDestructables().get(targetIndex);
+		if(targetIndex < gameState.getEntities().size()){
+			currentTarget = gameState.getEntities().get(targetIndex);
 			//Make sure the current target is alive
-			if(currentTarget.getHealth() <= 0){
+			if(currentTarget.getCurrentHealth() <= 0){
 				//If not toggle target again
 				//But first set current target not to null so the state on the new current target does not get selected
 				currentTarget = null;
@@ -131,12 +132,12 @@ public class PlayerBattleState extends ObjState{
 			else
 			{
 				//Set target as selected
-				currentTarget.toggleSelected();
+				currentTarget.getEquationObj().toggleSelected();
 			}
 		}
 		else{
 			//Are there any destructables
-			if(gameState.getDestructables().size() == 0){
+			if(gameState.getEntities().size() <= 1){
 				//No destructables in gameState, set targetIndex to -1 and currentTarget to null
 				targetIndex = -1;
 				currentTarget = null;
@@ -144,11 +145,11 @@ public class PlayerBattleState extends ObjState{
 			else{
 				//Set targetIndex to 0 and set currentTarget
 				targetIndex = 0;
-				currentTarget = gameState.getDestructables().get(targetIndex);
+				currentTarget = gameState.getEntities().get(targetIndex);
 				//Make sure the current target is alive
-				if(currentTarget.getHealth() <= 0){
+				if(currentTarget.getCurrentHealth() <= 0){
 					//Make sure there is another target to choose from (else the only target on the screen is dead
-					if(gameState.getDestructables().size() > 1){
+					if(gameState.getEntities().size() > 1){
 						//If so toggle target again
 						toggleTarget();
 					}
@@ -161,7 +162,7 @@ public class PlayerBattleState extends ObjState{
 				}
 				else{
 					//Set target as selected
-					currentTarget.toggleSelected();
+					currentTarget.getEquationObj().toggleSelected();
 				}
 			}
 		}

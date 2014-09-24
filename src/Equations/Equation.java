@@ -20,6 +20,19 @@ public class Equation {
 		solution = parseList();
 	}
 	
+	public Equation(int val)
+	{
+		//Create expression list and stack
+		expList = new ArrayList<Expression>();
+		expStack = new Stack<Expression>();
+		
+		expList.add(new NumericalExpression(val));
+		
+		//solve
+		solution = parseList();
+		
+	}
+	
 	public double getSolution(){
 		return solution;
 	}

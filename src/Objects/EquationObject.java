@@ -1,6 +1,7 @@
 package Objects;
 
 import java.awt.Color;
+import java.util.Random;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
@@ -27,7 +28,9 @@ public class EquationObject extends GameObject{
 			currentEq = Equation.GenRndEquation(following.defense);
 		}
 		else{
-			currentEq = Equation.GenRndEquation(0);
+			Random rnd = new Random();
+			currentEq = new Equation(rnd.nextInt(10 * following.defense));
+			
 		}
 		selected = false;
 		
@@ -81,6 +84,11 @@ public class EquationObject extends GameObject{
 			g2d.setColor(Color.black);
 			g2d.drawString(currentEq.toString(), (int)(position.getComponent(0) + padX / 2), (int)(position.getComponent(1) + height - padY));
 		}
+	}
+	
+	public Equation getEquation()
+	{
+		return currentEq;
 	}
 	
 	
