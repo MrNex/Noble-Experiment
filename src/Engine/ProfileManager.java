@@ -23,7 +23,7 @@ public class ProfileManager {
 		expNeeded = generateNextExpTier();
 		
 		//Create the player
-		player = new Entity(0, 0, 75, 300, 10, 1);
+		player = new Entity(0, 0, 75, 300, 10, 1, 1, true);
 		//
 		// 
 		

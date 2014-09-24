@@ -17,7 +17,6 @@ public class ProjectileState extends ObjState{
 	static double speed = .05;		//speed in px/s
 	Vector heading, initialPosition;
 	double time, distance;
-	Timer timer;
 	Entity target;
 	long timeStart;
 	
@@ -43,25 +42,7 @@ public class ProjectileState extends ObjState{
 		time = (distance / speed) / 1000;
 		System.out.println(time);
 		
-		//Create timer
-		timer = new Timer((int)time, new ActionListener(){
-
-			//When the timer is complete, damage target.
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				//Damage
-				//target.decrementCurrentHealth(((Destructable)attachedTo).getPower());
-				
-				//System.out.println("Hurt");
-				
-				//Remove destructable from state
-				//Directory.engine.getCurrentState().removeObj(attachedTo);
-			}
-			
-		});
 		
-		//Set timer as non-repeating
-		timer.setRepeats(false);
 		
 		//Normalize direction vector and set as heading
 		direction.normalize();
@@ -108,8 +89,6 @@ public class ProjectileState extends ObjState{
 
 	@Override
 	public void exit() {
-		//Upon exiting this state stop any timers
-		timer.stop();
 		
 	}
 

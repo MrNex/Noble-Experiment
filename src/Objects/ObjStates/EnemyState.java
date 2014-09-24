@@ -10,6 +10,7 @@ import javax.swing.Timer;
 
 import Engine.Directory;
 import Objects.Destructable;
+import Objects.Entity;
 
 public class EnemyState extends ObjState{
 
@@ -25,7 +26,7 @@ public class EnemyState extends ObjState{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				//Create a destructable projectile
-				Destructable projectile = new Destructable(attachedTo.getXPos(), attachedTo.getYPos(), 50, 20, 1, 1);
+				Entity projectile = new Entity(attachedTo.getXPos(), attachedTo.getYPos(), 50, 20, 1, 1, 1, true);
 				//SEt the shape
 				projectile.setShape(new Ellipse2D.Double(), Color.black);
 				//Set visible

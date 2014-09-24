@@ -40,6 +40,11 @@ public class BattleState extends State{
 	}
 	
 	//Updates this state
+	//The Game will update every game object in the current state
+	//Then it will remove any game objects that need to be removed from the current state
+	//Then it will add any game objects that need to be added to the current state
+	//TODO: Clean up code to use all original lists, there should be no conflict with adding or removing to or from these lists
+	//while their processes are going on.
 	@Override
 	public void update() {
 		//For every game object in gameObjects

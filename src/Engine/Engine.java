@@ -58,7 +58,7 @@ public class Engine {
 		
 		
 		//Create enemy as entity
-		GameObject enemy = new Entity(Directory.screenManager.getPercentageWidth(85.0), Directory.screenManager.getPercentageHeight(45.0), 75, 300, 1, 1);
+		GameObject enemy = new Entity(Directory.screenManager.getPercentageWidth(85.0), Directory.screenManager.getPercentageHeight(45.0), 75, 300, 1, 1, 1, false);
 		//Set enemy shape and visibility
 		enemy.setShape(new Ellipse2D.Double(), Color.RED);
 		enemy.setVisible(true);

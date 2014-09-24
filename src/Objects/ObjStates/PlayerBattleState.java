@@ -97,10 +97,15 @@ public class PlayerBattleState extends ObjState{
 
 	}
 
+	
+	//Changes the current target. If there is already a current target it will set it to a deselected state.
+	//If the next target index is still within the bounds of the list, and the next one is alive, it will set it as the current target.
+	//If it turns out the next target isn't alive it simply toggles targets again after setting the current target to null so as not to select it
+	
 	private void toggleTarget(){
 		//Change targets
-		//If the current target isn't null
-		if(currentTarget != null){
+		//If the current target isn't null and it is selected
+		if(currentTarget != null && currentTarget.isSelected()){
 			//Toggle selected attribute of current target(deselect)
 			currentTarget.toggleSelected();
 		}
@@ -118,7 +123,10 @@ public class PlayerBattleState extends ObjState{
 			//Make sure the current target is alive
 			if(currentTarget.getHealth() <= 0){
 				//If not toggle target again
+				//But first set current target not to null so the state on the new current target does not get selected
+				currentTarget = null;
 				toggleTarget();
+				
 			}
 			else
 			{

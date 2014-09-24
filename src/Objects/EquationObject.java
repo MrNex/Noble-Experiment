@@ -13,17 +13,22 @@ public class EquationObject extends GameObject{
 	
 	private static double yOffset = -50;
 	private Equation currentEq;
-	private Destructable following;
+	private Entity following;
 	private boolean selected;
 	private double padX, padY;
 	
-	public EquationObject(Destructable toFollow) {
+	public EquationObject(Entity toFollow) {
 		super(toFollow.getXPos(), toFollow.getYPos() + yOffset, 0, 0);
 		//Set the destructable this obj is following
 		following = toFollow;
 		
 		//Set current equation
-		currentEq = Equation.GenRndEquation(BattleState.difficulty);
+		if(toFollow.isEquation){
+			currentEq = Equation.GenRndEquation(following.defense);
+		}
+		else{
+			currentEq = Equation.GenRndEquation(0);
+		}
 		selected = false;
 		
 		//Generate the shape for this equationObject
@@ -48,6 +53,7 @@ public class EquationObject extends GameObject{
 		setRunning(true);
 	}
 	
+	//Sets this equations position above the object it is following
 	@Override
 	public void update(){
 		//Set position to the destructable this obj is following
@@ -77,6 +83,8 @@ public class EquationObject extends GameObject{
 		}
 	}
 	
+	
+	//Generates a new equation and returns 2 if 
 	public boolean attemptSolution(double guess){
 		if(guess == currentEq.getSolution()){
 			currentEq = Equation.GenRndEquation(BattleState.difficulty);
