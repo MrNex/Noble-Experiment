@@ -37,6 +37,12 @@ public class Equation {
 		return solution;
 	}
 	
+	///Gets a copy of the expression list for this equation
+	public ArrayList<Expression>getExpressionList()
+	{
+		return new ArrayList<Expression>(expList);
+	}
+	
 	//Loop through the expression list filling the expStack and solving when ready
 	//REturns solution to equation
 	private double parseList(){

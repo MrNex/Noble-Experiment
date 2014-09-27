@@ -1,9 +1,12 @@
 package Objects;
 
 import java.awt.Graphics2D;
+import java.util.ArrayList;
 
 import Engine.Directory;
 import Equations.Equation;
+import Equations.Expression;
+import Equations.OperatorExpression;
 
 //Class defines a "living" named game object which has stats
 public class Entity extends GameObject{
@@ -28,20 +31,26 @@ public class Entity extends GameObject{
 		defense = def;
 
 		
+		//This shows whether this entity has an equation that needs solving (Such as projectiles)
+		//Or if this entity has a number that needs an equation made
 		isEquation = eq;
-		//TODO: Split this up into two different subclasses, equationEntity and numericEntity
-
 		currentEq = new EquationObject(this);
 
 	}
 
+	
+	//Submits an equation representing the answer to this entities equation.
+	//If the answer is correct, power is removed from the entities health and a new equation is generated if the entity is not dead
+	//If the answer is incorrect, nothing really happens.
 	public boolean submitAnswer(Equation answer, int pow)
 	{
+		
 		//If correct
 		if(currentEq.attemptSolution(answer.getSolution()))
 		{
 			//Decrement health by power
-			currentHealth -= power;
+			currentHealth -= pow;
+			
 			//Check if dead
 			if(currentHealth <= 0){
 				//Set running to false
@@ -64,6 +73,12 @@ public class Entity extends GameObject{
 		return false;
 	}
 		
+	//True if entities equation is actual equation
+	//False if entities equation is just a number
+	public boolean holdsEquation()
+	{
+		return isEquation;
+	}
 	
 	public EquationObject getEquationObj()
 	{

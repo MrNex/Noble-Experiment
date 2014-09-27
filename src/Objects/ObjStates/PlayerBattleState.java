@@ -1,8 +1,10 @@
 package Objects.ObjStates;
 
+import java.util.ArrayList;
+
 import Engine.Directory;
 import Engine.States.BattleState;
-import Equations.Equation;
+import Equations.*;
 import Objects.Destructable;
 import Objects.Entity;
 
@@ -10,6 +12,10 @@ import Objects.Entity;
 public class PlayerBattleState extends ObjState{
 
 	//attributes
+	private int numAddOp;
+	private int numSubOp;
+	private int numMultOp;
+	private int numDivOp;
 	private String answerString;
 	private Entity currentTarget;
 	private int targetIndex;
@@ -58,19 +64,58 @@ public class PlayerBattleState extends ObjState{
 				//Attempt solution
 				//Parse answerString as an integer
 				int answer = Integer.parseInt(answerString);
-
+				
+				int submitPower = currentTarget == player ? 0 : player.getPower();
+				
 				//send answer to current target
-				if(currentTarget.submitAnswer(new Equation(answer), player.getPower())){
+				if(currentTarget.submitAnswer(new Equation(answer), submitPower)){
+					
+					//IF the current target held an equation
+					if(currentTarget.holdsEquation())
+					{
+						//Get the expressionList
+						ArrayList<Expression>expList = currentTarget.getEquationObj().getEquation().getExpressionList();
+						//iterate through it
+						for(Expression e : expList)
+						{
+							//If the expression is an operator
+							if(e instanceof OperatorExpression)
+							{
+								//Discern what type of operator, and then add to the players corresponding count of operators
+								if(e instanceof AdditionExpression){
+									numAddOp++;
+									System.out.println("Addition: " + numAddOp);
+								}
+								else if(e instanceof SubtractionExpression){
+									numSubOp++;
+									System.out.println("Subtraction: " + numSubOp);
+								}
+								else if(e instanceof MultiplicationExpression){
+									numMultOp++;
+									System.out.println("Multiplication: " + numMultOp);
+								}
+								else if(e instanceof DivisionExpression){
+									numDivOp++;
+									System.out.println("Division: " + numDivOp);
+								}
+							}
+						}
+					}
+					
 					//Increment profile stats
 					Directory.profile.incrementEquationsSolved();
 					
 					//Clear answerString
 					answerString = "";
 
-					//Check if the destructable was killed
+					//Check if the Entity was killed
 					if(currentTarget.getCurrentHealth() <= 0){
 						//Toggle target
 						toggleTarget();
+					}
+					else{
+						currentTarget.getEquationObj().generateNewEquation();
+						
 					}
 				}
 				else{

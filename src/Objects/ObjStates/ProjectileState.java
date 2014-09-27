@@ -74,7 +74,7 @@ public class ProjectileState extends ObjState{
 		
 		if(attachedTo.isColliding(target))
 		{
-			target.decrementCurrentHealth(((Destructable)attachedTo).getPower());
+			target.decrementCurrentHealth(((Entity)attachedTo).getPower());
 			
 			System.out.println("Hurt");
 			

@@ -92,14 +92,27 @@ public class EquationObject extends GameObject{
 	}
 	
 	
-	//Generates a new equation and returns 2 if 
+	//Generates a new equation and returns true if correct, else false
 	public boolean attemptSolution(double guess){
 		if(guess == currentEq.getSolution()){
-			currentEq = Equation.GenRndEquation(BattleState.difficulty);
+			
 			return true;
 		}
 		
 		return false;
+	}
+	
+	public void generateNewEquation()
+	{
+		if(following.holdsEquation())
+		{
+			currentEq = Equation.GenRndEquation(BattleState.difficulty);
+		}
+		else
+		{
+			Random rnd = new Random();
+			currentEq = new Equation(rnd.nextInt(10 * following.defense));
+		}
 	}
 
 }
