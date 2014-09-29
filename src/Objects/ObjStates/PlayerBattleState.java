@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import Engine.Directory;
 import Engine.States.BattleState;
 import Equations.*;
-import Objects.Destructable;
 import Objects.Entity;
 
 //State which governs the player during a battle
@@ -61,9 +60,14 @@ public class PlayerBattleState extends ObjState{
 			}
 			//Else if ch is a newline or return
 			else if((int)ch == (int)'\n' || (int)ch == (int)'\r'){
-				//Attempt solution
+				//Attempt solution 
+				int answer;
 				//Parse answerString as an integer
-				int answer = Integer.parseInt(answerString);
+				try{
+					answer = Integer.parseInt(answerString);
+				}catch(NumberFormatException nfe){
+					answer = 0;
+				}
 				
 				int submitPower = currentTarget == player ? 0 : player.getPower();
 				

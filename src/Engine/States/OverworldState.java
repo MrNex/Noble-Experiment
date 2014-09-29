@@ -2,8 +2,6 @@ package Engine.States;
 
 import java.awt.Graphics2D;
 import java.util.ArrayList;
-
-import Objects.Destructable;
 import Objects.GameObject;
 
 public class OverworldState extends State {

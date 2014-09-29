@@ -6,7 +6,6 @@ import java.awt.geom.Ellipse2D;
 import java.util.ArrayList;
 
 import Engine.Directory;
-import Objects.Destructable;
 import Objects.Entity;
 import Objects.GameObject;
 

@@ -23,12 +23,12 @@ public class ProfileManager {
 		expNeeded = generateNextExpTier();
 		
 		//Create the player
-		player = new Entity(0, 0, 75, 300, 10, 1, 1, true);
+		player = new Entity(500, 0, 200, 300, 10, 1, 1, true);
 		//
 		// 
 		
-		//SEt the shape
-		player.setShape(new Ellipse2D.Double(), Color.GREEN);
+		//Set the image
+		player.setImage(Directory.imageLibrary.get("PlayerBattleIdle"));
 		player.setVisible(true);
 	}
 	

@@ -1,9 +1,16 @@
 import Engine.*;
+import Loaders.*;
 
 public class Program {
 
 	public static void main(String[] args) {
 		
+		
+		//Initialize loader
+		Loader imageLoader = new ImageLoader();
+		
+		//Get images
+		Directory.imageLibrary = imageLoader.loadAll();
 		
 		//Create engine
 		Directory.engine = new Engine();

@@ -36,27 +36,6 @@ public class Engine {
 		running = true;
 		
 		
-		//Temporary!! Soon this will be triggered from the overworld state
-		/*
-		//Create enemy
-		GameObject enemy = new Destructable(Directory.screenManager.getPercentageWidth(85.0), Directory.screenManager.getPercentageHeight(45.0), 75, 300, 1, 1);
-		enemy.setShape(new Ellipse2D.Double(), Color.RED);
-		enemy.setVisible(true);
-
-		//Add enemy
-		Directory.engine.getCurrentState().addObj(enemy);
-
-		//Temporary!! Soon this will be triggered from the overworld state
-		//Create second enemy
-		GameObject enemy2 = new Destructable(Directory.screenManager.getPercentageWidth(70.0), Directory.screenManager.getPercentageHeight(45.0), 75, 300, 1, 1);
-		enemy2.setShape(new Ellipse2D.Double(), Color.RED);
-		enemy2.setVisible(true);
-
-		//Add enemy
-		Directory.engine.getCurrentState().addObj(enemy2);
-		 */
-		
-		
 		//Create enemy as entity
 		GameObject enemy = new Entity(Directory.screenManager.getPercentageWidth(85.0), Directory.screenManager.getPercentageHeight(45.0), 75, 300, 1, 1, 1, false);
 		//Set enemy shape and visibility

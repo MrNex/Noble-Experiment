@@ -2,6 +2,7 @@ package Objects;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.RectangularShape;
+import java.awt.image.BufferedImage;
 
 import MathHelp.Vector;
 import Objects.ObjStates.ObjState;
@@ -14,6 +15,7 @@ public class GameObject {
 	protected double width, height;
 	protected boolean visible, running;
 	protected RectangularShape shape;
+	protected BufferedImage image;
 	protected Color color;
 	protected ObjState currentState;
 
@@ -34,6 +36,8 @@ public class GameObject {
 
 		shape = null;
 		color = Color.black;
+		
+		image = null;
 	}
 
 	//Sets the position vector
@@ -87,14 +91,17 @@ public class GameObject {
 	}
 
 	//Set shape
-	public void setShape(RectangularShape newShape)
-	{
+	public void setShape(RectangularShape newShape){
 		//Set the shape
 		shape = newShape;
 		//if its not null, update it to my position
 		if(shape != null){
 			updateShape();
 		}
+	}
+	
+	public void setImage(BufferedImage newImage){
+		image = newImage;
 	}
 
 	//Set color
@@ -120,10 +127,19 @@ public class GameObject {
 	public void draw(Graphics2D g2d){
 		if(visible)
 		{
-			//Set the color
-			g2d.setColor(color);
-			//Fill the shape
-			g2d.fill(shape);
+			//If they have an image
+			if(image != null){
+				g2d.drawImage(image,
+						(int)position.getComponent(0), (int)position.getComponent(1), 
+						(int)(position.getComponent(0) + width), (int)(position.getComponent(1) + height), 
+						0, 0, image.getWidth(), image.getHeight(), null);
+			}
+			else{
+				//Set the color
+				g2d.setColor(color);
+				//Fill the shape
+				g2d.fill(shape);
+			}
 		}
 	}
 

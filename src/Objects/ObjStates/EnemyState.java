@@ -9,7 +9,6 @@ import java.awt.geom.Ellipse2D.Double;
 import javax.swing.Timer;
 
 import Engine.Directory;
-import Objects.Destructable;
 import Objects.Entity;
 
 public class EnemyState extends ObjState{
