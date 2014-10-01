@@ -1,6 +1,7 @@
 package Objects.ObjStates;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 import Engine.Directory;
 import Engine.States.BattleState;
@@ -48,7 +49,7 @@ public class PlayerBattleState extends ObjState{
 		//While the next character pressed isn't null
 		while((ch = Directory.inputManager.getNextKeyPressed()) != null){			//getNextKeyPressed dequeues the next key pressed from a queue of all keypresses
 			//If ch is a number or a negative sign
-			if(Character.isDigit(ch) || ch == (int)'-'){
+			if(Character.isDigit(ch) || ch == (int)'+' || ch == (int)'-' || ch == (int)'*' || ch == (int)'/'){
 				//If you start typing an answer and there isn't a target yet, toggle target
 				if(currentTarget == null){
 					toggleTarget();
@@ -60,75 +61,14 @@ public class PlayerBattleState extends ObjState{
 			}
 			//Else if ch is a newline or return
 			else if((int)ch == (int)'\n' || (int)ch == (int)'\r'){
-				//Attempt solution 
-				int answer;
-				//Parse answerString as an integer
-				try{
-					answer = Integer.parseInt(answerString);
-				}catch(NumberFormatException nfe){
-					answer = 0;
+				//If the current target has an equation
+				if(currentTarget.holdsEquation()){
+					answerEquation();
+				}else{
+					
+					submitEquation();
 				}
 				
-				int submitPower = currentTarget == player ? 0 : player.getPower();
-				
-				//send answer to current target
-				if(currentTarget.submitAnswer(new Equation(answer), submitPower)){
-					
-					//IF the current target held an equation
-					if(currentTarget.holdsEquation())
-					{
-						//Get the expressionList
-						ArrayList<Expression>expList = currentTarget.getEquationObj().getEquation().getExpressionList();
-						//iterate through it
-						for(Expression e : expList)
-						{
-							//If the expression is an operator
-							if(e instanceof OperatorExpression)
-							{
-								//Discern what type of operator, and then add to the players corresponding count of operators
-								if(e instanceof AdditionExpression){
-									numAddOp++;
-									System.out.println("Addition: " + numAddOp);
-								}
-								else if(e instanceof SubtractionExpression){
-									numSubOp++;
-									System.out.println("Subtraction: " + numSubOp);
-								}
-								else if(e instanceof MultiplicationExpression){
-									numMultOp++;
-									System.out.println("Multiplication: " + numMultOp);
-								}
-								else if(e instanceof DivisionExpression){
-									numDivOp++;
-									System.out.println("Division: " + numDivOp);
-								}
-							}
-						}
-					}
-					
-					//Increment profile stats
-					Directory.profile.incrementEquationsSolved();
-					
-					//Clear answerString
-					answerString = "";
-
-					//Check if the Entity was killed
-					if(currentTarget.getCurrentHealth() <= 0){
-						//Toggle target
-						toggleTarget();
-					}
-					else{
-						currentTarget.getEquationObj().generateNewEquation();
-						
-					}
-				}
-				else{
-					//Increment profile stats
-					Directory.profile.incrementWrongAnswers();
-					
-					//Clear the answer string
-					answerString = "";
-				}
 			}
 			//Else if ch is whitespace
 			else if(Character.isWhitespace(ch)){
@@ -217,6 +157,160 @@ public class PlayerBattleState extends ObjState{
 		}
 
 
+	}
+	
+	//Takes your current answerString, parses it into an equation, and submits it to the current target
+	private void submitEquation(){
+		//Create a list of expressions
+		ArrayList<Expression> expressionList = new ArrayList<Expression>();
+		
+		//Create a queue of integers
+		LinkedList<Integer> digits = new LinkedList<Integer>();
+		//for each character in the answer string
+		for(int i = 0; i < answerString.length(); i++){
+			if((Character.isDigit(answerString.charAt(i)))){
+				String digit = answerString.substring(i, i+1);
+				//Add the digit to the queue
+				digits.addLast(Integer.parseInt(digit));
+				
+				//Make sure the next character is a digit, or there is a next character
+				if(answerString.length() - 1 == i || !Character.isDigit(answerString.charAt(i+1))){
+					//If it's not, get the integer represented by the digits
+					int val = ListToInt(digits);
+					
+					//Add a numerical expression to the expression list
+					expressionList.add(new NumericalExpression(val));
+					//Clear the list of digits
+					digits.clear();
+				}
+			}
+			else if(answerString.charAt(i) == '+'){
+				expressionList.add(new AdditionExpression());
+			}
+			else if(answerString.charAt(i) == '-'){
+				expressionList.add(new SubtractionExpression());
+			}
+			else if(answerString.charAt(i) == '*'){
+				expressionList.add(new MultiplicationExpression());
+			}
+			else if(answerString.charAt(i) == '/'){
+				expressionList.add(new DivisionExpression());
+			}
+		}
+		
+		//Compile the equation
+		Equation submission = new Equation(expressionList);
+		
+		//send answer to current target
+		if(currentTarget.submitAnswer(submission, player.getPower())){
+			Directory.profile.incrementEquationsMade();
+			
+			//Clear answerString
+			answerString = "";
+
+			//Check if the Entity was killed
+			if(currentTarget.getCurrentHealth() <= 0){
+				//Toggle target
+				toggleTarget();
+			}
+			else{
+				currentTarget.getEquationObj().generateNewEquation();
+				
+			}
+		}else
+		{
+			Directory.profile.incrementWrongAnswers();
+		}
+	}
+	
+	//Takes a linked list of integers representing digits in a number where the first value 
+	//has the highest place value decreasing to the lowest in the last spot
+	//And turns it into the corresponding integer returning that value
+	private int ListToInt(LinkedList<Integer> digits){
+		int sum = 0;
+		while(digits.size() > 0){
+			int increment = digits.pollFirst();
+			if(digits.size() > 0)
+				increment *= digits.size();
+			sum += increment;
+		}
+		return sum;
+	}
+	
+	//Takes your current answerString, parses it to an integer, and submits it to the current target
+	private void answerEquation(){
+		//Attempt solution 
+		int answer;
+		//Parse answerString as an integer
+		try{
+			answer = Integer.parseInt(answerString);
+		}catch(NumberFormatException nfe){
+			answer = 0;
+		}
+		
+		//If targeting yourself, make the power 0.
+		int submitPower = currentTarget == player ? 0 : player.getPower();
+		
+		//send answer to current target
+		if(currentTarget.submitAnswer(new Equation(answer), submitPower)){
+			
+			//TODO: next if is Probably redundant, current target has equation if this method is called. 
+			//But will keep it to prevent misuse for now.
+			//IF the current target held an equation
+			if(currentTarget.holdsEquation())
+			{
+				//Get the expressionList
+				ArrayList<Expression>expList = currentTarget.getEquationObj().getEquation().getExpressionList();
+				//iterate through it
+				for(Expression e : expList)
+				{
+					//If the expression is an operator
+					if(e instanceof OperatorExpression)
+					{
+						//Discern what type of operator, and then add to the players corresponding count of operators
+						if(e instanceof AdditionExpression){
+							numAddOp++;
+							System.out.println("Addition: " + numAddOp);
+						}
+						else if(e instanceof SubtractionExpression){
+							numSubOp++;
+							System.out.println("Subtraction: " + numSubOp);
+						}
+						else if(e instanceof MultiplicationExpression){
+							numMultOp++;
+							System.out.println("Multiplication: " + numMultOp);
+						}
+						else if(e instanceof DivisionExpression){
+							numDivOp++;
+							System.out.println("Division: " + numDivOp);
+						}
+					}
+				}
+			}
+			
+			//Increment profile stats
+			Directory.profile.incrementEquationsSolved();
+			
+			//Clear answerString
+			answerString = "";
+
+			//Check if the Entity was killed
+			if(currentTarget.getCurrentHealth() <= 0){
+				//Toggle target
+				toggleTarget();
+			}
+			else{
+				currentTarget.getEquationObj().generateNewEquation();
+				
+			}
+		}
+		else{
+			//Increment profile stats
+			Directory.profile.incrementWrongAnswers();
+			
+			//Clear the answer string
+			answerString = "";
+		}
 	}
 
 	@Override

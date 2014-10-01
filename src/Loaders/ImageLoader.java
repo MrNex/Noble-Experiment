@@ -15,6 +15,8 @@ public class ImageLoader extends Loader<BufferedImage>{
 		
 	}
 
+	//Loads all of the files with .png extension in ./Assets/Images directory
+	//Returning a hashmap with each image file as a value keyed by fileName (Not including .png or path)
 	@Override
 	public HashMap<String, BufferedImage> loadAll() {
 		//Create hashmap of images

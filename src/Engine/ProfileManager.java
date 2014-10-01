@@ -10,6 +10,7 @@ public class ProfileManager {
 
 	private Entity player;
 	private int equationsSolved;
+	private int equationsMade;
 	private int wrongAnswers;
 	private int level;
 	private int currentExp, expNeeded;
@@ -17,6 +18,7 @@ public class ProfileManager {
 	public ProfileManager() {
 		//Initialize attributes
 		equationsSolved = 0;
+		equationsMade = 0;
 		wrongAnswers = 0;
 		level = 0;
 		currentExp = 0;
@@ -24,8 +26,6 @@ public class ProfileManager {
 		
 		//Create the player
 		player = new Entity(500, 0, 200, 300, 10, 1, 1, true);
-		//
-		// 
 		
 		//Set the image
 		player.setImage(Directory.imageLibrary.get("PlayerBattleIdle"));
@@ -49,6 +49,11 @@ public class ProfileManager {
 	//Increments the players number of wrong answers
 	public void incrementWrongAnswers(){
 		wrongAnswers++;
+	}
+	
+	//Increments the players number of equations made
+	public void incrementEquationsMade(){
+		equationsMade++;
 	}
 	
 	//Increments the current experience, leveling up if necessary
