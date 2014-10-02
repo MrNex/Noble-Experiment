@@ -1,5 +1,6 @@
 package Equations;
 import java.util.ArrayList;
+import java.util.EmptyStackException;
 import java.util.Random;
 import java.util.Stack;
 
@@ -11,7 +12,7 @@ public class Equation {
 	private ArrayList<Expression> expList;
 	private Stack<Expression> expStack;
 	
-	public Equation(ArrayList<Expression> exps) {
+	public Equation(ArrayList<Expression> exps) throws InvalidEquationException {
 		//Create expression list and stack
 		expList = new ArrayList<Expression>(exps);
 		expStack = new Stack<Expression>();
@@ -20,8 +21,7 @@ public class Equation {
 		solution = parseList();
 	}
 	
-	public Equation(int val)
-	{
+	public Equation(int val) {
 		//Create expression list and stack
 		expList = new ArrayList<Expression>();
 		expStack = new Stack<Expression>();
@@ -29,7 +29,15 @@ public class Equation {
 		expList.add(new NumericalExpression(val));
 		
 		//solve
-		solution = parseList();
+		try{
+			solution = parseList();
+		}
+		catch(InvalidEquationException iEE)
+		{
+			//IDeally this catch should never be triggered. Equation is a single number. Really hard to make a number invalid.
+			System.out.println("From int constructor of Equation: " + iEE.getMessage());
+		}
+		
 		
 	}
 	
@@ -45,7 +53,7 @@ public class Equation {
 	
 	//Loop through the expression list filling the expStack and solving when ready
 	//REturns solution to equation
-	private double parseList(){
+	private double parseList() throws InvalidEquationException{
 		//Create a variable to keep track of last relevant rank
 		int lastRank = 0;
 		
@@ -79,19 +87,47 @@ public class Equation {
 		if(expStack.size() > 1)
 			solveStack(0);
 		
-		//Return the final numericalExpression's value on the stack
-		return expStack.get(0).evaluate();
+		try{
+			//Return the final numericalExpression's value on the stack
+			return expStack.get(0).evaluate();
+		}
+		catch(NullPointerException nPE){
+			throw new InvalidEquationException();
+		}
+		
 	}
 	
+	//Throws invalid Equation exception if equation is invalid
 	//Solves the current expression stack until the addition of the nextRank to the expStack is permitted
-	private int solveStack(int nextRank){
-		//Pop the first numerical expression off stack (rhs)
-		Expression e2 = expStack.pop();
-		//Pop the operatorExpression off the stack
-		OperatorExpression op = (OperatorExpression)expStack.pop();
+	private int solveStack(int nextRank) throws InvalidEquationException {
+		//Create variables for the current section of equation
+		NumericalExpression e2 = null;
+		NumericalExpression e1 = null;
+		OperatorExpression op = null;
 		
-		//Set operator expressions (And pop last number off stack)
-		op.setE1(expStack.pop());
+		try{
+			//Pop the first numerical expression off stack (rhs)
+			e2 = (NumericalExpression)expStack.pop();
+			
+			//Pop the operatorExpression off the stack
+			op = (OperatorExpression)expStack.pop();
+			
+			//Pop the second numrical expression off stack
+			e1 = (NumericalExpression)expStack.pop();
+		}
+		catch(ClassCastException cCE){
+			//If any one of these expressons is not what we expect, this is an invalid equation
+			throw new InvalidEquationException();
+		}
+		catch(EmptyStackException eSE){
+			//If any one of these expressions isn't there, this is an invalid equation.
+			throw new InvalidEquationException();
+		}
+		
+		
+		
+		//Set operator expressions
+		op.setE1(e1);
 		op.setE2(e2);
 		
 		//Evaluate the operator
@@ -110,6 +146,9 @@ public class Equation {
 			return lastRank;
 	}
 	
+	//GEnerates a random equation containing the specified number of operators and returns a
+	//new equation. If an InvalidEquationException is thrown while trying to generate an equation (which shouldn't happen)
+	//A message is printed and the process is recursively tried again.
 	public static Equation GenRndEquation(int numOperators){
 		//Create arrayList of expressions
 		ArrayList<Expression> eList = new ArrayList<Expression>();
@@ -184,8 +223,19 @@ public class Equation {
 			eList.add(e2);
 		}
 		
+		//Declare a returnEquation
+		Equation returnEquation;
+		try{
+			returnEquation = new Equation(eList);
+		}
+		catch(InvalidEquationException iEE){
+			//If the equation is invalid, make another?
+			System.out.println("From generating a random equation: " + iEE.getMessage());
+			returnEquation = GenRndEquation(numOperators);
+		}
+		
 		//Return a put together equation
-		return new Equation(eList);
+		return returnEquation;
 	}
 	
 	public String toString(){

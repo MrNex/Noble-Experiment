@@ -198,29 +198,48 @@ public class PlayerBattleState extends ObjState{
 			}
 		}
 		
-		//Compile the equation
-		Equation submission = new Equation(expressionList);
+		//Declare the submission equation
+		Equation submission = null;
 		
-		//send answer to current target
-		if(currentTarget.submitAnswer(submission, player.getPower())){
-			Directory.profile.incrementEquationsMade();
-			
-			//Clear answerString
-			answerString = "";
+		try{
+			//Compile the equation
+			submission = new Equation(expressionList);
+		}
+		catch(InvalidEquationException iEE){
+			//Improper equation
+			//Give feedback
+			System.out.println(iEE.getMessage());
+			submission = null;
+		}
+		
+		
+		//If the submission is valid
+		if(submission!=null){
+			//send answer to current target
+			if(currentTarget.submitAnswer(submission, player.getPower())){
+				Directory.profile.incrementEquationsMade();
+				
+				//Clear answerString
+				answerString = "";
 
-			//Check if the Entity was killed
-			if(currentTarget.getCurrentHealth() <= 0){
-				//Toggle target
-				toggleTarget();
+				//Check if the Entity was killed
+				if(currentTarget.getCurrentHealth() <= 0){
+					//Toggle target
+					toggleTarget();
+				}
+				else{
+					currentTarget.getEquationObj().generateNewEquation();
+					
+				}
 			}
 			else{
-				currentTarget.getEquationObj().generateNewEquation();
-				
+				Directory.profile.incrementWrongAnswers();
 			}
-		}else
-		{
+		}
+		else{
 			Directory.profile.incrementWrongAnswers();
 		}
+		
 	}
 	
 	//Takes a linked list of integers representing digits in a number where the first value 
