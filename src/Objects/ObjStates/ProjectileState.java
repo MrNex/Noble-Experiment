@@ -32,6 +32,7 @@ public class ProjectileState extends ObjState{
 		//Find distance from this obj to target
 		//Find vector from this obj to target
 		Vector direction = new Vector(target.getPos());
+		//direction.setComponent(1, target.getYPos()+100);
 		direction.subtract(attachedTo.getPos());
 		
 		//Find the magnitude of this vector and store as distance.
