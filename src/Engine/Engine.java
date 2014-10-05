@@ -9,6 +9,7 @@ import MathHelp.Vector;
 import Objects.*;
 import Objects.ObjStates.EnemyState;
 import Objects.ObjStates.PlayerBattleState;
+import Objects.ObjStates.PlayerOverworldState;
 
 public class Engine {
 
@@ -40,9 +41,9 @@ public class Engine {
 		// set background values
 		background.setVisible(true);
 		background.setImage(Directory.imageLibrary.get("Background_Forest_1"));
-		// set background state
-		//background.setState(new ObjState());
+		
 		Directory.engine.getCurrentState().addObj(background);
+		
 		
 		//Create enemy as entity
 		GameObject enemy = new Entity(Directory.screenManager.getPercentageWidth(85.0), Directory.screenManager.getPercentageHeight(45.0), 75, 300, 10, 1, 1, false);
@@ -67,7 +68,7 @@ public class Engine {
 		Directory.profile.getPlayer().updateShape();
 		
 		//Set player state
-		Directory.profile.getPlayer().setState(new PlayerBattleState());
+		Directory.profile.getPlayer().setState(new Objects.ObjStates.PlayerBattleState());
 		Directory.profile.getPlayer().setRunning(true);
 
 		//Add player

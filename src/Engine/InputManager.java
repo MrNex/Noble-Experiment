@@ -28,7 +28,7 @@ public class InputManager implements KeyListener{
 
 	//Checks if a current key is pressed
 	public boolean isKeyPressed(char key){
-		return keys[(int)key];
+		return keys[(int)Character.toLowerCase(key)] || keys[(int)Character.toUpperCase(key)];
 	}
 	
 	//Clear queue of presses 

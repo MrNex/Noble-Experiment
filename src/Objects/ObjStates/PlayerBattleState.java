@@ -6,12 +6,14 @@ import java.util.LinkedList;
 import Engine.Directory;
 import Engine.States.BattleState;
 import Equations.*;
+import MathHelp.Vector;
 import Objects.Entity;
 
 //State which governs the player during a battle
 public class PlayerBattleState extends ObjState{
 
 	//attributes
+	private Vector worldPos;
 	private int numAddOp;
 	private int numSubOp;
 	private int numMultOp;
@@ -32,6 +34,9 @@ public class PlayerBattleState extends ObjState{
 
 	@Override
 	public void enter() {
+		//Save current position
+		worldPos = attachedTo.getPos();
+
 		//downcast attachedTo gameobject to player
 		if(attachedTo instanceof Entity){
 			player = (Entity)attachedTo;
@@ -40,6 +45,19 @@ public class PlayerBattleState extends ObjState{
 		//Toggle target to select first target
 		toggleTarget();
 
+
+		//Update dimensions
+		attachedTo.setWidth(200);
+		attachedTo.setHeight(300);
+
+		//Set the image of player to the battleImage
+		player.setImage(Directory.imageLibrary.get("PlayerBattleIdle"));
+
+		//Set the visibility of the equation object
+		player.setEquationVisibility(true);
+
+		//Toggle target to select first target
+		toggleTarget();
 	}
 
 	@Override
@@ -54,7 +72,7 @@ public class PlayerBattleState extends ObjState{
 				if(currentTarget == null){
 					toggleTarget();
 				}
-				
+
 				//Add to the answerString
 				answerString += ch;
 				System.out.println(answerString);
@@ -65,10 +83,14 @@ public class PlayerBattleState extends ObjState{
 				if(currentTarget.holdsEquation()){
 					answerEquation();
 				}else{
-					
+
 					submitEquation();
 				}
-				
+
+				//Clear answerString
+				answerString = "";
+
+
 			}
 			//Else if ch is whitespace
 			else if(Character.isWhitespace(ch)){
@@ -87,11 +109,11 @@ public class PlayerBattleState extends ObjState{
 
 	}
 
-	
+
 	//Changes the current target. If there is already a current target it will set it to a deselected state.
 	//If the next target index is still within the bounds of the list, and the next one is alive, it will set it as the current target.
 	//If it turns out the next target isn't alive it simply toggles targets again after setting the current target to null so as not to select it
-	
+
 	private void toggleTarget(){
 		//Change targets
 		//If the current target isn't null and it is selected
@@ -116,7 +138,7 @@ public class PlayerBattleState extends ObjState{
 				//But first set current target not to null so the state on the new current target does not get selected
 				currentTarget = null;
 				toggleTarget();
-				
+
 			}
 			else
 			{
@@ -158,12 +180,12 @@ public class PlayerBattleState extends ObjState{
 
 
 	}
-	
+
 	//Takes your current answerString, parses it into an equation, and submits it to the current target
 	private void submitEquation(){
 		//Create a list of expressions
 		ArrayList<Expression> expressionList = new ArrayList<Expression>();
-		
+
 		//Create a queue of integers
 		LinkedList<Integer> digits = new LinkedList<Integer>();
 		//for each character in the answer string
@@ -172,12 +194,12 @@ public class PlayerBattleState extends ObjState{
 				String digit = answerString.substring(i, i+1);
 				//Add the digit to the queue
 				digits.addLast(Integer.parseInt(digit));
-				
+
 				//Make sure the next character is a digit, or there is a next character
 				if(answerString.length() - 1 == i || !Character.isDigit(answerString.charAt(i+1))){
 					//If it's not, get the integer represented by the digits
 					int val = ListToInt(digits);
-					
+
 					//Add a numerical expression to the expression list
 					expressionList.add(new NumericalExpression(val));
 					//Clear the list of digits
@@ -197,12 +219,12 @@ public class PlayerBattleState extends ObjState{
 				expressionList.add(new DivisionExpression());
 			}
 		}
-		
+
 		//Declare the submission equation
 		Equation submission = null;
 		if(expressionList.size() > 0)
 		{
-			
+
 		}
 		try{
 			//Compile the equation
@@ -214,14 +236,14 @@ public class PlayerBattleState extends ObjState{
 			System.out.println(iEE.getMessage());
 			submission = null;
 		}
-		
-		
+
+
 		//If the submission is valid
 		if(submission!=null){
 			//send answer to current target
 			if(currentTarget.submitAnswer(submission, player.getPower())){
 				Directory.profile.incrementEquationsMade();
-				
+
 				//Clear answerString
 				answerString = "";
 
@@ -232,7 +254,7 @@ public class PlayerBattleState extends ObjState{
 				}
 				else{
 					currentTarget.getEquationObj().generateNewEquation();
-					
+
 				}
 			}
 			else{
@@ -242,9 +264,9 @@ public class PlayerBattleState extends ObjState{
 		else{
 			Directory.profile.incrementWrongAnswers();
 		}
-		
+
 	}
-	
+
 	//Takes a linked list of integers representing digits in a number where the first value 
 	//has the highest place value decreasing to the lowest in the last spot
 	//And turns it into the corresponding integer returning that value
@@ -258,7 +280,7 @@ public class PlayerBattleState extends ObjState{
 		}
 		return sum;
 	}
-	
+
 	//Takes your current answerString, parses it to an integer, and submits it to the current target
 	private void answerEquation(){
 		//Attempt solution 
@@ -269,13 +291,13 @@ public class PlayerBattleState extends ObjState{
 		}catch(NumberFormatException nfe){
 			answer = 0;
 		}
-		
+
 		//If targeting yourself, make the power 0.
 		int submitPower = currentTarget == player ? 0 : player.getPower();
-		
+
 		//send answer to current target
 		if(currentTarget.submitAnswer(new Equation(answer), submitPower)){
-			
+
 			//TODO: next if is Probably redundant, current target has equation if this method is called. 
 			//But will keep it to prevent misuse for now.
 			//IF the current target held an equation
@@ -309,12 +331,9 @@ public class PlayerBattleState extends ObjState{
 					}
 				}
 			}
-			
+
 			//Increment profile stats
 			Directory.profile.incrementEquationsSolved();
-			
-			//Clear answerString
-			answerString = "";
 
 			//Check if the Entity was killed
 			if(currentTarget.getCurrentHealth() <= 0){
@@ -323,13 +342,13 @@ public class PlayerBattleState extends ObjState{
 			}
 			else{
 				currentTarget.getEquationObj().generateNewEquation();
-				
+
 			}
 		}
 		else{
 			//Increment profile stats
 			Directory.profile.incrementWrongAnswers();
-			
+
 			//Clear the answer string
 			answerString = "";
 		}
@@ -337,7 +356,8 @@ public class PlayerBattleState extends ObjState{
 
 	@Override
 	public void exit() {
-
+		//Set position back to worldPos
+		attachedTo.setPos(worldPos);
 	}
 
 }

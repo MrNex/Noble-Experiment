@@ -59,6 +59,22 @@ public class GameObject {
 	public double getYPos(){
 		return position.getComponent(1);
 	}
+	
+	/**
+	 * Sets the width of this gameobject
+	 * @param newWidth Width to set
+	 */
+	public void setWidth(int newWidth){
+		width = newWidth;
+	}
+	
+	/**
+	 * Sets the height of this gameObject
+	 * @param newHeight Height to set
+	 */
+	public void setHeight(int newHeight){
+		height = newHeight;
+	}
 
 	//Set the state of an object (DON'T FORGET TO SET THE OBJECT TO RUNNING!)
 	public void setState(ObjState newState){

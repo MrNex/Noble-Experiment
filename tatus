@@ -1,0 +1,82 @@
+[1mdiff --git a/Assets/Images/Background_Forest_1.png b/Assets/Images/Background_Forest_1.png[m
+[1mnew file mode 100644[m
+[1mindex 0000000..c4349e8[m
+Binary files /dev/null and b/Assets/Images/Background_Forest_1.png differ
+[1mdiff --git a/Assets/Images/Fireball1.png b/Assets/Images/Fireball1.png[m
+[1mnew file mode 100644[m
+[1mindex 0000000..b7b88d9[m
+Binary files /dev/null and b/Assets/Images/Fireball1.png differ
+[1mdiff --git a/Assets/Images/Fireball2.png b/Assets/Images/Fireball2.png[m
+[1mnew file mode 100644[m
+[1mindex 0000000..ee06025[m
+Binary files /dev/null and b/Assets/Images/Fireball2.png differ
+[1mdiff --git a/Assets/Images/Fireball3.png b/Assets/Images/Fireball3.png[m
+[1mnew file mode 100644[m
+[1mindex 0000000..bce2f2f[m
+Binary files /dev/null and b/Assets/Images/Fireball3.png differ
+* Unmerged path bin/Engine/Engine.class
+[1mdiff --git a/bin/Engine/ScreenManager.class b/bin/Engine/ScreenManager.class[m
+[1mindex 4508408..94cd890 100644[m
+Binary files a/bin/Engine/ScreenManager.class and b/bin/Engine/ScreenManager.class differ
+[1mdiff --git a/src/Engine/Engine.java b/src/Engine/Engine.java[m
+[1mindex a1861e6..a03bb80 100644[m
+[1m--- a/src/Engine/Engine.java[m
+[1m+++ b/src/Engine/Engine.java[m
+[36m@@ -36,6 +36,14 @@[m [mpublic class Engine {[m
+ 		//Set running to true[m
+ 		running = true;[m
+ 		[m
+[32m+[m		[32m// Create custom background as gameObject[m
+[32m+[m		[32mGameObject background = new GameObject(0, 0, Directory.screenManager.getPercentageWidth(100.0), Directory.screenManager.getPercentageHeight(100.0));[m
+[32m+[m		[32m// set background values[m
+[32m+[m		[32mbackground.setVisible(true);[m
+[32m+[m		[32mbackground.setImage(Directory.imageLibrary.get("Background_Forest_1"));[m
+[32m+[m		[32m// set background state[m
+[32m+[m		[32m//background.setState(new ObjState());[m
+[32m+[m		[32mDirectory.engine.getCurrentState().addObj(background);[m
+ 		[m
+ 		//Create enemy as entity[m
+ 		GameObject enemy = new Entity(Directory.screenManager.getPercentageWidth(85.0), Directory.screenManager.getPercentageHeight(45.0), 75, 300, 10, 1, 1, false);[m
+[1mdiff --git a/src/Engine/HUD.java b/src/Engine/HUD.java[m
+[1mnew file mode 100644[m
+[1mindex 0000000..fbe83c6[m
+[1m--- /dev/null[m
+[1m+++ b/src/Engine/HUD.java[m
+[36m@@ -0,0 +1,37 @@[m
+[32m+[m[32mpackage Engine;[m
+[32m+[m[32mimport java.awt.Color;[m
+[32m+[m[32mimport java.awt.List;[m
+[32m+[m[32mimport java.util.ArrayList;[m
+[32m+[m[32mimport java.awt.geom.Rectangle2D;[m
+[32m+[m
+[32m+[m[32mimport Objects.GameObject;[m
+[32m+[m[32mimport Engine.Directory;[m
+[32m+[m
+[32m+[m[32mpublic class HUD {[m
+[32m+[m	[32m//private List<GameObject> hudObjects= new ArrayList<GameObject>();[m
+[32m+[m	[32mpublic GameObject healthBar;[m
+[32m+[m[41m	[m
+[32m+[m	[32mpublic HUD() {[m
+[32m+[m		[32minit();[m
+[32m+[m	[32m}[m
+[32m+[m[41m	[m
+[32m+[m	[32mpublic void init()[m
+[32m+[m	[32m{[m
+[32m+[m		[32minitHealthBar();[m
+[32m+[m	[32m}[m
+[32m+[m[41m	[m
+[32m+[m	[32mprivate void initHealthBar()[m
+[32m+[m	[32m{[m
+[32m+[m		[32mhealthBar = new GameObject(5,15,250,25);[m
+[32m+[m		[32mhealthBar.setShape(new Rectangle2D.Double());[m
+[32m+[m		[32mhealthBar.setColor(Color.green);[m
+[32m+[m		[32mhealthBar.setVisible(true);[m
+[32m+[m		[32m//hudObjects.add(healthBar);[m
+[32m+[m	[32m}[m
+[32m+[m[41m	[m
+[32m+[m	[32m// Update HealthBar based on player health[m
+[32m+[m	[32mprivate void updateHealth()[m
+[32m+[m	[32m{[m
+[32m+[m		[32m//healthBar. = Directory.ProfileManager.Player.getCurrentHealth() * 10;[m
+[32m+[m	[32m}[m
+[32m+[m[32m}[m

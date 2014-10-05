@@ -2,6 +2,8 @@ package Engine.States;
 
 import java.awt.Graphics2D;
 import java.util.ArrayList;
+
+import Engine.Directory;
 import Objects.GameObject;
 
 public class OverworldState extends State {
@@ -36,12 +38,20 @@ public class OverworldState extends State {
 		}
 		toAdd.removeAll(copyList);
 
+		//Clear the queue of keypresses (Since it is not being used in this state)
+		Directory.inputManager.clear();
 
 	}
 
 	@Override
 	public void draw(Graphics2D g2d) {
-		// TODO Auto-generated method stub
+		ArrayList<GameObject> drawList = getObjListCopy();
+
+		//For every game object in objects
+		for(GameObject obj : drawList)
+		{
+			obj.draw(g2d);
+		}
 
 	}
 

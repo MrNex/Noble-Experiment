@@ -15,7 +15,7 @@ public class Entity extends GameObject{
 	protected String name;
 	protected int totalHealth, currentHealth, power, defense;
 	protected EquationObject currentEq;
-	protected boolean isEquation;
+	protected boolean isEquation, equationVisibility;
 
 	public Entity(double xx, double yy, double w, double h, int hp, int pow, int def, boolean eq) {
 		super(xx, yy, w, h);
@@ -35,6 +35,9 @@ public class Entity extends GameObject{
 		//Or if this entity has a number that needs an equation made
 		isEquation = eq;
 		currentEq = new EquationObject(this);
+
+		
+		equationVisibility = true;
 
 	}
 
@@ -93,6 +96,22 @@ public class Entity extends GameObject{
 		return power;
 	}
 
+	/**
+	 * Gets whether the equation object on this entity is currently being draw.
+	 * @return the visibility of this entities equation object
+	 */
+	public boolean getEquationVisibility(){
+		return equationVisibility;
+	}
+	
+	/**
+	 * Sets the visibility of this entities equation object
+	 * @param showEquation Should the equation object attached to this entity be showing
+	 */
+	public void setEquationVisibility(boolean showEquation){
+		equationVisibility = showEquation;
+	}
+	
 	public void incrementCurrentHealth(int val){
 		currentHealth += val;
 		//if the currentHealth is over the limit
@@ -141,7 +160,9 @@ public class Entity extends GameObject{
 	public void draw(Graphics2D g2d){
 		if(isVisible()){
 			super.draw(g2d);
-			currentEq.draw(g2d);
+			if(equationVisibility){
+				currentEq.draw(g2d);
+			}
 		}
 	}
 
