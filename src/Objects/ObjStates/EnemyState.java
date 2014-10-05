@@ -14,7 +14,7 @@ import Objects.Entity;
 public class EnemyState extends ObjState{
 
 	//Attributes
-	private static int attackSpeed = 5000;				//SEt all enemies attack speeds to 10 seconds to start
+	private static int attackSpeed = 5000;				//Set all enemies attack speeds to 10 seconds to start
 	private Timer attackTimer;
 	
 	public EnemyState() {
@@ -25,9 +25,11 @@ public class EnemyState extends ObjState{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				//Create a destructable projectile
-				Entity projectile = new Entity(attachedTo.getXPos(), attachedTo.getYPos(), 50, 20, 1, 1, 1, true);
-				//SEt the shape
-				projectile.setShape(new Ellipse2D.Double(), Color.black);
+				Entity projectile = new Entity(attachedTo.getXPos(), attachedTo.getYPos(), 50, 50, 1, 1, 1, true);
+				// Set image
+				projectile.setImage(Directory.imageLibrary.get("Bullet_Yellow"));
+				//Set the shape
+				//projectile.setShape(new Ellipse2D.Double(), Color.black);
 				//Set visible
 				projectile.setVisible(true);
 				//Set the state
