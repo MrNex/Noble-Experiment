@@ -91,6 +91,9 @@ public class Equation {
 			//Return the final numericalExpression's value on the stack
 			return expStack.get(0).evaluate();
 		}
+		catch(ArrayIndexOutOfBoundsException e){
+			throw new InvalidEquationException();
+		}
 		catch(NullPointerException nPE){
 			throw new InvalidEquationException();
 		}

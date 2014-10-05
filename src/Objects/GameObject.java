@@ -40,12 +40,12 @@ public class GameObject {
 		image = null;
 	}
 
-	//Sets the position vector
+	//Gets the position vector
 	public Vector getPos(){
 		return position;
 	}
 
-	//gets the position vector
+	//sets the position vector
 	public void setPos(Vector v){
 		position = v;
 	}

@@ -200,7 +200,10 @@ public class PlayerBattleState extends ObjState{
 		
 		//Declare the submission equation
 		Equation submission = null;
-		
+		if(expressionList.size() > 0)
+		{
+			
+		}
 		try{
 			//Compile the equation
 			submission = new Equation(expressionList);
