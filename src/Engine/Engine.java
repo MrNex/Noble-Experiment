@@ -35,6 +35,14 @@ public class Engine {
 		//Set running to true
 		running = true;
 		
+		// Create custom background as gameObject
+		GameObject background = new GameObject(0, 0, Directory.screenManager.getPercentageWidth(100.0), Directory.screenManager.getPercentageHeight(100.0));
+		// set background values
+		background.setVisible(true);
+		background.setImage(Directory.imageLibrary.get("Background_Forest_1"));
+		// set background state
+		//background.setState(new ObjState());
+		Directory.engine.getCurrentState().addObj(background);
 		
 		//Create enemy as entity
 		GameObject enemy = new Entity(Directory.screenManager.getPercentageWidth(85.0), Directory.screenManager.getPercentageHeight(45.0), 75, 300, 10, 1, 1, false);
