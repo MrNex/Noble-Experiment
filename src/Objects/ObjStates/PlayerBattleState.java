@@ -183,52 +183,13 @@ public class PlayerBattleState extends ObjState{
 
 	//Takes your current answerString, parses it into an equation, and submits it to the current target
 	private void submitEquation(){
-		//Create a list of expressions
-		ArrayList<Expression> expressionList = new ArrayList<Expression>();
-
-		//Create a queue of integers
-		LinkedList<Integer> digits = new LinkedList<Integer>();
-		//for each character in the answer string
-		for(int i = 0; i < answerString.length(); i++){
-			if((Character.isDigit(answerString.charAt(i)))){
-				String digit = answerString.substring(i, i+1);
-				//Add the digit to the queue
-				digits.addLast(Integer.parseInt(digit));
-
-				//Make sure the next character is a digit, or there is a next character
-				if(answerString.length() - 1 == i || !Character.isDigit(answerString.charAt(i+1))){
-					//If it's not, get the integer represented by the digits
-					int val = ListToInt(digits);
-
-					//Add a numerical expression to the expression list
-					expressionList.add(new NumericalExpression(val));
-					//Clear the list of digits
-					digits.clear();
-				}
-			}
-			else if(answerString.charAt(i) == '+'){
-				expressionList.add(new AdditionExpression());
-			}
-			else if(answerString.charAt(i) == '-'){
-				expressionList.add(new SubtractionExpression());
-			}
-			else if(answerString.charAt(i) == '*'){
-				expressionList.add(new MultiplicationExpression());
-			}
-			else if(answerString.charAt(i) == '/'){
-				expressionList.add(new DivisionExpression());
-			}
-		}
 
 		//Declare the submission equation
 		Equation submission = null;
-		if(expressionList.size() > 0)
-		{
 
-		}
 		try{
 			//Compile the equation
-			submission = new Equation(expressionList);
+			submission = Equation.parseEquation(answerString);
 		}
 		catch(InvalidEquationException iEE){
 			//Improper equation
@@ -240,30 +201,50 @@ public class PlayerBattleState extends ObjState{
 
 		//If the submission is valid
 		if(submission!=null){
-			//send answer to current target
-			if(currentTarget.submitAnswer(submission, player.getPower())){
-				Directory.profile.incrementEquationsMade();
+			//Make sure the player has enough operators for equation
+			if(numAddOp >= submission.getAdditionOperators() &&
+					numSubOp >= submission.getSubtractionOperators() &&
+					numMultOp >= submission.getMultiplicationOperators() &&
+					numDivOp >= submission.getDivisionOperators()){
 
-				//Clear answerString
-				answerString = "";
+				//Take the operators away from the player
+				numAddOp -= submission.getAdditionOperators();
+				numSubOp -= submission.getSubtractionOperators();
+				numMultOp -= submission.getMultiplicationOperators();
+				numDivOp -= submission.getDivisionOperators();
 
-				//Check if the Entity was killed
-				if(currentTarget.getCurrentHealth() <= 0){
-					//Toggle target
-					toggleTarget();
+				//send answer to current target
+				if(currentTarget.submitAnswer(submission, player.getPower())){
+					Directory.profile.incrementEquationsMade();
+
+					//Clear answerString
+					answerString = "";
+
+					//Check if the Entity was killed
+					if(currentTarget.getCurrentHealth() <= 0){
+						//Toggle target
+						toggleTarget();
+					}
+					else{
+						currentTarget.getEquationObj().generateNewEquation();
+
+					}
 				}
 				else{
-					currentTarget.getEquationObj().generateNewEquation();
-
+					Directory.profile.incrementWrongAnswers();
+					System.out.println("Wrong, answer is " + currentTarget.getEquationObj().getEquation().getSolution() + " your answer was " + submission.getSolution());
 				}
 			}
 			else{
-				Directory.profile.incrementWrongAnswers();
+				System.out.println("You do not have enough operators!");
 			}
 		}
 		else{
+			System.out.println("Invalid");
+			
 			Directory.profile.incrementWrongAnswers();
 		}
+
 
 	}
 
@@ -298,39 +279,13 @@ public class PlayerBattleState extends ObjState{
 		//send answer to current target
 		if(currentTarget.submitAnswer(new Equation(answer), submitPower)){
 
-			//TODO: next if is Probably redundant, current target has equation if this method is called. 
-			//But will keep it to prevent misuse for now.
-			//IF the current target held an equation
-			if(currentTarget.holdsEquation())
-			{
-				//Get the expressionList
-				ArrayList<Expression>expList = currentTarget.getEquationObj().getEquation().getExpressionList();
-				//iterate through it
-				for(Expression e : expList)
-				{
-					//If the expression is an operator
-					if(e instanceof OperatorExpression)
-					{
-						//Discern what type of operator, and then add to the players corresponding count of operators
-						if(e instanceof AdditionExpression){
-							numAddOp++;
-							System.out.println("Addition: " + numAddOp);
-						}
-						else if(e instanceof SubtractionExpression){
-							numSubOp++;
-							System.out.println("Subtraction: " + numSubOp);
-						}
-						else if(e instanceof MultiplicationExpression){
-							numMultOp++;
-							System.out.println("Multiplication: " + numMultOp);
-						}
-						else if(e instanceof DivisionExpression){
-							numDivOp++;
-							System.out.println("Division: " + numDivOp);
-						}
-					}
-				}
-			}
+			System.out.println("Correct");
+			
+			//Add the operators from solved equation to the player
+			numAddOp += currentTarget.getEquationObj().getEquation().getAdditionOperators();
+			numSubOp += currentTarget.getEquationObj().getEquation().getSubtractionOperators();
+			numMultOp += currentTarget.getEquationObj().getEquation().getMultiplicationOperators();
+			numDivOp += currentTarget.getEquationObj().getEquation().getDivisionOperators();
 
 			//Increment profile stats
 			Directory.profile.incrementEquationsSolved();
@@ -346,6 +301,8 @@ public class PlayerBattleState extends ObjState{
 			}
 		}
 		else{
+			System.out.println("Wrong");
+			
 			//Increment profile stats
 			Directory.profile.incrementWrongAnswers();
 
