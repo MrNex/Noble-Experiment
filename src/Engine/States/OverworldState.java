@@ -12,6 +12,12 @@ public class OverworldState extends State {
 		// TODO Auto-generated constructor stub
 	}
 
+	/**
+	 * Updates every object in this state,
+	 * removes objects from the state which must be removed
+	 * Adds objects to the state that must be added
+	 * And clears the input manager
+	 */
 	@Override
 	public void update() {
 		//For every game object in gameObjects

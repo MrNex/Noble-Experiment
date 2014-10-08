@@ -3,6 +3,7 @@ package Engine;
 import java.awt.Color;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Ellipse2D.Double;
+import java.util.Stack;
 
 import Engine.States.*;
 import MathHelp.Vector;
@@ -14,6 +15,7 @@ import Objects.ObjStates.PlayerOverworldState;
 public class Engine {
 
 	private boolean running;
+	private Stack<State> stateStack;
 	private State currentState;
 
 	public Engine() {
@@ -22,6 +24,12 @@ public class Engine {
 
 	public void init()
 	{
+		//Initialize the stateStack
+		stateStack = new Stack<State>();
+		
+		//Push current state on stack
+		stateStack.push(new BattleState());
+		
 		//Set the currentState
 		currentState = new BattleState();
 
@@ -82,14 +90,21 @@ public class Engine {
 	{
 		while(running)
 		{
-			currentState.update();
-
+			stateStack.peek().update();
 		}
 	}
 
+	public State popState(){
+		return stateStack.pop();
+	}
+	
 	public State getCurrentState()
 	{
-		return currentState;
+		return stateStack.peek();
+	}
+	
+	public void pushState(State stateToPush){
+		stateStack.push(stateToPush);
 	}
 
 }

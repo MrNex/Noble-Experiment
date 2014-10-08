@@ -14,10 +14,12 @@ public class GameObject {
 	protected Vector position;
 	protected double width, height;
 	protected boolean visible, running;
+	protected boolean triggerable, solid;
 	protected RectangularShape shape;
 	protected BufferedImage image;
 	protected Color color;
 	protected ObjState currentState;
+	
 
 	public GameObject(double xx, double yy, double w, double h) {
 		//Set designated attributes
@@ -104,6 +106,40 @@ public class GameObject {
 	}
 	public void setRunning(boolean isRunning){
 		running = isRunning;
+	}
+	
+	/**
+	 * Gets whether this gameObject has an active trigger
+	 * @return whether this object has an active trigger
+	 */
+	public boolean isTriggerable(){
+		return triggerable;
+	}
+	
+	/**
+	 * Sets whether this gameObject has an active trigger
+	 * @param isTriggerable Does this game object have an active trigger
+	 */
+	public void setTriggerable(boolean isTriggerable){
+		triggerable = isTriggerable;
+	}
+	
+	/**
+	 * Sets whether an object is solid
+	 * A solid object cannot be passed through
+	 * @return The solidarity of the object
+	 */
+	public boolean isSolid(){
+		return solid;
+	}
+	
+	/**
+	 * Sets whether an object is solid.
+	 * Solid objects cannot be passed through
+	 * @param isSolid Is this gameObject solid?
+	 */
+	public void setSolid(boolean isSolid){
+		solid = isSolid;
 	}
 
 	//Set shape
