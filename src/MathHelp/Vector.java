@@ -7,7 +7,7 @@ public class Vector {
 	//Attributes
 	private int numComponents;
 	private double[] components;
-	
+
 	/**
 	 * <p>Constructs a vector with a specified number of components.<br>
 	 * All components will default to 0</p>
@@ -18,23 +18,23 @@ public class Vector {
 		numComponents = nComps;
 		//Initialize array
 		components = new double[numComponents];
-		
+
 	}
-	
+
 	/**
 	 * <p>Constructs a vector as a copy of another vector</p>
 	 * @param v The vector you wish to copy
 	 */
 	public Vector(Vector v){
 		numComponents = v.numComponents;
-		
+
 		components = new double[numComponents];
-		
+
 		for(int i = 0; i < numComponents; i++){
 			components[i] = v.components[i];
 		}
 	}
-	
+
 	//Accessors
 	/**
 	 * Gets the component of this vector at a specified index
@@ -44,7 +44,7 @@ public class Vector {
 	public double getComponent(int index){
 		return components[index];
 	}
-	
+
 	/**
 	 * <p>Sets a specified component of this vector</p>
 	 * @param index Index of component to set
@@ -53,8 +53,8 @@ public class Vector {
 	public void setComponent(int index, double val){
 		components[index] = val;
 	}
-	
-	
+
+
 	//Methods
 	/**
 	 * Gets the magnitude of this vector
@@ -67,20 +67,20 @@ public class Vector {
 		}
 		return Math.sqrt(sumSq);
 	}
-	
+
 	/**
 	 * Set the magnitude of this vector while maintaining direction.
 	 * @param newMag Desired magnitude
 	 */
 	public void setMag(double newMag){
 		normalize();
-		
+
 		//Multiply each component by the new mag
 		for(int i = 0; i < numComponents; i++){
 			components[i] *= newMag;
 		}
 	}
-	
+
 	/**
 	 * Create a new vector with set magnitude in the direction of an existing vector
 	 * @param v Vector with desired direction
@@ -90,10 +90,10 @@ public class Vector {
 	public static Vector setMag(Vector v, double newMag){
 		Vector returnVector = normalize(v);
 		returnVector.setMag(newMag);
-		
+
 		return returnVector;
 	}
-	
+
 	/**
 	 * Normalizes this vector.
 	 * Maintains direction while giving this vector a magnitude of 1.
@@ -102,12 +102,12 @@ public class Vector {
 	 */
 	public void normalize(){
 		double mag = getMag();
-		
+
 		for(int i = 0; i < numComponents; i++){
 			components[i] /= mag;
 		}
 	}
-	
+
 	/**
 	 * <p>Creates a unit {@link Vec} in the direction of an  vector</p> 
 	 * @param v Vector to normalize
@@ -118,7 +118,7 @@ public class Vector {
 		returnVector.normalize();
 		return returnVector;
 	}
-	
+
 	/**
 	 * <p>Increments this Vector by another Vector</p>
 	 * @param v Vector to increment this vector by
@@ -128,7 +128,7 @@ public class Vector {
 			components[i] += v.components[i];
 		}
 	}
-	
+
 	/**
 	 * <p>Returns the sum of two vectors</p>
 	 * @param v1 Initial vector
@@ -137,14 +137,14 @@ public class Vector {
 	 */
 	public static Vector add(Vector v1, Vector v2){
 		Vector sum = new Vector(v1.numComponents);
-		
+
 		for(int i = 0; i < v1.numComponents; i++){
 			sum.components[i] = v1.components[i] + v2.components[i];
 		}
-		
+
 		return sum;
 	}
-	
+
 	/**
 	 * <p>Decrements this vector by vector v</p>
 	 * @param v The vector to take away from this vector.
@@ -154,7 +154,7 @@ public class Vector {
 			components[i] -= v.components[i];
 		}
 	}
-	
+
 	/**
 	 * Subtracts Vector v2 from Vector v1
 	 * @param v1 The initial vector
@@ -163,14 +163,14 @@ public class Vector {
 	 */
 	public static Vector subtract(Vector v1, Vector v2){
 		Vector difference = new Vector(v1.numComponents);
-		
+
 		for(int i = 0; i < v1.numComponents; i++){
 			difference.components[i] = v1.components[i] - v2.components[i];
 		}
-		
+
 		return difference;
 	}
-	
+
 	/**
 	 * <p>Calculates the dot product of this vector with another vector</p>
 	 * @param v Vector to dot with
@@ -178,14 +178,14 @@ public class Vector {
 	 */
 	public double dot(Vector v){
 		double prod = 0.0;
-		
+
 		for(int i = 0; i < numComponents; i++){
 			prod += components[i] * v.components[i];
 		}
-		
+
 		return prod;
 	}
-	
+
 	/**
 	 * <p>Calculates the dot product of two vectors</p>
 	 * @param v1 The first vector being dotted
@@ -194,12 +194,24 @@ public class Vector {
 	 */
 	public static double dot(Vector v1, Vector v2){
 		double prod = 0.0;
-		
+
 		for(int i = 0; i < v1.numComponents; i++){
 			prod += v1.components[i] * v2.components[i];
 		}
-		
+
 		return prod;
+	}
+
+	public String toString(){
+		String returnString = "[";
+		for(int i = 0; i < numComponents; i++){
+			returnString += components[i];
+			if(i < numComponents - 1){
+				returnString +=", ";
+			}
+		}
+		returnString += "]\n";
+		return returnString;
 	}
 
 }

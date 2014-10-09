@@ -15,7 +15,7 @@ import Objects.*;
  * @author Nex
  *
  */
-public class ProjectileState extends ObjState{
+public class ProjectileState extends ObjBattleState{
 
 	//Attributes
 	//TODO: Find way to make this slower!
@@ -30,6 +30,7 @@ public class ProjectileState extends ObjState{
 	 * @param x The entity being targetted that this projectile should seek
 	 */
 	public ProjectileState(Entity x) {
+		super(true);
 		//X marks the spot
 		target = x;
 	
@@ -43,6 +44,8 @@ public class ProjectileState extends ObjState{
 	 */
 	@Override
 	public void enter() {
+		super.enter();
+		
 		//Determine the amount of miliseconds until this projectile hits it's target
 		//Find distance from this obj to target
 		//Find vector from this obj to target
@@ -69,10 +72,7 @@ public class ProjectileState extends ObjState{
 		
 		timeStart = System.currentTimeMillis();
 		
-		//If running is not true, set obj to running
-		if(!attachedTo.isRunning()){
-			attachedTo.setRunning(true);
-		}
+		
 		
 		//Start the timer
 		//timer.start();
@@ -86,6 +86,7 @@ public class ProjectileState extends ObjState{
 	 */
 	@Override
 	public void update() {
+		super.update();
 		//iP + tM = fP
 		
 		//GEt elapsed time since "firing" in seconds

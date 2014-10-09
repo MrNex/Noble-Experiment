@@ -39,8 +39,11 @@ public class BattleStartTrigger extends Trigger {
 			background.setVisible(true);
 			background.setImage(Directory.imageLibrary.get("Background_Forest_1"));
 
-			Directory.engine.getCurrentState().addObj(background);
+			//Directory.engine.getCurrentState().addObj(background);
 
+			attachedTo.setRunning(false);
+			triggeredBy.setRunning(false);
+			
 			//Set stae of the attached obj
 			attachedTo.setState(new EnemyBattleState());
 			//Set the obj as running
@@ -48,6 +51,7 @@ public class BattleStartTrigger extends Trigger {
 
 			//Set state of player
 			triggeredBy.setState(new PlayerBattleState());
+			triggeredBy.setRunning(true);
 
 			//Add this obj to the next state
 			Directory.engine.getCurrentState().addObj(attachedTo);

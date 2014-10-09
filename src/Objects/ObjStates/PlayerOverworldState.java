@@ -1,6 +1,7 @@
 package Objects.ObjStates;
 
 import java.awt.Color;
+import java.awt.Graphics2D;
 import java.awt.geom.Ellipse2D;
 
 import Engine.Directory;
@@ -39,7 +40,7 @@ public class PlayerOverworldState extends ObjState{
 		//Set the image to null (until image for overworld state is made)
 		attachedTo.setImage(null);
 		
-		((Entity)attachedTo).setEquationVisibility(false);
+		//((Entity)attachedTo).setEquationVisibility(false);
 		
 	}
 
@@ -74,6 +75,11 @@ public class PlayerOverworldState extends ObjState{
 	@Override
 	public void exit() {
 		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void draw(Graphics2D g2d) {
 		
 	}
 

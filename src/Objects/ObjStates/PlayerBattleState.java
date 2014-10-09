@@ -10,7 +10,7 @@ import MathHelp.Vector;
 import Objects.Entity;
 
 //State which governs the player during a battle
-public class PlayerBattleState extends ObjState{
+public class PlayerBattleState extends ObjBattleState{
 
 	//attributes
 	private Vector worldPos;
@@ -24,7 +24,7 @@ public class PlayerBattleState extends ObjState{
 	private Entity player;
 
 	public PlayerBattleState() {
-		super();
+		super(true);
 
 		//Set attributes
 		answerString = "";
@@ -34,8 +34,10 @@ public class PlayerBattleState extends ObjState{
 
 	@Override
 	public void enter() {
+		super.enter();
+		
 		//Save current position
-		worldPos = attachedTo.getPos();
+		worldPos = new Vector(attachedTo.getPos());
 
 		//downcast attachedTo gameobject to player
 		if(attachedTo instanceof Entity){
@@ -60,7 +62,7 @@ public class PlayerBattleState extends ObjState{
 		player.setImage(Directory.imageLibrary.get("PlayerBattleIdle"));
 
 		//Set the visibility of the equation object
-		player.setEquationVisibility(true);
+		//player.setEquationVisibility(true);
 
 		//Toggle target to select first target
 		toggleTarget();
@@ -68,6 +70,8 @@ public class PlayerBattleState extends ObjState{
 
 	@Override
 	public void update() {
+		super.update();
+		
 		//Declare character to retrieve keys in the order that they were pressed since last update
 		Character ch;
 		//While the next character pressed isn't null
@@ -86,11 +90,12 @@ public class PlayerBattleState extends ObjState{
 			//Else if ch is a newline or return
 			else if((int)ch == (int)'\n' || (int)ch == (int)'\r'){
 				//If the current target has an equation
-				if(currentTarget.holdsEquation()){
+				if(((ObjBattleState)currentTarget.getState()).holdsEquation()){
 					answerEquation();
-				}else{
 
+				}else{
 					submitEquation();
+				
 				}
 
 				//Clear answerString
@@ -121,11 +126,17 @@ public class PlayerBattleState extends ObjState{
 	//If it turns out the next target isn't alive it simply toggles targets again after setting the current target to null so as not to select it
 
 	private void toggleTarget(){
+		
+		//Get the state of the current target
+		ObjBattleState currObjState = null;
+		if(currentTarget != null)
+			currObjState = (ObjBattleState)currentTarget.getState();
+		
 		//Change targets
 		//If the current target isn't null and it is selected
-		if(currentTarget != null && currentTarget.getEquationObj().isSelected()){
+		if(currObjState != null && currObjState.getEquationObj().isSelected()){
 			//Toggle selected attribute of current target(deselect)
-			currentTarget.getEquationObj().toggleSelected();
+			currObjState.getEquationObj().toggleSelected();
 		}
 
 		//Increment target index
@@ -138,6 +149,8 @@ public class PlayerBattleState extends ObjState{
 		//battlestate's array of destructables assign the next index as the current target
 		if(targetIndex < gameState.getEntities().size()){
 			currentTarget = gameState.getEntities().get(targetIndex);
+			currObjState = (ObjBattleState)currentTarget.getState();
+			
 			//Make sure the current target is alive
 			if(currentTarget.getCurrentHealth() <= 0){
 				//If not toggle target again
@@ -149,7 +162,7 @@ public class PlayerBattleState extends ObjState{
 			else
 			{
 				//Set target as selected
-				currentTarget.getEquationObj().toggleSelected();
+				currObjState.getEquationObj().toggleSelected();
 			}
 		}
 		else{
@@ -163,6 +176,7 @@ public class PlayerBattleState extends ObjState{
 				//Set targetIndex to 0 and set currentTarget
 				targetIndex = 0;
 				currentTarget = gameState.getEntities().get(targetIndex);
+				currObjState = (ObjBattleState)currentTarget.getState();
 				//Make sure the current target is alive
 				if(currentTarget.getCurrentHealth() <= 0){
 					//Make sure there is another target to choose from (else the only target on the screen is dead
@@ -179,13 +193,13 @@ public class PlayerBattleState extends ObjState{
 				}
 				else{
 					//Set target as selected
-					currentTarget.getEquationObj().toggleSelected();
+					currObjState.getEquationObj().toggleSelected();
 				}
 			}
 		}
-
-
 	}
+	
+	
 
 	//Takes your current answerString, parses it into an equation, and submits it to the current target
 	private void submitEquation(){
@@ -219,8 +233,11 @@ public class PlayerBattleState extends ObjState{
 				numMultOp -= submission.getMultiplicationOperators();
 				numDivOp -= submission.getDivisionOperators();
 
+				//Get current targets battle state
+				ObjBattleState targetBattleState = (ObjBattleState)currentTarget.getState();
+				
 				//send answer to current target
-				if(currentTarget.submitAnswer(submission, player.getPower())){
+				if(targetBattleState.submitAnswer(submission, player.getPower())){
 					Directory.profile.incrementEquationsMade();
 
 					//Clear answerString
@@ -231,13 +248,13 @@ public class PlayerBattleState extends ObjState{
 						battleEnd();
 					}
 					else{
-						currentTarget.getEquationObj().generateNewEquation();
+						targetBattleState.getEquationObj().generateNewEquation();
 
 					}
 				}
 				else{
 					Directory.profile.incrementWrongAnswers();
-					System.out.println("Wrong, answer is " + currentTarget.getEquationObj().getEquation().getSolution() + " your answer was " + submission.getSolution());
+					System.out.println("Wrong, answer is " + targetBattleState.getEquationObj().getEquation().getSolution() + " your answer was " + submission.getSolution());
 				}
 			}
 			else{
@@ -281,16 +298,19 @@ public class PlayerBattleState extends ObjState{
 		//If targeting yourself, make the power 0.
 		int submitPower = currentTarget == player ? 0 : player.getPower();
 
+		//Get targets battle state
+		ObjBattleState targetBattleState = (ObjBattleState)currentTarget.getState();
+		
 		//send answer to current target
-		if(currentTarget.submitAnswer(new Equation(answer), submitPower)){
+		if(targetBattleState.submitAnswer(new Equation(answer), submitPower)){
 
 			System.out.println("Correct");
 			
 			//Add the operators from solved equation to the player
-			numAddOp += currentTarget.getEquationObj().getEquation().getAdditionOperators();
-			numSubOp += currentTarget.getEquationObj().getEquation().getSubtractionOperators();
-			numMultOp += currentTarget.getEquationObj().getEquation().getMultiplicationOperators();
-			numDivOp += currentTarget.getEquationObj().getEquation().getDivisionOperators();
+			numAddOp += targetBattleState.getEquationObj().getEquation().getAdditionOperators();
+			numSubOp += targetBattleState.getEquationObj().getEquation().getSubtractionOperators();
+			numMultOp += targetBattleState.getEquationObj().getEquation().getMultiplicationOperators();
+			numDivOp += targetBattleState.getEquationObj().getEquation().getDivisionOperators();
 
 			//Increment profile stats
 			Directory.profile.incrementEquationsSolved();
@@ -301,7 +321,7 @@ public class PlayerBattleState extends ObjState{
 				toggleTarget();
 			}
 			else{
-				currentTarget.getEquationObj().generateNewEquation();
+				targetBattleState.getEquationObj().generateNewEquation();
 
 			}
 		}
@@ -324,7 +344,7 @@ public class PlayerBattleState extends ObjState{
 		//Set image to null
 		attachedTo.setImage(null);
 		//Set equationVisibility to none
-		((Entity)attachedTo).setEquationVisibility(false);
+		//((Entity)attachedTo).setEquationVisibility(false);
 	}
 	
 	/**

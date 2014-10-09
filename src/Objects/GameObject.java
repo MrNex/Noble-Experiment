@@ -65,6 +65,22 @@ public class GameObject {
 	}
 	
 	/**
+	 * GEts the width of this gameObject
+	 * @return The width of this gameObject
+	 */
+	public double getWidth(){
+		return width;
+	}
+	
+	/**
+	 * Gets the height of this gameObject
+	 * @return The height of this gameObject
+	 */
+	public double getHeight(){
+		return height;
+	}
+	
+	/**
 	 * Sets the width of this gameobject
 	 * @param newWidth Width to set
 	 */
@@ -92,6 +108,14 @@ public class GameObject {
 			newState.setAttachedGameObject(this);
 			newState.enter();
 		}
+	}
+	
+	/**
+	 * Gets this gameObjects current state
+	 * @return The state currently attached to this gameObject
+	 */
+	public ObjState getState(){
+		return currentState;
 	}
 
 	//visible accessors
@@ -214,7 +238,11 @@ public class GameObject {
 		}
 	}
 
-	//Draws the shape representing this gameObject
+	/**
+	 * Draws the image (Or shape if image is null) representing this gameObject.
+	 * If this object has a running state, it will draw the state as well.
+	 * @param g2d
+	 */
 	public void draw(Graphics2D g2d){
 		if(visible)
 		{
@@ -231,9 +259,18 @@ public class GameObject {
 				//Fill the shape
 				g2d.fill(shape);
 			}
+			//IF this object is running
+			if(running){
+				//Draw the currentState as well
+				currentState.draw(g2d);
+			}
 		}
 	}
 
+	/**
+	 * Updates the shape to the current object position,
+	 * And the current object dimensions.
+	 */
 	public void updateShape(){
 		if(shape != null)
 			shape.setFrame(position.getComponent(0), position.getComponent(1), width, height);

@@ -12,7 +12,7 @@ import Engine.Directory;
 import MathHelp.Vector;
 import Objects.Entity;
 
-public class EnemyBattleState extends ObjState{
+public class EnemyBattleState extends ObjBattleState{
 
 	//Attributes
 	private Vector worldPos;
@@ -24,6 +24,8 @@ public class EnemyBattleState extends ObjState{
 	 * Creates an attack timer which will
 	 */
 	public EnemyBattleState() {
+		super(false);
+		
 		//Create attackTimer
 		attackTimer = new Timer(attackSpeed, new ActionListener(){
 
@@ -31,7 +33,7 @@ public class EnemyBattleState extends ObjState{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				//Create a destructable projectile
-				Entity projectile = new Entity(attachedTo.getXPos(), attachedTo.getYPos(), 50, 50, 1, 1, 1, true);
+				Entity projectile = new Entity(attachedTo.getXPos(), attachedTo.getYPos(), 50, 50, 1, 1, 1);
 				// Set image
 				projectile.setImage(Directory.imageLibrary.get("Bullet_Yellow"));
 				//Set the shape
@@ -61,13 +63,15 @@ public class EnemyBattleState extends ObjState{
 	 */
 	@Override
 	public void enter() {
+		super.enter();
+		
 		//Store worldPos
-		worldPos = attachedTo.getPos();
+		worldPos = new Vector(attachedTo.getPos());
 
 		//Set position
 		Vector posVector = new Vector(2);
 		posVector.setComponent(0, Directory.screenManager.getPercentageWidth(85.0));
-		posVector.setComponent(1,Directory.screenManager.getPercentageHeight(45.0));
+		posVector.setComponent(1, Directory.screenManager.getPercentageHeight(45.0));
 		attachedTo.setPos(posVector);
 
 		//Set battleState dimensions
@@ -75,9 +79,6 @@ public class EnemyBattleState extends ObjState{
 		attachedTo.setHeight(300);
 
 		attachedTo.updateShape();
-
-		//Set the visibility of the equation object
-		((Entity)attachedTo).setEquationVisibility(true);
 
 		//Upon entering this state, start the timer
 		attackTimer.start();
@@ -90,6 +91,8 @@ public class EnemyBattleState extends ObjState{
 	 */
 	@Override
 	public void update() {
+		super.update();
+		
 		//Check if the target was killed yet
 		if(Directory.profile.getPlayer().getCurrentHealth() <= 0){
 			//Player is dead
@@ -112,7 +115,7 @@ public class EnemyBattleState extends ObjState{
 		attackTimer.stop();
 		
 		//Turn equation visibility off
-		((Entity)attachedTo).setEquationVisibility(false);
+		//((Entity)attachedTo).setEquationVisibility(false);
 
 		//Revert back to overworld pos
 		attachedTo.setPos(worldPos);

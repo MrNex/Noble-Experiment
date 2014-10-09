@@ -7,24 +7,25 @@ import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 
 import Engine.Directory;
-import Engine.States.BattleState;  //Temp
+import Engine.States.BattleState;
 import Equations.Equation;
+import Objects.ObjStates.HoverState;
+import Objects.ObjStates.ObjBattleState;
 
 public class EquationObject extends GameObject{
 	
-	private static double yOffset = -50;
 	private Equation currentEq;
 	private Entity following;
 	private boolean selected;
 	private double padX, padY;
 	
 	public EquationObject(Entity toFollow) {
-		super(toFollow.getXPos(), toFollow.getYPos() + yOffset, 0, 0);
+		super(toFollow.getXPos(), toFollow.getYPos() - 50, 0, 0);
 		//Set the destructable this obj is following
 		following = toFollow;
 		
 		//Set current equation
-		if(toFollow.isEquation){
+		if(((ObjBattleState)toFollow.currentState).holdsEquation()){
 			currentEq = Equation.GenRndEquation(following.defense);
 		}
 		else{
@@ -49,22 +50,15 @@ public class EquationObject extends GameObject{
 		height += padY;
 		
 		//Create shape
-		setShape(new Rectangle2D.Double(position.getComponent(0), position.getComponent(1) + yOffset, width + padX, height + padY), Color.red);
+		setShape(new Rectangle2D.Double(position.getComponent(0), position.getComponent(1) - 50, width + padX, height + padY), Color.red);
 		//Set visible
 		setVisible(true);
+		
+		//Attach state
+		setState(new HoverState(toFollow));
+		
 		//Set to running
 		setRunning(true);
-	}
-	
-	//Sets this equations position above the object it is following
-	@Override
-	public void update(){
-		//Set position to the destructable this obj is following
-		position.setComponent(0, following.getXPos());
-		position.setComponent(1, following.getYPos() + yOffset);
-		
-		//Update the shape
-		updateShape();
 	}
 
 	
@@ -104,7 +98,7 @@ public class EquationObject extends GameObject{
 	
 	public void generateNewEquation()
 	{
-		if(following.holdsEquation())
+		if(((ObjBattleState)following.currentState).holdsEquation())
 		{
 			currentEq = Equation.GenRndEquation(BattleState.difficulty);
 		}
