@@ -9,7 +9,12 @@ import Engine.Directory;
 import MathHelp.Vector;
 import Objects.*;
 
-//Projectile state defines ai which seek over time and try to hit a target entity
+/**
+ * Projectile state defines behavior which will cause a gameObject to travel towards a target
+ * at the defined speed and deal damage upon collision
+ * @author Nex
+ *
+ */
 public class ProjectileState extends ObjState{
 
 	//Attributes
@@ -20,12 +25,22 @@ public class ProjectileState extends ObjState{
 	Entity target;
 	long timeStart;
 	
+	/**
+	 * Constructs a projectile state
+	 * @param x The entity being targetted that this projectile should seek
+	 */
 	public ProjectileState(Entity x) {
 		//X marks the spot
 		target = x;
 	
 	}
 
+	/**
+	 * Prepares the attached gameObject for the projectile state:
+	 * Determines a direction vector toward the target,
+	 * Determines a time in seconds it will take to reach target
+	 * And sets this target to running if it isn't already
+	 */
 	@Override
 	public void enter() {
 		//Determine the amount of miliseconds until this projectile hits it's target
@@ -63,6 +78,12 @@ public class ProjectileState extends ObjState{
 		//timer.start();
 	}
 
+	/**
+	 * Updates this projectile state, incrementing the attached objects position
+	 * by the appropriate amount based on the elapsed time of arrival and the time passed since firing.
+	 * And checks if the projectile is colliding with the target.
+	 * If it is, the target will take damage and the projectile is removed from the current state.
+	 */
 	@Override
 	public void update() {
 		//iP + tM = fP
@@ -88,6 +109,9 @@ public class ProjectileState extends ObjState{
 		attachedTo.updateShape();
 	}
 
+	/**
+	 * Takes the attachedObject out of projectileState.
+	 */
 	@Override
 	public void exit() {
 		

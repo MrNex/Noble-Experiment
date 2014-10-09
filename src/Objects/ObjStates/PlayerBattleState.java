@@ -44,6 +44,12 @@ public class PlayerBattleState extends ObjState{
 
 		//Toggle target to select first target
 		toggleTarget();
+		
+		//Update position
+		Vector posVector = new Vector(2);
+		posVector.setComponent(0, Directory.screenManager.getPercentageWidth(15.0));
+		posVector.setComponent(1, Directory.screenManager.getPercentageHeight(45.0));
+		attachedTo.setPos(posVector);
 
 
 		//Update dimensions
@@ -222,8 +228,7 @@ public class PlayerBattleState extends ObjState{
 
 					//Check if the Entity was killed
 					if(currentTarget.getCurrentHealth() <= 0){
-						//Toggle target
-						toggleTarget();
+						battleEnd();
 					}
 					else{
 						currentTarget.getEquationObj().generateNewEquation();
@@ -315,6 +320,23 @@ public class PlayerBattleState extends ObjState{
 	public void exit() {
 		//Set position back to worldPos
 		attachedTo.setPos(worldPos);
+		
+		//Set image to null
+		attachedTo.setImage(null);
+		//Set equationVisibility to none
+		((Entity)attachedTo).setEquationVisibility(false);
+	}
+	
+	/**
+	 * The player is ending the battle: The player has won
+	 */
+	private void battleEnd(){
+		//Exit battlestate
+		Directory.engine.popState();
+		//Remove dead entity
+		Directory.engine.getCurrentState().removeObj(currentTarget);
+		//swap state back to overworld state
+		attachedTo.setState(new PlayerOverworldState());
 	}
 
 }

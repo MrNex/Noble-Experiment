@@ -14,6 +14,8 @@ public class Program {
 		
 		//Create engine
 		Directory.engine = new Engine();
+		//Create Collision manager
+		Directory.collisionManager = new CollisionManager();
 		//Create input manager
 		Directory.inputManager = new InputManager();
 		//Create screen manager

@@ -14,6 +14,7 @@ public class OverworldState extends State {
 
 	/**
 	 * Updates every object in this state,
+	 * Checks for collsions
 	 * removes objects from the state which must be removed
 	 * Adds objects to the state that must be added
 	 * And clears the input manager
@@ -25,6 +26,7 @@ public class OverworldState extends State {
 		{
 			obj.update();
 		}
+		
 
 		//Get copyList (Avoid concurrent modification exceptions)
 		ArrayList<GameObject>copyList = new ArrayList<GameObject>(toRemove);
@@ -35,6 +37,9 @@ public class OverworldState extends State {
 		}
 		toRemove.removeAll(copyList);
 
+		//Check for collisions
+		Directory.collisionManager.checkCollisions();
+		
 		//Get copyList
 		copyList = new ArrayList<GameObject>(toAdd);
 		//add every game object in toAdd

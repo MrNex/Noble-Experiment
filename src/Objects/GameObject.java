@@ -6,6 +6,7 @@ import java.awt.image.BufferedImage;
 
 import MathHelp.Vector;
 import Objects.ObjStates.ObjState;
+import Objects.Triggers.Trigger;
 
 
 public class GameObject {
@@ -19,6 +20,7 @@ public class GameObject {
 	protected BufferedImage image;
 	protected Color color;
 	protected ObjState currentState;
+	protected Trigger trigger;
 	
 
 	public GameObject(double xx, double yy, double w, double h) {
@@ -125,6 +127,33 @@ public class GameObject {
 	}
 	
 	/**
+	 * Gets the trigger attached to this gameObject
+	 * @return The trigger component of this gameObject
+	 */
+	public Trigger getTrigger(){
+		return trigger;
+	}
+	
+	/**
+	 * Attaches a trigger component to this gameObject
+	 * The trigger will not be active unless the gameObject is also set to triggerable
+	 * @param newTrigger The new trigger component to attach
+	 */
+	public void setTrigger(Trigger newTrigger){
+		//If there was an old trigger
+		if(trigger != null){
+			//Remove trigger's attachment to this gameObject
+			trigger.Attach(null);
+		}
+		trigger = newTrigger;
+		//If the new trigger is not null
+		if(trigger != null){
+			//Set trigger's attached Gameobject as this gameObject
+			trigger.Attach(this);
+		}
+	}
+	
+	/**
 	 * Sets whether an object is solid
 	 * A solid object cannot be passed through
 	 * @return The solidarity of the object
@@ -142,7 +171,12 @@ public class GameObject {
 		solid = isSolid;
 	}
 
-	//Set shape
+	/**
+	 * Sets the shape of this gameobject
+	 * If the shape is not being set to null, the shape will be updated to fit the
+	 * current dimensions and location of this gameObject
+	 * @param newShape The new shape this gameObject should have
+	 */
 	public void setShape(RectangularShape newShape){
 		//Set the shape
 		shape = newShape;
@@ -152,6 +186,11 @@ public class GameObject {
 		}
 	}
 	
+	/**
+	 * Set the image of this gameObject
+	 * IF both an image and a shape are set, the image will be drawn
+	 * @param newImage The new image of this gameObject
+	 */
 	public void setImage(BufferedImage newImage){
 		image = newImage;
 	}

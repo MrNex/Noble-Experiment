@@ -9,7 +9,7 @@ import Equations.Expression;
 import Equations.OperatorExpression;
 
 //Class defines a "living" named game object which has stats
-public class Entity extends GameObject{
+public class Entity extends MovableGameObject{
 
 	//Attributes
 	protected String name;

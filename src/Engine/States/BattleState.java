@@ -9,7 +9,8 @@ import Engine.Directory;
 import Objects.Entity;
 import Objects.GameObject;
 
-
+//TODO: Clean up to keep track of two entities and a list of projectile gameObjects.
+//TODO: Have all state-Ending and cleanup logic in here instead of PlayerBattleState and EnemyBattleState!
 public class BattleState extends State{
 
 	//Attributes
@@ -42,8 +43,6 @@ public class BattleState extends State{
 	//The Game will update every game object in the current state
 	//Then it will remove any game objects that need to be removed from the current state
 	//Then it will add any game objects that need to be added to the current state
-	//TODO: Clean up code to use all original lists, there should be no conflict with adding or removing to or from these lists
-	//while their processes are going on.
 	@Override
 	public void update() {
 		//For every game object in gameObjects
@@ -72,9 +71,9 @@ public class BattleState extends State{
 		for(GameObject obj : copyList)
 		{
 			objects.add(obj);
-			//if obj is a destructable
+			//if obj is a entity
 			if(obj instanceof Entity){
-				//Add to destructables
+				//Add to entities
 				entities.add((Entity)obj);
 			}
 		}

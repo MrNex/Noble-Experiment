@@ -8,15 +8,16 @@ import java.util.Stack;
 import Engine.States.*;
 import MathHelp.Vector;
 import Objects.*;
-import Objects.ObjStates.EnemyState;
+import Objects.ObjStates.EnemyBattleState;
 import Objects.ObjStates.PlayerBattleState;
 import Objects.ObjStates.PlayerOverworldState;
+import Objects.Triggers.BattleStartTrigger;
 
 public class Engine {
 
 	private boolean running;
 	private Stack<State> stateStack;
-	private State currentState;
+	//private State currentState;
 
 	public Engine() {
 		init();
@@ -28,10 +29,10 @@ public class Engine {
 		stateStack = new Stack<State>();
 		
 		//Push current state on stack
-		stateStack.push(new BattleState());
+		stateStack.push(new OverworldState());
 		
 		//Set the currentState
-		currentState = new BattleState();
+		//currentState = new BattleState();
 
 
 		//Set internal variables
@@ -44,26 +45,27 @@ public class Engine {
 		//Set running to true
 		running = true;
 		
-		// Create custom background as gameObject
-		GameObject background = new GameObject(0, 0, Directory.screenManager.getPercentageWidth(100.0), Directory.screenManager.getPercentageHeight(100.0));
-		// set background values
-		background.setVisible(true);
-		background.setImage(Directory.imageLibrary.get("Background_Forest_1"));
-		
-		Directory.engine.getCurrentState().addObj(background);
 		
 		
 		//Create enemy as entity
-		GameObject enemy = new Entity(Directory.screenManager.getPercentageWidth(85.0), Directory.screenManager.getPercentageHeight(45.0), 75, 300, 10, 1, 1, false);
+		GameObject enemy = new Entity(Directory.screenManager.getPercentageWidth(85.0), Directory.screenManager.getPercentageHeight(45.0), 20, 20, 10, 1, 1, false);
 		//Set enemy shape and visibility
 		enemy.setShape(new Ellipse2D.Double(), Color.RED);
 		enemy.setVisible(true);
+		//Set enemy trigger
+		enemy.setTrigger(new BattleStartTrigger());
+		//Set the enemy as triggerable
+		enemy.setTriggerable(true);
 		//Set enemy state
-		enemy.setState(new EnemyState());
+		//enemy.setState(new EnemyBattleState());
 		//Set enemy to running
-		enemy.setRunning(true);
+		//enemy.setRunning(true);
+		//Set enemies equation as invisible
+		((Entity)enemy).setEquationVisibility(false);
+		
 		//Add enemy to state
 		Directory.engine.getCurrentState().addObj(enemy);
+		
 		
 
 		//Position player
@@ -76,7 +78,7 @@ public class Engine {
 		Directory.profile.getPlayer().updateShape();
 		
 		//Set player state
-		Directory.profile.getPlayer().setState(new Objects.ObjStates.PlayerBattleState());
+		Directory.profile.getPlayer().setState(new PlayerOverworldState());
 		Directory.profile.getPlayer().setRunning(true);
 
 		//Add player

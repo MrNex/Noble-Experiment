@@ -6,7 +6,14 @@ import java.awt.geom.Ellipse2D;
 import Engine.Directory;
 import MathHelp.Vector;
 import Objects.Entity;
+import Objects.MovableGameObject;
 
+/**
+ * Defines behavior which will allow the player to move in a top-down manner
+ * using wasd
+ * @author Nex
+ *
+ */
 public class PlayerOverworldState extends ObjState{
 
 	//Attributes
@@ -60,13 +67,8 @@ public class PlayerOverworldState extends ObjState{
 			translation.setComponent(0, translation.getComponent(0)+movementSpeed);
 		}
 		
-		//Increment translation vector by position
-		translation.add(attachedTo.getPos());
-		//Set attachedTo's position to translation
-		attachedTo.setPos(translation);
-		
-		//Update the shape
-		attachedTo.updateShape();
+		//Move this gameObject
+		((MovableGameObject)attachedTo).move(translation);
 	}
 
 	@Override
