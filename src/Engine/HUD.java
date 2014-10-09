@@ -26,12 +26,12 @@ public class HUD {
 		healthBar.setShape(new Rectangle2D.Double());
 		healthBar.setColor(Color.green);
 		healthBar.setVisible(true);
-		//hudObjects.add(healthBar);
 	}
 	
 	// Update HealthBar based on player health
-	private void updateHealth()
+	public void updateHealth()
 	{
-		//healthBar. = Directory.ProfileManager.Player.getCurrentHealth() * 10;
+		healthBar.setWidth(Directory.profile.getPlayer().getCurrentHealth() * 10);
+		healthBar.updateShape();
 	}
 }

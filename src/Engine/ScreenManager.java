@@ -11,6 +11,7 @@ import java.awt.geom.Line2D;
 import javax.swing.JPanel;
 import javax.swing.JFrame;
 
+import Engine.States.*;
 import Objects.GameObject;
 
 public class ScreenManager extends JPanel {
@@ -19,6 +20,7 @@ public class ScreenManager extends JPanel {
 	private JPanel drawPanel;
 	private Color backgroundColor;
 	private int width, height;
+	private HUD hud;
 	
 	public ScreenManager() {
 		init();
@@ -29,6 +31,8 @@ public class ScreenManager extends JPanel {
 		//Set internals
 		width = 800;
 		height = 600;
+		
+		hud = new HUD();
 		
 		//Create the window
 		window = new JFrame("Mathemancy V 0.1");
@@ -53,6 +57,11 @@ public class ScreenManager extends JPanel {
 				
 				//Start draw calls
 				Directory.engine.getCurrentState().draw(g2d);
+				
+				if(Directory.engine.getCurrentState() instanceof BattleState){
+					hud.healthBar.draw(g2d);
+					hud.updateHealth();
+				}	
 			}
 			
 		};
