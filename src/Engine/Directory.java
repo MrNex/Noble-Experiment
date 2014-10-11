@@ -3,6 +3,11 @@ package Engine;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 
+import Engine.Manager.CollisionManager;
+import Engine.Manager.InputManager;
+import Engine.Manager.ProfileManager;
+import Engine.Manager.ScreenManager;
+
 //Main messenging class
 public class Directory {
 	//Attributes

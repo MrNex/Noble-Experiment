@@ -29,7 +29,7 @@ public abstract class Trigger {
 	 * Sets the gameobject his trigger is attached to
 	 * @param attachTo The gameobject the trigger should attach to
 	 */
-	public void Attach(GameObject attachTo){
+	public void setAttachedObj(GameObject attachTo){
 		attachedTo = attachTo;
 	}
 	

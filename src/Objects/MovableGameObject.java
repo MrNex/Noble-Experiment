@@ -22,6 +22,8 @@ public class MovableGameObject extends GameObject {
 	 */
 	public MovableGameObject(double xx, double yy, double w, double h) {
 		super(xx, yy, w, h);
+		
+		previousPosition = new Vector(position);
 
 	}
 	
@@ -32,7 +34,7 @@ public class MovableGameObject extends GameObject {
 	 */
 	public void move(Vector movementVector){
 		//Set previous position
-		previousPosition = position;
+		previousPosition.copy(position);
 		//Increment current position
 		position.add(movementVector);
 		
@@ -44,7 +46,9 @@ public class MovableGameObject extends GameObject {
 	 * Sets the current position back to the previous position
 	 */
 	public void revert(){
-		position = previousPosition;
+		position.copy(previousPosition);
+		System.out.println(position.toString());
+		updateShape();
 	}
 	
 

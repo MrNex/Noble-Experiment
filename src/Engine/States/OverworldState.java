@@ -38,7 +38,7 @@ public class OverworldState extends State {
 		toRemove.removeAll(copyList);
 
 		//Check for collisions
-		Directory.collisionManager.checkCollisions();
+		Directory.collisionManager.update();
 		
 		//Get copyList
 		copyList = new ArrayList<GameObject>(toAdd);

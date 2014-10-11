@@ -3,12 +3,17 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.RectangularShape;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 import MathHelp.Vector;
 import Objects.ObjStates.ObjState;
 import Objects.Triggers.Trigger;
 
-
+/**
+ * Defines any object in the game
+ * @author Nex
+ *
+ */
 public class GameObject {
 
 	//Attributes
@@ -20,9 +25,17 @@ public class GameObject {
 	protected BufferedImage image;
 	protected Color color;
 	protected ObjState currentState;
-	protected Trigger trigger;
+	protected ArrayList<Trigger> triggers;
 	
 
+	/**
+	 * Creates a basic GameObject with a position and size
+	 * GameObject defaults to not running and not visible with a null state
+	 * @param xx X Position in worldspace
+	 * @param yy Y Position in worldspace
+	 * @param w object width
+	 * @param h object height
+	 */
 	public GameObject(double xx, double yy, double w, double h) {
 		//Set designated attributes
 		position = new Vector(2);
@@ -44,44 +57,57 @@ public class GameObject {
 		image = null;
 	}
 
-	//Gets the position vector
+	//Accessors
+	/**
+	 * Gets the position vector
+	 * @return the position vector
+	 */
 	public Vector getPos(){
 		return position;
 	}
 
-	//sets the position vector
+	/**
+	 * Sets the position vector
+	 * @param v New position vector
+	 */
 	public void setPos(Vector v){
 		position = v;
 	}
 
-	//Gets the x comp of positionvector
+	/**
+	 * Gets the X component of the position vector
+	 * @return
+	 */
 	public double getXPos(){
 		return position.getComponent(0);
 	}
 
-	//Gets the y comp of position vector
+	/**
+	 * Gets the Y component of the position {@link mathematics.Vec}
+	 * @return the Y component of position {@link mathematics.Vec}
+	 */
 	public double getYPos(){
 		return position.getComponent(1);
 	}
 	
 	/**
-	 * GEts the width of this gameObject
-	 * @return The width of this gameObject
+	 * GEts the width of this gameObject's image/shape/bounding box
+	 * @return The width of this gameObject's image/shape/bounding box
 	 */
 	public double getWidth(){
 		return width;
 	}
 	
 	/**
-	 * Gets the height of this gameObject
-	 * @return The height of this gameObject
+	 * Gets the height of this gameObject's image/shape/bounding box
+	 * @return The height of this gameObject's image/shape/bounding box
 	 */
 	public double getHeight(){
 		return height;
 	}
 	
 	/**
-	 * Sets the width of this gameobject
+	 * Sets the width of this gameobject's image/shape/bounding box
 	 * @param newWidth Width to set
 	 */
 	public void setWidth(int newWidth){
@@ -89,14 +115,31 @@ public class GameObject {
 	}
 	
 	/**
-	 * Sets the height of this gameObject
+	 * Sets the height of this gameObject's image/shape/bounding box
 	 * @param newHeight Height to set
 	 */
 	public void setHeight(int newHeight){
 		height = newHeight;
 	}
+	
+	/**
+	 * Gets a position vector representing the center of this object
+	 * @return A vector holding the coordinates of the exact center of this object
+	 */
+	public Vector getCenter(){
+		Vector centerVec = new Vector(2);
+		centerVec.copy(position);
+		centerVec.incrementComponent(0, width/2.0);
+		centerVec.incrementComponent(1, height/2.0);
+		return centerVec;
+	}
 
-	//Set the state of an object (DON'T FORGET TO SET THE OBJECT TO RUNNING!)
+	/**
+	 * Sets the state of an {@link GameObject}.
+	 * 
+	 * If object isn't working see {@link setRunning()}
+	 * @param newState State to attach to object
+	 */
 	public void setState(ObjState newState){
 		//If not leaving a null state
 		if(currentState != null)
@@ -118,18 +161,34 @@ public class GameObject {
 		return currentState;
 	}
 
-	//visible accessors
+	/**
+	 * Gets the visibility of this gameobject
+	 * @return Whether or not the object is visible
+	 */
 	public boolean isVisible(){
 		return visible;
 	}
+	
+	/**
+	 * Sets the visibility of this gameObject
+	 * @param isVisible is the object visible
+	 */
 	public void setVisible(boolean isVisible){
 		visible = isVisible;
 	}
 
-	//running accessors
+	/**
+	 * Gets whethe or not this gameobject is running.
+	 * @return Whether or not the gameobject is running.
+	 */
 	public boolean isRunning(){
 		return running;
 	}
+	
+	/**
+	 * Sets whether or not the gameObject is running
+	 * @param isRunning Is the gameObject running
+	 */
 	public void setRunning(boolean isRunning){
 		running = isRunning;
 	}
@@ -143,38 +202,42 @@ public class GameObject {
 	}
 	
 	/**
-	 * Sets whether this gameObject has an active trigger
-	 * @param isTriggerable Does this game object have an active trigger
+	 * Sets whether this object is triggerable or not.
+	 * IF set to true the arrayList of triggers is initialized.
+	 * This will clear the list of triggers.
+	 * @param isTriggerable Whether or not this object should be triggerable
 	 */
 	public void setTriggerable(boolean isTriggerable){
 		triggerable = isTriggerable;
+		//If this object is triggerable, initialize its list of triggers
+		if(triggerable){
+			triggers = new ArrayList<Trigger>();
+		}
 	}
 	
 	/**
-	 * Gets the trigger attached to this gameObject
-	 * @return The trigger component of this gameObject
+	 * Adds a trigger to this gameObject
+	 * @param triggerToAdd The trigger being added
 	 */
-	public Trigger getTrigger(){
-		return trigger;
+	public void addTrigger(Trigger triggerToAdd){
+		triggers.add(triggerToAdd);
+		triggerToAdd.setAttachedObj(this);
 	}
 	
 	/**
-	 * Attaches a trigger component to this gameObject
-	 * The trigger will not be active unless the gameObject is also set to triggerable
-	 * @param newTrigger The new trigger component to attach
+	 * Removes a trigger from this gameObject
+	 * @param triggerToRemove the trigger being removed
 	 */
-	public void setTrigger(Trigger newTrigger){
-		//If there was an old trigger
-		if(trigger != null){
-			//Remove trigger's attachment to this gameObject
-			trigger.Attach(null);
-		}
-		trigger = newTrigger;
-		//If the new trigger is not null
-		if(trigger != null){
-			//Set trigger's attached Gameobject as this gameObject
-			trigger.Attach(this);
-		}
+	public void removeTrigger(Trigger triggerToRemove){
+		triggers.remove(triggerToRemove);
+	}
+	
+	/**
+	 * Gets the list of triggers attached to this object
+	 * @return An arrayList of all triggers attached to this object
+	 */
+	public ArrayList<Trigger> getTriggers(){
+		return new ArrayList<Trigger>(triggers);
 	}
 	
 	/**
@@ -219,19 +282,28 @@ public class GameObject {
 		image = newImage;
 	}
 
-	//Set color
+	/**
+	 * Sets the color of the GameObject
+	 * @param newColor The new color
+	 */
 	public void setColor(Color newColor){
 		color = newColor;
 	}
 
-	//I'm a programmer and math minor, I love to re-use things.
+	/**
+	 * Sets the shape and color of the gameobject
+	 * @param newShape The new shape
+	 * @param color The new color
+	 */
 	public void setShape(RectangularShape newShape, Color color)
 	{
 		setShape(newShape);
 		setColor(color);
 	}
 
-	//Updates the gameObject
+	/**
+	 * Updates the current state of the gameObject if this object is running
+	 */
 	public void update(){
 		if(running){
 			currentState.update();
@@ -241,7 +313,9 @@ public class GameObject {
 	/**
 	 * Draws the image (Or shape if image is null) representing this gameObject.
 	 * If this object has a running state, it will draw the state as well.
-	 * @param g2d
+	 * 
+	 * If the gameobject is visible AND running, the currentState's draw method will also be called
+	 * @param g2d reference to renderer to draw
 	 */
 	public void draw(Graphics2D g2d){
 		if(visible)
@@ -280,17 +354,21 @@ public class GameObject {
 	public boolean isColliding(GameObject obj){
 
 		//If the left side of this is to the left  right side of obj and the right side of this is to the right of the left side of obj
-		if(position.getComponent(0) < obj.position.getComponent(0) + this.width && this.position.getComponent(0) + this.width > obj.position.getComponent(0)){
+		if(position.getComponent(0) < obj.position.getComponent(0) + obj.width && this.position.getComponent(0) + this.width > obj.position.getComponent(0)){
 
 			//IF the top of this is higher than the bottom of obj and the bottom of this is further down than the top of obj
-			if(position.getComponent(1) < obj.position.getComponent(1) + this.height && this.position.getComponent(1) + this.height > obj.position.getComponent(1)){
+			if(position.getComponent(1) < obj.position.getComponent(1) + obj.height && this.position.getComponent(1) + this.height > obj.position.getComponent(1)){
 				return true;
 			}	
 		}
 		return false;
 	}
 
-	//Checks whether or not the bounding box surrounding the shape contains a given point
+	/**
+	 * Checks if the bounding box of this obj is intersecting the bounding box of another obj
+	 * @param obj GameObject to check with
+	 * @return Whether this gameobject is intersecting with obj
+	 */
 	public boolean contains(double xx, double yy){
 		return 
 				xx < position.getComponent(0) + width && 
