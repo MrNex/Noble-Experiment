@@ -5,6 +5,11 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.Ellipse2D.Double;
 import java.util.Stack;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.Timer;
+
 import Engine.Manager.CollisionManager;
 import Engine.Manager.InputManager;
 import Engine.Manager.ProfileManager;
@@ -31,6 +36,7 @@ public class Engine {
 	//Attributes
 	private boolean running;
 	private Stack<State> stateStack;
+	private Timer drawTimer;
 
 	/**
 	 * Constructs an engine
@@ -63,6 +69,16 @@ public class Engine {
 		Directory.profile = new ProfileManager();				//Create player profile & Constructs player
 
 
+		//Create draw loop
+		drawTimer = new Timer(1000/60, new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Directory.screenManager.update();
+			}
+		});
+
+		drawTimer.setRepeats(true);
+
 	}
 
 	/**
@@ -90,6 +106,9 @@ public class Engine {
 		//Load the test screen
 		loadTestScreen();
 
+		//Start the drawLoop
+		drawTimer.start();
+		
 		//Run
 		run();
 	}
@@ -109,7 +128,7 @@ public class Engine {
 		enemy.setTriggerable(true);
 		//Set enemy trigger
 		enemy.addTrigger(new BattleStartTrigger());
-		
+
 		enemy.setSolid(true);
 
 		//Add enemy to state
@@ -131,7 +150,7 @@ public class Engine {
 		Directory.profile.getPlayer().setRunning(true);
 
 		Directory.profile.getPlayer().setSolid(true);
-		
+
 		//Add player
 		Directory.engine.getCurrentState().addObj(Directory.profile.getPlayer());
 	}

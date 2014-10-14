@@ -15,24 +15,40 @@ import Engine.Directory;
 import Engine.States.*;
 import Objects.GameObject;
 
-public class ScreenManager extends JPanel {
+/**
+ * Defines a component of the engine which handles managing the current state 
+ * of the screen.
+ * @author Nex
+ *
+ */
+public class ScreenManager extends Manager {
 
+	//Attributes
 	private JFrame window;
 	private JPanel drawPanel;
 	private Color backgroundColor;
 	private int width, height;
 	private HUD hud;
 	
+	/**
+	 * Constructs a screenManager
+	 */
 	public ScreenManager() {
-		init();
+		super();
 	}
 	
+	/**
+	 * Initializes all member variables
+	 * Makes call to Input Manager, Must be called after InputManager is constructed!
+	 */
+	@Override
 	public void init()
 	{
 		//Set internals
 		width = 800;
 		height = 600;
 		
+		//Initialize hud
 		hud = new HUD();
 		
 		//Create the window
@@ -46,8 +62,7 @@ public class ScreenManager extends JPanel {
 			public void paintComponent(Graphics g)
 			{
 				super.paintComponent(g);
-				//Refresh screen
-				super.setBackground(null);
+				//Paint background
 				g.setColor(backgroundColor);
 				g.fillRect(0, 0, width, height);
 				
@@ -84,20 +99,43 @@ public class ScreenManager extends JPanel {
 		drawPanel.setFocusable(true);
 	}
 	
-	//Gets the graphics renderer of drawPanel
+	/**
+	 * Gets the graphics renderer of drawPanel
+	 * @return An instance of the graphics renderer in drawPanel.
+	 */
 	public Graphics getGraphics(){
 		return drawPanel.getGraphics();
 	}
 	
 
 
+	/**
+	 * Gets a percentage of the width of the screen
+	 * @param percent The percent you want
+	 * @return The specified percentage of the screenWidth
+	 */
 	public double getPercentageWidth(double percent)
 	{
 		return width / 100.0 * percent;
 	}
 	
+	/**
+	 * Gets a percentage of the height of the screen
+	 * @param percent The percent of the height that you want
+	 * @return The specified percentage of the screenHeight
+	 */
 	public double getPercentageHeight(double percent)
 	{
 		return height / 100.0 * percent;
+	}
+
+	/**
+	 * Updates the screen manager
+	 * Repaints the drawPanel
+	 */
+	@Override
+	public void update() {
+		drawPanel.repaint();
+		
 	}
 }

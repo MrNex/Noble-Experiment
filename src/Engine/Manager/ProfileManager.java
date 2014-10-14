@@ -6,8 +6,13 @@ import java.awt.geom.Ellipse2D;
 import Engine.Directory;
 import Objects.Entity;
 
-//This class keeps track of stats and instances of the player
-public class ProfileManager {
+/**
+ * Defines a component of the engine
+ * which keeps track of stats and instances of the player
+ * @author Nex
+ *
+ */
+public class ProfileManager extends Manager{
 
 	private Entity player;
 	private int equationsSolved;
@@ -15,8 +20,19 @@ public class ProfileManager {
 	private int wrongAnswers;
 	private int level;
 	private int currentExp, expNeeded;
-	
+
+	/**
+	 * Constructs a profile manager
+	 */
 	public ProfileManager() {
+		super();
+	}
+	
+	/**
+	 * Initializes all member variables
+	 */
+	@Override
+	public void init() {
 		//Initialize attributes
 		equationsSolved = 0;
 		equationsMade = 0;
@@ -24,39 +40,46 @@ public class ProfileManager {
 		level = 0;
 		currentExp = 0;
 		expNeeded = generateNextExpTier();
-		
+
 		//Create the player
 		player = new Entity(500, 0, 200, 300, 10, 1, 1);
-		
+
 		//Set the image
 		player.setImage(Directory.imageLibrary.get("PlayerBattleIdle"));
 		player.setVisible(true);
+
 	}
-	
+
+	@Override
+	public void update() {
+		// TODO Auto-generated method stub
+
+	}
+
 	public Entity getPlayer(){
 		return player;
 	}
-	
+
 	//Generates the next amount of exp needed to level up
 	private int generateNextExpTier(){
 		return (int)(100 + Math.pow(10, level));
 	}
-	
+
 	//Increments the players number of equations solved
 	public void incrementEquationsSolved(){
 		equationsSolved++;
 	}
-	
+
 	//Increments the players number of wrong answers
 	public void incrementWrongAnswers(){
 		wrongAnswers++;
 	}
-	
+
 	//Increments the players number of equations made
 	public void incrementEquationsMade(){
 		equationsMade++;
 	}
-	
+
 	//Increments the current experience, leveling up if necessary
 	public void incrementCurrentExp(int val){
 		//Increment the current experience
@@ -65,13 +88,13 @@ public class ProfileManager {
 		if(currentExp >= expNeeded){
 			//Subtract to get remaining
 			currentExp -= expNeeded;
-			
+
 			//Increment level
 			level++;
-			
+
 			//Get the next tier of expNeeded
 			expNeeded = generateNextExpTier();
-			
+
 		}
 	}
 
