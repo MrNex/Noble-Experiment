@@ -41,6 +41,10 @@ public class Entity extends MovableGameObject{
 		return power;
 	}
 	
+	public int getDefense(){
+		return defense;
+	}
+	
 	public void incrementCurrentHealth(int val){
 		currentHealth += val;
 		//if the currentHealth is over the limit
