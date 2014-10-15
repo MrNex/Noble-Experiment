@@ -18,9 +18,9 @@ import Loaders.ImageLoader;
 import Loaders.Loader;
 import MathHelp.Vector;
 import Objects.*;
-import Objects.ObjStates.EnemyBattleState;
-import Objects.ObjStates.PlayerBattleState;
 import Objects.ObjStates.MObjStates.PlayerOverworldState;
+import Objects.ObjStates.MObjStates.EntityStates.EnemyBattleState;
+import Objects.ObjStates.MObjStates.EntityStates.PlayerBattleState;
 import Objects.Triggers.BattleStartTrigger;
 
 

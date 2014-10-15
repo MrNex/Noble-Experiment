@@ -3,8 +3,8 @@ package Objects.Triggers;
 import Engine.Directory;
 import Engine.States.BattleState;
 import Objects.GameObject;
-import Objects.ObjStates.EnemyBattleState;
-import Objects.ObjStates.PlayerBattleState;
+import Objects.ObjStates.MObjStates.EntityStates.EnemyBattleState;
+import Objects.ObjStates.MObjStates.EntityStates.PlayerBattleState;
 import Objects.ObjStates.MObjStates.EntityStates.TargetableState;
 
 
@@ -47,7 +47,6 @@ public class BattleStartTrigger extends Trigger {
 			
 			//Set stae of the attached obj
 			attachedTo.setState(new EnemyBattleState());
-			//attachedTo.setState(new TargetableState(false));
 			//Set the obj as running
 			attachedTo.setRunning(true);
 

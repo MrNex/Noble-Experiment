@@ -74,7 +74,7 @@ public abstract class ObjBattleState extends ObjState {
 	//If the answer is correct, power is removed from the entities health and a new equation is generated if the entity is not dead
 	//If the answer is incorrect, nothing really happens.
 	/**
-	 * Submits an equation representing answer to this state's equation.
+	 * Submit an equation representing answer to this state's equation.
 	 * If the answer is correct, power is removed from the entities health and a new
 	 * equation is generated if the entity is not dead.
 	 * If the answer is incorrect, nothing happens.

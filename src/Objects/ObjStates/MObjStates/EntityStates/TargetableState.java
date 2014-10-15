@@ -67,6 +67,14 @@ public class TargetableState extends EntityState{
 		return equation;
 	}
 	
+	/**
+	 * Gets whether this targetable state holds equations or numerical values
+	 * @return True if state holds equations, false if state holds a single value wrapped in an equation.
+	 */
+	public boolean holdsEquation(){
+		return holdsEquation;
+	}
+	
 	
 	
 	//Constructors
@@ -79,6 +87,8 @@ public class TargetableState extends EntityState{
 
 		//Not selected yet
 		selected = false;
+		equationColor = Color.red;
+		
 		//SEt the magnitude that the equation will hover above the attached entity
 		hoverMag = 50.0;
 		//initialize equationbox
@@ -110,9 +120,9 @@ public class TargetableState extends EntityState{
 		//If the equation isn't null
 		if(equation != null){
 			g2d.setColor(equationColor);
-			g2d.draw(equationBox);
+			g2d.fill(equationBox);
 			g2d.setColor(Color.black);
-			g2d.drawString(equation.toString(),(int)(equationBox.getX() - padX / 2.0), (int)(equationBox.getY() + height - padY));
+			g2d.drawString(equation.toString(),(int)(equationBox.getX() + padX / 2.0), (int)(equationBox.getY() + height - padY));
 		}
 	}
 
@@ -133,6 +143,46 @@ public class TargetableState extends EntityState{
 			return true;
 		}
 		
+		return false;
+	}
+	
+	/**
+	 * Checks a potential solution to see if it is the answer
+	 * to the current equation
+	 * 
+	 * If it is the answer, decrements the attached entities health by pow
+	 * If the entity dies, after decrementing health the entity is
+	 * set to no longer be running or visible, has it's state set to null, 
+	 * and is removed from the current state of the engine.
+	 * 
+	 * @param answer Equation representing answer to this states current equation
+	 * @param pow Damage to deal to the attached entity if answer is correct
+	 * @return True if answered correctly, false if answered incorrectly.
+	 */
+	public boolean submitAnswer(Equation answer, int pow){
+		//Check answer
+		if(answer.getSolution() == equation.getSolution()){
+			//If correct, decrement attached entities health by submitted power
+			getAttachedEntity().decrementCurrentHealth(pow);
+			
+			//Check if the entity has died
+			if(getAttachedEntity().getCurrentHealth() <= 0){
+				//Dead targetable is no longer running
+				attachedTo.setRunning(false);
+				//Dead targetable is no longer visible
+				attachedTo.setVisible(false);
+				//Dead targetable is no longer in this state because dead targetable is no longer targetable
+				attachedTo.setState(null);
+				//Remove from the current state of the engine
+				Directory.engine.getCurrentState().removeObj(attachedTo);
+				
+			}
+			
+			//Return true because correct answer
+			return true;
+		}
+		
+		//Return false if wrong
 		return false;
 	}
 
