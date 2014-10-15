@@ -7,7 +7,6 @@ import Engine.Directory;
 import Equations.Equation;
 import Equations.Expression;
 import Equations.OperatorExpression;
-import Objects.ObjStates.ObjBattleState;
 
 //Class defines a "living" named game object which has stats
 public class Entity extends MovableGameObject{
