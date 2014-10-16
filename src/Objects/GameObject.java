@@ -218,6 +218,7 @@ public class GameObject {
 		return running;
 	}
 	
+	
 	/**
 	 * Sets whether or not the gameObject is running
 	 * @param isRunning Is the gameObject running
@@ -225,6 +226,7 @@ public class GameObject {
 	public void setRunning(boolean isRunning){
 		running = isRunning;
 	}
+	
 	
 	/**
 	 * Gets whether this gameObject has an active trigger

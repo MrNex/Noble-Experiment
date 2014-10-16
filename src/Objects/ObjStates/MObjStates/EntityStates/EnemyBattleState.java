@@ -92,12 +92,6 @@ public class EnemyBattleState extends TargetableState{
 	@Override
 	public void update() {
 		super.update();
-		
-		//Check if the target was killed yet
-		if(Directory.profile.getPlayer().getCurrentHealth() <= 0){
-			//Player is dead
-			//battleEnd();
-		}
 
 	}
 
@@ -124,31 +118,6 @@ public class EnemyBattleState extends TargetableState{
 		attachedTo.setWidth(25);
 		attachedTo.setHeight(25);
 		attachedTo.updateShape();
-
-	}
-
-	/**
-	 * Ends battle state: Enemy won
-	 * Stop this enemy from running and set the state to null.
-	 * Pop the battlestate off the stateStack (revert to previous state)
-	 * Stop the (defeated) player from running and remove the player from the current state. 
-	 */
-	private void battleEnd(){
-		//Stop attacking
-		//Set this object as not running
-		attachedTo.setRunning(false);
-		//Revert this obj's state back to (In this case null)
-		attachedTo.setState(null);
-
-		//Set state of engine back to overworld
-		Directory.engine.popState();
-
-		//Set player to not running
-		Directory.profile.getPlayer().setRunning(false);
-		
-		
-		//Remove player from current engine state
-		Directory.engine.getCurrentState().removeObj(Directory.profile.getPlayer());
 
 	}
 

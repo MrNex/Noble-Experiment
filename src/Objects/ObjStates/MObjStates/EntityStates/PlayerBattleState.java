@@ -113,8 +113,6 @@ public class PlayerBattleState extends TargetableState{
 			}
 			//Else if backspace was pressed (casts to int 8)
 			else if((int)ch == 8){
-				//Remove the last character from the answer string
-				//answerString = answerString.substring(0, answerString.length()-1);
 				//Clear answerString
 				answerString = "";
 			}
@@ -349,18 +347,6 @@ public class PlayerBattleState extends TargetableState{
 		
 		//Set image to null
 		attachedTo.setImage(null);
-	}
-	
-	/**
-	 * The player is ending the battle: The player has won
-	 */
-	private void battleEnd(){
-		//Exit battlestate
-		Directory.engine.popState();
-		//Remove dead entity
-		Directory.engine.getCurrentState().removeObj(currentTarget);
-		//swap state back to overworld state
-		attachedTo.setState(new PlayerOverworldState());
 	}
 
 }
