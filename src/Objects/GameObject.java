@@ -184,11 +184,14 @@ public class GameObject {
 	/**
 	 * Removes the current state from the state stack and returns it
 	 * If there is a non-null state being removed it's exit method is called
+	 * If there is an underlying non-null state it's enter method is called
 	 * @return The (now) former state
 	 */
 	public ObjState popState(){
 		if(getState() != null) getState().exit();
-		return stateStack.pop();
+		ObjState returnState = stateStack.pop();
+		if(getState() != null) getState().enter();
+		return returnState;
 	}
 
 	/**

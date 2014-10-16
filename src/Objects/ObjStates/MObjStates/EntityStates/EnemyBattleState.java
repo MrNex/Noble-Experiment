@@ -96,7 +96,7 @@ public class EnemyBattleState extends TargetableState{
 		//Check if the target was killed yet
 		if(Directory.profile.getPlayer().getCurrentHealth() <= 0){
 			//Player is dead
-			battleEnd();
+			//battleEnd();
 		}
 
 	}

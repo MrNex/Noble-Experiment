@@ -251,7 +251,7 @@ public class PlayerBattleState extends TargetableState{
 
 					//Check if the Entity was killed
 					if(currentTarget.getCurrentHealth() <= 0){
-						battleEnd();
+						//battleEnd();
 					}
 					else{
 						targetState.generateNewEquation();

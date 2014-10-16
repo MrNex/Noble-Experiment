@@ -3,6 +3,7 @@ package Objects.Triggers;
 import Engine.Directory;
 import Engine.States.BattleState;
 import Objects.GameObject;
+import Objects.Entity;
 import Objects.ObjStates.MObjStates.EntityStates.EnemyBattleState;
 import Objects.ObjStates.MObjStates.EntityStates.PlayerBattleState;
 import Objects.ObjStates.MObjStates.EntityStates.TargetableState;
@@ -32,7 +33,7 @@ public class BattleStartTrigger extends Trigger {
 	public void action(GameObject triggeredBy) {
 		if(triggeredBy == Directory.profile.getPlayer()){
 			//Push a battlestate to the stateSTack
-			Directory.engine.pushState(new BattleState());
+			Directory.engine.pushState(new BattleState((Entity)triggeredBy, (Entity)attachedTo));
 
 			// Create custom background as gameObject
 			GameObject background = new GameObject(0, 0, Directory.screenManager.getPercentageWidth(100.0), Directory.screenManager.getPercentageHeight(100.0));

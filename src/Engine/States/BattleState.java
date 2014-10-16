@@ -29,14 +29,18 @@ public class BattleState extends State{
 	 * Constructs battle state
 	 * Calls super constructor -> Makes call to init()
 	 */
-	public BattleState() {
+	public BattleState(Entity triggeredBy, Entity attachedTo) {
 		super();
 
-		//competitor1 = e1;
-		//competitor2 = e2;
-		
+		//Assign member variables
+		competitor1 = triggeredBy;
+		competitor2 = attachedTo;
+
 	}
 
+	/**
+	 * Initializes member variables
+	 */
 	@Override
 	protected void init() {
 		//Initialize super
@@ -52,10 +56,12 @@ public class BattleState extends State{
 		return entities;
 	}
 
-	//Updates this state
-	//The Game will update every game object in the current state
-	//Then it will remove any game objects that need to be removed from the current state
-	//Then it will add any game objects that need to be added to the current state
+	/**
+	 * Updates this state
+	 * The Game will update every game object in the current state
+	 * Then it will remove any game objects that need to be removed from the current state
+	 * Then it will add any game objects that need to be added to the current state
+	 */
 	@Override
 	public void update() {
 		//For every game object in gameObjects
@@ -93,13 +99,16 @@ public class BattleState extends State{
 		toAdd.removeAll(copyList);
 
 		//Check if the battle is over
-		//if(isBattleOver()){
-			//endBattle();
-		//}
-		
+		if(isBattleOver()){
+			endBattle();
+		}
+
 	}
 
-	//Draws this state
+	/**
+	 * Draws this state
+	 * Calls draw on all gameObjects in the state's list of gameobjects
+	 */
 	@Override
 	public void draw(Graphics2D g2d){
 
@@ -112,24 +121,46 @@ public class BattleState extends State{
 			obj.draw(g2d);
 		}
 	}
-	
+
 	/**
 	 * Determines if the battle is over
-	 * @return
+	 * @return true if one of the two competitors are dead, else false
 	 */
 	private boolean isBattleOver(){
 		if(competitor1.getCurrentHealth() <=0 || competitor2.getCurrentHealth() <= 0) return true;
 		return false;
 	}
-	
+
 	/**
 	 * Resolves battleState and pops state off stack, moving back to overworld state
 	 * The competitor which died will be removed from the underlying state.
 	 */
 	private void endBattle(){
-		//Determine who lost
-		Entity loser = competitor1.getCurrentHealth() <= 0 ? competitor1 : competitor2;
+		//Determine winner and loser
+		Entity loser;
+		Entity winner;
+
+		if(competitor1.getCurrentHealth() <= 0){
+			loser = competitor1;
+			winner = competitor2;
+		}
+		else{
+			loser = competitor2;
+			winner = competitor1;
+		}
 		
+		//Pop the state of the winner (Revert to whatever state was prior the battle)
+		winner.popState();
 		
+		//Loser is no longer running or visible
+		loser.setRunning(false);
+		loser.setVisible(false);
+		
+		//Pop state of engine reverting back to whatever was previous
+		Directory.engine.popState();
+		
+		//Remove the loser from the engine's currentState
+		Directory.engine.getCurrentState().removeObj(loser);
+
 	}
 }
