@@ -138,6 +138,8 @@ public class GameObject {
 	/**
 	 * Sets the current of an {@link GameObject}.
 	 * Replaces the state currently on top of the state stack.
+	 * IF a state is being replaced, that states exit method is called.
+	 * If the state replacing it is not null, that states entermethod is called
 	 * If object isn't working see setRunning()
 	 * @param newState State to attach to object
 	 */
@@ -145,12 +147,12 @@ public class GameObject {
 		//If not leaving a null state
 		if(getState() != null)
 			popState().exit();
-		pushState(newState);
+		stateStack.push(newState);
 		
 		//If not going into a null state
-		if(newState != null){
-			newState.setAttachedGameObject(this);
-			newState.enter();
+		if(getState() != null){
+			getState().setAttachedGameObject(this);
+			getState().enter();
 		}
 	}
 	
@@ -166,17 +168,26 @@ public class GameObject {
 	
 	/**
 	 * Pushes a state to the top of state stack to set as current state
+	 * If there is already a state on the stack, it's exit method is called.
+	 * If the new state being pushed is not on the stack, its enter method is called
 	 * @param stateToPush The new current state
 	 */
 	public void pushState(ObjState stateToPush){
+		if(getState() != null) getState().exit();
 		stateStack.push(stateToPush);
+		if(getState() != null){
+			getState().setAttachedGameObject(this);
+			getState().enter();
+		}
 	}
 	
 	/**
 	 * Removes the current state from the state stack and returns it
+	 * If there is a non-null state being removed it's exit method is called
 	 * @return The (now) former state
 	 */
 	public ObjState popState(){
+		if(getState() != null) getState().exit();
 		return stateStack.pop();
 	}
 

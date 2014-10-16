@@ -46,12 +46,12 @@ public class BattleStartTrigger extends Trigger {
 			triggeredBy.setRunning(false);
 			
 			//Set stae of the attached obj
-			attachedTo.setState(new EnemyBattleState());
+			attachedTo.pushState(new EnemyBattleState());
 			//Set the obj as running
 			attachedTo.setRunning(true);
 
 			//Set state of player
-			triggeredBy.setState(new PlayerBattleState());
+			triggeredBy.pushState(new PlayerBattleState());
 			triggeredBy.setRunning(true);
 
 			//Add this obj to the next state
