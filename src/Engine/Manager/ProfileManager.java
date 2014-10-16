@@ -14,6 +14,7 @@ import Objects.Entity;
  */
 public class ProfileManager extends Manager{
 
+	//Attributes
 	private Entity player;
 	private int equationsSolved;
 	private int equationsMade;
@@ -50,37 +51,56 @@ public class ProfileManager extends Manager{
 
 	}
 
+	/**
+	 * Unused.
+	 */
 	@Override
 	public void update() {
 		// TODO Auto-generated method stub
 
 	}
 
+	/**
+	 * Gets the player
+	 * @return A reference to the player's Entity
+	 */
 	public Entity getPlayer(){
 		return player;
 	}
 
-	//Generates the next amount of exp needed to level up
+	/**
+	 * Generates the next amount of exp needed to level up
+	 * @return The amount of experience needed to level up to the next level
+	 */
 	private int generateNextExpTier(){
 		return (int)(100 + Math.pow(10, level));
 	}
 
-	//Increments the players number of equations solved
+	/**
+	 * Increments the players number of equations solved
+	 */
 	public void incrementEquationsSolved(){
 		equationsSolved++;
 	}
 
-	//Increments the players number of wrong answers
+	/**
+	 * Increments the players number of wrong answers
+	 */
 	public void incrementWrongAnswers(){
 		wrongAnswers++;
 	}
 
-	//Increments the players number of equations made
+	/**
+	 * Increments the players number of equations made
+	 */
 	public void incrementEquationsMade(){
 		equationsMade++;
 	}
 
-	//Increments the current experience, leveling up if necessary
+	/**
+	 * Increments the current experience, leveling up if necessary
+	 * @param val Amout to increment current experience by
+	 */
 	public void incrementCurrentExp(int val){
 		//Increment the current experience
 		currentExp += val;

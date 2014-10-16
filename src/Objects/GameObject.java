@@ -4,6 +4,7 @@ import java.awt.Graphics2D;
 import java.awt.geom.RectangularShape;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Stack;
 
 import MathHelp.Vector;
 import Objects.ObjStates.ObjState;
@@ -24,7 +25,7 @@ public class GameObject {
 	protected RectangularShape shape;
 	protected BufferedImage image;
 	protected Color color;
-	protected ObjState currentState;
+	protected Stack<ObjState> stateStack;
 	protected ArrayList<Trigger> triggers;
 	
 
@@ -49,7 +50,7 @@ public class GameObject {
 		visible = false;
 		running = false;
 
-		currentState = null;
+		stateStack = new Stack<ObjState>();
 
 		shape = null;
 		color = Color.black;
@@ -135,16 +136,16 @@ public class GameObject {
 	}
 
 	/**
-	 * Sets the state of an {@link GameObject}.
-	 * 
-	 * If object isn't working see {@link setRunning()}
+	 * Sets the current of an {@link GameObject}.
+	 * Replaces the state currently on top of the state stack.
+	 * If object isn't working see setRunning()
 	 * @param newState State to attach to object
 	 */
 	public void setState(ObjState newState){
 		//If not leaving a null state
-		if(currentState != null)
-			currentState.exit();
-		currentState = newState;
+		if(getState() != null)
+			popState().exit();
+		pushState(newState);
 		
 		//If not going into a null state
 		if(newState != null){
@@ -158,7 +159,25 @@ public class GameObject {
 	 * @return The state currently attached to this gameObject
 	 */
 	public ObjState getState(){
-		return currentState;
+		if(stateStack.size() > 0)
+			return stateStack.peek();
+		return null;
+	}
+	
+	/**
+	 * Pushes a state to the top of state stack to set as current state
+	 * @param stateToPush The new current state
+	 */
+	public void pushState(ObjState stateToPush){
+		stateStack.push(stateToPush);
+	}
+	
+	/**
+	 * Removes the current state from the state stack and returns it
+	 * @return The (now) former state
+	 */
+	public ObjState popState(){
+		return stateStack.pop();
 	}
 
 	/**
@@ -306,7 +325,7 @@ public class GameObject {
 	 */
 	public void update(){
 		if(running){
-			currentState.update();
+			getState().update();
 		}
 	}
 
@@ -336,7 +355,7 @@ public class GameObject {
 			//IF this object is running
 			if(running){
 				//Draw the currentState as well
-				currentState.draw(g2d);
+				getState().draw(g2d);
 			}
 		}
 	}

@@ -8,7 +8,11 @@ import Engine.Manager.InputManager;
 import Engine.Manager.ProfileManager;
 import Engine.Manager.ScreenManager;
 
-//Main messenging class
+/**
+ * This class defines the main messenging system for the engine.
+ * @author Nex
+ *
+ */
 public class Directory {
 	//Attributes
 	public static Engine engine;
