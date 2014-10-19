@@ -102,7 +102,8 @@ public class ProjectileState extends TargetableState{
 			System.out.println("Hurt");
 			
 			Directory.engine.getCurrentState().removeObj(attachedTo);
-			attachedTo.setRunning(false);
+			//attachedTo.setRunning(false);	
+			attachedTo.setState(null);	//Sets running to false
 			attachedTo.setVisible(false);
 		}
 		

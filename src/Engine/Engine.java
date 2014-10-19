@@ -146,7 +146,7 @@ public class Engine {
 
 		//Set player state
 		Directory.profile.getPlayer().setState(new PlayerOverworldState());
-		Directory.profile.getPlayer().setRunning(true);
+		//Directory.profile.getPlayer().setRunning(true);
 
 		Directory.profile.getPlayer().setSolid(true);
 

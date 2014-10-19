@@ -168,11 +168,13 @@ public class TargetableState extends EntityState{
 			//Check if the entity has died
 			if(getAttachedEntity().getCurrentHealth() <= 0){
 				//Dead targetable is no longer running
-				attachedTo.setRunning(false);
-				//Dead targetable is no longer visible
-				attachedTo.setVisible(false);
+				//attachedTo.setRunning(false);/
+				
 				//Dead targetable is no longer in this state because dead targetable is no longer targetable
 				attachedTo.setState(null);
+				
+				//Dead targetable is no longer visible
+				attachedTo.setVisible(false);
 				//Remove from the current state of the engine
 				Directory.engine.getCurrentState().removeObj(attachedTo);
 				

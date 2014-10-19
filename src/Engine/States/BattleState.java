@@ -153,7 +153,8 @@ public class BattleState extends State{
 		winner.popState();
 		
 		//Loser is no longer running or visible
-		loser.setRunning(false);
+		//loser.setRunning(false);
+		loser.setState(null);
 		loser.setVisible(false);
 		
 		//Pop state of engine reverting back to whatever was previous

@@ -40,7 +40,7 @@ public class PlayerBattleState extends TargetableState{
 	@Override
 	public void enter() {
 		super.enter();
-		
+
 		//Save current position
 		worldPos = new Vector(attachedTo.getPos());
 
@@ -49,7 +49,7 @@ public class PlayerBattleState extends TargetableState{
 
 		//Toggle target to select first target
 		toggleTarget();
-		
+
 		//Update position
 		Vector posVector = new Vector(2);
 		posVector.setComponent(0, Directory.screenManager.getPercentageWidth(15.0));
@@ -74,7 +74,7 @@ public class PlayerBattleState extends TargetableState{
 	@Override
 	public void update() {
 		super.update();
-		
+
 		//Declare character to retrieve keys in the order that they were pressed since last update
 		Character ch;
 		//While the next character pressed isn't null
@@ -92,13 +92,18 @@ public class PlayerBattleState extends TargetableState{
 			}
 			//Else if ch is a newline or return
 			else if((int)ch == (int)'\n' || (int)ch == (int)'\r'){
-				//If the current target has an equation
-				if(((TargetableState)currentTarget.getState()).holdsEquation()){
-					answerEquation();
+				//Cast current taget's state as targetable
+				TargetableState targetState = (TargetableState)currentTarget.getState();
+				//If the target has a targetable state
+				if(targetState != null){
+					//If the current target has an equation
+					if(targetState.holdsEquation()){
+						answerEquation();
 
-				}else{
-					submitEquation();
-				
+					}else{
+						submitEquation();
+
+					}
 				}
 
 				//Clear answerString
@@ -129,16 +134,16 @@ public class PlayerBattleState extends TargetableState{
 	//If it turns out the next target isn't alive it simply toggles targets again after setting the current target to null so as not to select it
 
 	private void toggleTarget(){
-		
+
 		//Get the state of the current target
 		//ObjBattleState currObjState = null;
 		//if(currentTarget != null)
-			//currObjState = (ObjBattleState)currentTarget.getState();
-		
+		//currObjState = (ObjBattleState)currentTarget.getState();
+
 		TargetableState currObjState = null;
 		if(currentTarget != null)
 			currObjState = (TargetableState)currentTarget.getState();
-		
+
 		//Change targets
 		//If the current target isn't null and it is selected
 		if(currObjState != null && currObjState.isSelected()){
@@ -157,7 +162,7 @@ public class PlayerBattleState extends TargetableState{
 		if(targetIndex < gameState.getEntities().size()){
 			currentTarget = gameState.getEntities().get(targetIndex);
 			currObjState = (TargetableState)currentTarget.getState();
-			
+
 			//Make sure the current target is alive and targetable
 			if(currentTarget.getCurrentHealth() <= 0 && currObjState instanceof TargetableState){
 				//If not toggle target again
@@ -205,8 +210,8 @@ public class PlayerBattleState extends TargetableState{
 			}
 		}
 	}
-	
-	
+
+
 
 	//Takes your current answerString, parses it into an equation, and submits it to the current target
 	private void submitEquation(){
@@ -217,6 +222,17 @@ public class PlayerBattleState extends TargetableState{
 		try{
 			//Compile the equation
 			submission = Equation.parseEquation(answerString);
+			
+			//Make sure it contains at least 1 operator
+			if(submission.getAdditionOperators() +
+					submission.getSubtractionOperators() +
+					submission.getMultiplicationOperators() +
+					submission.getDivisionOperators() <= 0)
+			{
+				//If there is not at least one operator, throw an invalid equation exception
+				throw new InvalidEquationException();
+			}
+			
 		}
 		catch(InvalidEquationException iEE){
 			//Improper equation
@@ -242,7 +258,7 @@ public class PlayerBattleState extends TargetableState{
 
 				//Get current targets battle state
 				TargetableState targetState = (TargetableState)currentTarget.getState();
-				
+
 				//send answer to current target
 				if(targetState.submitAnswer(submission, player.getPower())){
 					Directory.profile.incrementEquationsMade();
@@ -267,7 +283,7 @@ public class PlayerBattleState extends TargetableState{
 		}
 		else{
 			System.out.println("Invalid Equation");
-			
+
 			Directory.profile.incrementWrongAnswers();
 		}
 
@@ -304,12 +320,12 @@ public class PlayerBattleState extends TargetableState{
 
 		//Get targets battle state
 		TargetableState targetState = (TargetableState)currentTarget.getState();
-		
+
 		//send answer to current target
 		if(targetState.submitAnswer(new Equation(answer), submitPower)){
 
 			System.out.println("Correct");
-			
+
 			//Add the operators from solved equation to the player
 			numAddOp += targetState.getEquation().getAdditionOperators();
 			numSubOp += targetState.getEquation().getSubtractionOperators();
@@ -331,7 +347,7 @@ public class PlayerBattleState extends TargetableState{
 		}
 		else{
 			System.out.println("Wrong");
-			
+
 			//Increment profile stats
 			Directory.profile.incrementWrongAnswers();
 
@@ -344,7 +360,7 @@ public class PlayerBattleState extends TargetableState{
 	public void exit() {
 		//Set position back to worldPos
 		attachedTo.setPos(worldPos);
-		
+
 		//Set image to null
 		attachedTo.setImage(null);
 	}

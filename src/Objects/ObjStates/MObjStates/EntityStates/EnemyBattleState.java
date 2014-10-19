@@ -40,10 +40,10 @@ public class EnemyBattleState extends TargetableState{
 				//projectile.setShape(new Ellipse2D.Double(), Color.black);
 				//Set visible
 				projectile.setVisible(true);
-				//Set the state
+				//Set the state, which sets running to true
 				projectile.setState(new ProjectileState(Directory.profile.getPlayer()));
 				//SEt projectile as running
-				projectile.setRunning(true);
+				//projectile.setRunning(true);
 				//Add projectile to current engine state
 				Directory.engine.getCurrentState().addObj(projectile);
 			}
@@ -118,7 +118,6 @@ public class EnemyBattleState extends TargetableState{
 		attachedTo.setWidth(25);
 		attachedTo.setHeight(25);
 		attachedTo.updateShape();
-
 	}
 
 }

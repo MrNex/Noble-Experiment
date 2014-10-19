@@ -73,8 +73,8 @@ public class Entity extends MovableGameObject{
 		//If the entity is dead
 		else if(currentHealth <= 0){
 			//Set running to false
-			setRunning(false);
-			//SEt the state of the entity to null
+			//setRunning(false);
+			//SEt the state of the entity to null which sets running to false
 			setState(null);							//Causes exit conditions to run on current state (Could potentially be important)
 			//Remove entity from current engine state
 			Directory.engine.getCurrentState().removeObj(this);

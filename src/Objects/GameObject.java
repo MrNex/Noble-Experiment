@@ -20,7 +20,7 @@ public class GameObject {
 	//Attributes
 	protected Vector position;
 	protected double width, height;
-	protected boolean visible, running;
+	protected boolean visible/*, running*/;
 	protected boolean triggerable, solid;
 	protected RectangularShape shape;
 	protected BufferedImage image;
@@ -48,8 +48,8 @@ public class GameObject {
 
 		//Set default attributes
 		visible = false;
-		running = false;
-
+		//running = false;
+		
 		stateStack = new Stack<ObjState>();
 
 		shape = null;
@@ -140,13 +140,15 @@ public class GameObject {
 	 * Replaces the state currently on top of the state stack.
 	 * IF a state is being replaced, that states exit method is called.
 	 * If the state replacing it is not null, that states entermethod is called
-	 * If object isn't working see setRunning()
+	 * If the new state is not null, the object is set to running
+	 * Else, the object is set to not running.
 	 * @param newState State to attach to object
 	 */
 	public void setState(ObjState newState){
 		//If not leaving a null state
 		if(getState() != null)
 			popState().exit();
+		
 		stateStack.push(newState);
 		
 		//If not going into a null state
@@ -169,7 +171,11 @@ public class GameObject {
 	/**
 	 * Pushes a state to the top of state stack to set as current state
 	 * If there is already a state on the stack, it's exit method is called.
-	 * If the new state being pushed is not on the stack, its enter method is called
+	 * If the new state being pushed is not null, its enter method is called
+	 * 
+	 * If the new state is not null, and this object isn't already running, running is set to true
+	 * IF the new state is null and this object is running, running is set to false
+	 * 
 	 * @param stateToPush The new current state
 	 */
 	public void pushState(ObjState stateToPush){
@@ -178,6 +184,7 @@ public class GameObject {
 		if(getState() != null){
 			getState().setAttachedGameObject(this);
 			getState().enter();
+			
 		}
 	}
 	
@@ -185,12 +192,20 @@ public class GameObject {
 	 * Removes the current state from the state stack and returns it
 	 * If there is a non-null state being removed it's exit method is called
 	 * If there is an underlying non-null state it's enter method is called
+	 * 
+	 * If there is an underlying non-null state and this object is not running, it is set to running
+	 * If there is not an underlying non-null state and this object is already running, it is set to not running
+	 * 
 	 * @return The (now) former state
 	 */
 	public ObjState popState(){
 		if(getState() != null) getState().exit();
 		ObjState returnState = stateStack.pop();
-		if(getState() != null) getState().enter();
+		
+		if(getState() != null){
+			getState().enter();
+		}
+		
 		return returnState;
 	}
 
@@ -212,21 +227,12 @@ public class GameObject {
 
 	/**
 	 * Gets whethe or not this gameobject is running.
-	 * @return Whether or not the gameobject is running.
+	 * @return Whether or not the gameobject has a non-null state on top of its statestack.
 	 */
 	public boolean isRunning(){
-		return running;
+		//if(running != (getState() != null)) System.out.println("Broken.");
+		return getState() != null;
 	}
-	
-	
-	/**
-	 * Sets whether or not the gameObject is running
-	 * @param isRunning Is the gameObject running
-	 */
-	public void setRunning(boolean isRunning){
-		running = isRunning;
-	}
-	
 	
 	/**
 	 * Gets whether this gameObject has an active trigger
@@ -340,7 +346,7 @@ public class GameObject {
 	 * Updates the current state of the gameObject if this object is running
 	 */
 	public void update(){
-		if(running){
+		if(isRunning()){
 			getState().update();
 		}
 	}
@@ -369,7 +375,7 @@ public class GameObject {
 				g2d.fill(shape);
 			}
 			//IF this object is running
-			if(running){
+			if(isRunning()){
 				//Draw the currentState as well
 				getState().draw(g2d);
 			}
