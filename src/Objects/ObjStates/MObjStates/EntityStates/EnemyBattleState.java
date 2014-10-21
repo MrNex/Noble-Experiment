@@ -12,45 +12,30 @@ import Engine.Directory;
 import MathHelp.Vector;
 import Objects.Entity;
 
+/**
+ * Defines basic test enemy behavior during battleState
+ * @author Nex
+ *
+ */
 public class EnemyBattleState extends TargetableState{
 
 	//Attributes
 	private Vector worldPos;
-	private static int attackSpeed = 5000;				//Set all enemies attack speeds to 10 seconds to start
+	private static int attackSpeed = 5;				//Set all enemies attack speeds to 5 seconds to start
 	private Timer attackTimer;
+	private double previousTime;
+	private double elapsedTime;
 
 	/**
 	 * Constructs an Enemies battle state
-	 * Creates an attack timer which will
+	 * 
 	 */
 	public EnemyBattleState() {
 		super(false);
 		
-		//Create attackTimer
-		attackTimer = new Timer(attackSpeed, new ActionListener(){
-
-			//When the timer is finished
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				//Create a destructable projectile
-				Entity projectile = new Entity(attachedTo.getXPos(), attachedTo.getYPos(), 50, 50, 1, 1, 1);
-				// Set image
-				projectile.setImage(Directory.imageLibrary.get("Bullet_Yellow"));
-				//Set the shape
-				//projectile.setShape(new Ellipse2D.Double(), Color.black);
-				//Set visible
-				projectile.setVisible(true);
-				//Set the state, which sets running to true
-				projectile.setState(new ProjectileState(Directory.profile.getPlayer()));
-				//SEt projectile as running
-				//projectile.setRunning(true);
-				//Add projectile to current engine state
-				Directory.engine.getCurrentState().addObj(projectile);
-			}
-		});
-
-		//SEt the timer to repeat
-		attackTimer.setRepeats(true);
+		elapsedTime = 0;
+		previousTime = 0;
+		
 	}
 
 	/**
@@ -59,20 +44,23 @@ public class EnemyBattleState extends TargetableState{
 	 * Sets width and Height for battle state view
 	 * Updates the shape of the object
 	 * Sets the equation visibility to true
-	 * Begins attacking
+	 * Begins attacking timer
 	 */
 	@Override
 	public void enter() {
 		super.enter();
-		
 		//Store worldPos
 		worldPos = new Vector(attachedTo.getPos());
 
+		
+		
 		//Set position
 		Vector posVector = new Vector(2);
 		posVector.setComponent(0, Directory.screenManager.getPercentageWidth(85.0));
 		posVector.setComponent(1, Directory.screenManager.getPercentageHeight(45.0));
-		attachedTo.setPos(posVector);
+		
+		//Refresh attached movable game object's previous position due to engine state change.
+		getAttachedMObj().refresh();
 
 		//Set battleState dimensions
 		attachedTo.setWidth(75);
@@ -80,37 +68,68 @@ public class EnemyBattleState extends TargetableState{
 
 		attachedTo.updateShape();
 
-		//Upon entering this state, start the timer
-		attackTimer.start();
+		//Upon entering this state, start timing
+		
+		//Set previousTime to currentTime
+		previousTime = System.currentTimeMillis();
 
 	}
 
 	/**
 	 * Updates the enemiesBattleState
-	 * Checks if the player is dead yet, if he/she is, ends the battle
+	 * Gets the current time,
+	 * Increments elapsed time since last shot
+	 * IF it's time to shoot again, set elapsed time to 0 and shoot
+	 * Finally, set previousTime to the currentTime.
 	 */
 	@Override
 	public void update() {
 		super.update();
+		
+		double currentTime = System.currentTimeMillis();
+		elapsedTime += (currentTime - previousTime) / 1000.0;
+		
+		if(elapsedTime > attackSpeed){
+			elapsedTime = 0;
+			shoot();
+		}
+		
+		previousTime = currentTime;
 
+	}
+	
+	/**
+	 * Creates a new projectile and adds the projectile to the current state:
+	 * Creates projectile and sets as solid
+	 * Sets image and visibility of projectile
+	 * Sets the state of projectile
+	 * Add the projectile to the current state of engine
+	 */
+	private void shoot(){
+		//Create a  projectile
+		Entity projectile = new Entity(attachedTo.getXPos(), attachedTo.getYPos(), 50, 50, 1, 1, 1);
+		projectile.setSolid(true);
+		
+		// Set image
+		projectile.setImage(Directory.imageLibrary.get("Bullet_Yellow"));
+		//Set the shape
+		//projectile.setShape(new Ellipse2D.Double(), Color.black);
+		//Set visible
+		projectile.setVisible(true);
+		//Set the state, which sets running to true
+		projectile.setState(new ProjectileState(Directory.profile.getPlayer(), attachedTo));
+		//Add projectile to current engine state
+		Directory.engine.getCurrentState().addObj(projectile);
 	}
 
 	/**
 	 * Exits the enemies battle state
-	 * Stops atacking,
-	 * Sets equation to invisible,
 	 * Sets position back to worldPos,
 	 * Reverts back to overworld dimensions,
 	 * Updates the objects shape
 	 */
 	@Override
 	public void exit() {
-		//Upon exiting this state stop attackTimer
-		attackTimer.stop();
-		
-		//Turn equation visibility off
-		//((Entity)attachedTo).setEquationVisibility(false);
-
 		//Revert back to overworld pos
 		attachedTo.setPos(worldPos);
 

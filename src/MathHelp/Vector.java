@@ -221,6 +221,10 @@ public class Vector {
 		return prod;
 	}
 
+	/**
+	 * Creates a string representing the content of this vector
+	 * @return A string representing the content of this vector
+	 */
 	public String toString(){
 		String returnString = "[";
 		for(int i = 0; i < numComponents; i++){

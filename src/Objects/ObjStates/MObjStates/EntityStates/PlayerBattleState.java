@@ -28,6 +28,13 @@ public class PlayerBattleState extends TargetableState{
 	private int targetIndex;
 	private Entity player;
 
+	/**
+	 * Creates player battle state
+	 * 
+	 * Initializes the answerString, a string that represents the currently typed answer
+	 * Sets the currentTarget to null
+	 * Sets the targetIndex to -1
+	 */
 	public PlayerBattleState() {
 		super(true);
 
@@ -37,6 +44,14 @@ public class PlayerBattleState extends TargetableState{
 		targetIndex = -1;
 	}
 
+	/**
+	 * Has an object enter PlayerBattleState
+	 * Saves the object's world position and aligns the object on the left side of the screen.
+	 * Calls MovableGameObject's refresh method to set the previousPosition to the currentPosition.
+	 * 		This ensures the object won't revert to its old previousPosition when getting hit by a projectile.
+	 * Sets dimensions to battleDimensions, and sets the image to the player's battleImage
+	 * Calls toggleTarget to target a valid entity
+	 */
 	@Override
 	public void enter() {
 		super.enter();
@@ -47,14 +62,14 @@ public class PlayerBattleState extends TargetableState{
 		//downcast attachedTo gameobject to player
 		player = getAttachedEntity();
 
-		//Toggle target to select first target
-		toggleTarget();
-
 		//Update position
 		Vector posVector = new Vector(2);
-		posVector.setComponent(0, Directory.screenManager.getPercentageWidth(15.0));
+		posVector.setComponent(0, Directory.screenManager.getPercentageWidth(5.0));
 		posVector.setComponent(1, Directory.screenManager.getPercentageHeight(45.0));
 		attachedTo.setPos(posVector);
+
+		//Refresh the movable object's previous position due to engine state change
+		getAttachedMObj().refresh();
 
 
 		//Update dimensions
@@ -64,13 +79,19 @@ public class PlayerBattleState extends TargetableState{
 		//Set the image of player to the battleImage
 		player.setImage(Directory.imageLibrary.get("PlayerBattleIdle"));
 
-		//Set the visibility of the equation object
-		//player.setEquationVisibility(true);
-
 		//Toggle target to select first target
 		toggleTarget();
 	}
 
+	/**
+	 * Updates the player's BattleState
+	 * Loops through all keyPresses since last update
+	 * 		If a character is an operator or a number, appends it to the answerString
+	 * 		If a character is a newLine buffer, calls answerEquation or submitEquation based on current target
+	 * 		If a character is whitespace, togglesTarget and clears answerString
+	 * 		If a character is backspace, clears answerString
+	 * Updates the attached shape
+	 */
 	@Override
 	public void update() {
 		super.update();
@@ -129,10 +150,15 @@ public class PlayerBattleState extends TargetableState{
 	}
 
 
-	//Changes the current target. If there is already a current target it will set it to a deselected state.
-	//If the next target index is still within the bounds of the list, and the next one is alive, it will set it as the current target.
-	//If it turns out the next target isn't alive it simply toggles targets again after setting the current target to null so as not to select it
-
+	/**
+	 * Changes the current target. If there is already a current target it will set it to a deselected state.
+	 * If the next target index is still within the bounds of the list, and the next one is alive, it will set it as the current target.
+	 * If it turns out the next target isn't alive it simply toggles targets again after setting the current target to null so as not to select it
+	 * 
+	 * If there is only 1 entity left in the state (The entity this state is attached to) the targetIndex is set to -1 and
+	 * The currentTarget is set to null
+	 */
+	
 	private void toggleTarget(){
 
 		//Get the state of the current target
@@ -213,7 +239,17 @@ public class PlayerBattleState extends TargetableState{
 
 
 
-	//Takes your current answerString, parses it into an equation, and submits it to the current target
+	/**
+	 * Takes your current answerString, parses it into an equation, and submits it to the current target
+	 * Parses the answerString into an equation
+	 * 		If the equation is invalid or there are no operators in the equation the player's amount of wrong answers is incremented.
+	 * However if the equation is valid:
+	 * 		If the player does not have enough operators nothing more happens and a prompt is printed.
+	 * However, if there is enough operators, Decrements operators in the equation from player.
+	 * Sends equation to current target.
+	 * If it is correct, increments answers correct, else increments answers wrong
+	 * IF the target is still alive, queues the target to generate a new equation
+	 */
 	private void submitEquation(){
 
 		//Declare the submission equation
@@ -222,7 +258,7 @@ public class PlayerBattleState extends TargetableState{
 		try{
 			//Compile the equation
 			submission = Equation.parseEquation(answerString);
-			
+
 			//Make sure it contains at least 1 operator
 			if(submission.getAdditionOperators() +
 					submission.getSubtractionOperators() +
@@ -232,7 +268,7 @@ public class PlayerBattleState extends TargetableState{
 				//If there is not at least one operator, throw an invalid equation exception
 				throw new InvalidEquationException();
 			}
-			
+
 		}
 		catch(InvalidEquationException iEE){
 			//Improper equation
@@ -263,13 +299,9 @@ public class PlayerBattleState extends TargetableState{
 				if(targetState.submitAnswer(submission, player.getPower())){
 					Directory.profile.incrementEquationsMade();
 
-					//Check if the Entity was killed
-					if(currentTarget.getCurrentHealth() <= 0){
-						//battleEnd();
-					}
-					else{
+					//If the target wasn't killed, generate a new equation for it
+					if(currentTarget.getCurrentHealth() > 0){
 						targetState.generateNewEquation();
-
 					}
 				}
 				else{
@@ -286,25 +318,19 @@ public class PlayerBattleState extends TargetableState{
 
 			Directory.profile.incrementWrongAnswers();
 		}
-
-
 	}
 
-	//Takes a linked list of integers representing digits in a number where the first value 
-	//has the highest place value decreasing to the lowest in the last spot
-	//And turns it into the corresponding integer returning that value
-	private int ListToInt(LinkedList<Integer> digits){
-		int sum = 0;
-		while(digits.size() > 0){
-			int increment = digits.pollFirst();
-			if(digits.size() > 0)
-				increment *= digits.size();
-			sum += increment;
-		}
-		return sum;
-	}
 
-	//Takes your current answerString, parses it to an integer, and submits it to the current target
+	/**
+	 * Takes your current answerString, parses it to an integer, and submits it to the current target
+	 * 
+	 * Tries to parse answerString to integer (prompts and exits method if fails)
+	 * Sets the power to the attached Entities current power, or to 0 if the entity is targetting itself
+	 * Submits the value and power to the currentTarget.
+	 * 		If the submission is incorrect, increments the number of incorrect answers
+	 * If the submission is correct, adds the operators in the equation to the player's operators
+	 * Increments equations solved and if the target is still alive,has it generate a new equation.
+	 */
 	private void answerEquation(){
 		//Attempt solution 
 		int answer;
@@ -312,11 +338,13 @@ public class PlayerBattleState extends TargetableState{
 		try{
 			answer = Integer.parseInt(answerString);
 		}catch(NumberFormatException nfe){
+			System.out.println("Please enter valid value.");
 			answer = 0;
+			return;
 		}
 
 		//If targeting yourself, make the power 0.
-		int submitPower = currentTarget == player ? 0 : player.getPower();
+		int submitPower = currentTarget == player ? 0 : getAttachedEntity().getPower();
 
 		//Get targets battle state
 		TargetableState targetState = (TargetableState)currentTarget.getState();
@@ -356,6 +384,9 @@ public class PlayerBattleState extends TargetableState{
 		}
 	}
 
+	/**
+	 * AttachedObject Exits the player's battle state
+	 */
 	@Override
 	public void exit() {
 		//Set position back to worldPos

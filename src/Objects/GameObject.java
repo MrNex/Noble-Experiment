@@ -230,7 +230,6 @@ public class GameObject {
 	 * @return Whether or not the gameobject has a non-null state on top of its statestack.
 	 */
 	public boolean isRunning(){
-		//if(running != (getState() != null)) System.out.println("Broken.");
 		return getState() != null;
 	}
 	
@@ -391,7 +390,15 @@ public class GameObject {
 			shape.setFrame(position.getComponent(0), position.getComponent(1), width, height);
 	}
 
-	//Checks if the bounding box of this obj is intersecting the bounding box of another obj
+	/**
+	 * Checks if the bounding box of this obj is intersecting the bounding box of another obj
+	 * If they are, also queries state's isColliding method.
+	 * If there is not a current state and objects are colliding, returns true.
+	 * If there is a current state and objects are colliding, returns the result of the current states isColliding method
+	 * If objects are not colliding returns false
+	 * @param obj Object to test for collisions with
+	 * @return False if objects are not colliding , true if objects are colliding & state says objects are colliding.
+	 */
 	public boolean isColliding(GameObject obj){
 
 		//If the left side of this is to the left  right side of obj and the right side of this is to the right of the left side of obj
@@ -399,7 +406,7 @@ public class GameObject {
 
 			//IF the top of this is higher than the bottom of obj and the bottom of this is further down than the top of obj
 			if(position.getComponent(1) < obj.position.getComponent(1) + obj.height && this.position.getComponent(1) + this.height > obj.position.getComponent(1)){
-				return true;
+				return isRunning() ? getState().isColliding(obj) : true;
 			}	
 		}
 		return false;

@@ -45,6 +45,8 @@ public class BattleStartTrigger extends Trigger {
 			
 			//Set stae of the attached obj
 			attachedTo.pushState(new EnemyBattleState());
+			attachedTo.removeTrigger(this);
+			attachedTo.setTriggerable(false);
 			
 			//Set state of player
 			triggeredBy.pushState(new PlayerBattleState());

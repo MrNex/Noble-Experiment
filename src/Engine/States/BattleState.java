@@ -70,11 +70,11 @@ public class BattleState extends State{
 			obj.update();
 		}
 
-		//Get copyList (Avoid concurrent modification exceptions)
-		ArrayList<GameObject>copyList = new ArrayList<GameObject>(toRemove);
+		//Check for collisions
+		Directory.collisionManager.update();
+
 		//remove every game object in toRemove
-		for(GameObject obj : copyList)
-		{
+		for(GameObject obj : toRemove){
 			objects.remove(obj);
 			//if obj is a destructable
 			if(obj instanceof Entity){
@@ -82,10 +82,12 @@ public class BattleState extends State{
 				entities.remove((Entity)obj);
 			}
 		}
-		toRemove.removeAll(copyList);
+		toRemove.clear();
+
+
 
 		//Get copyList
-		copyList = new ArrayList<GameObject>(toAdd);
+		ArrayList<GameObject> copyList = new ArrayList<GameObject>(toAdd);
 		//add every game object in toAdd
 		for(GameObject obj : copyList)
 		{
@@ -148,18 +150,18 @@ public class BattleState extends State{
 			loser = competitor2;
 			winner = competitor1;
 		}
-		
+
 		//Pop the state of the winner (Revert to whatever state was prior the battle)
 		winner.popState();
-		
+
 		//Loser is no longer running or visible
 		//loser.setRunning(false);
 		loser.setState(null);
 		loser.setVisible(false);
-		
+
 		//Pop state of engine reverting back to whatever was previous
 		Directory.engine.popState();
-		
+
 		//Remove the loser from the engine's currentState
 		Directory.engine.getCurrentState().removeObj(loser);
 

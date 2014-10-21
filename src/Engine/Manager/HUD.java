@@ -7,6 +7,7 @@ import java.awt.geom.Rectangle2D;
 import Objects.GameObject;
 import Engine.Directory;
 
+
 public class HUD {
 	//private List<GameObject> hudObjects= new ArrayList<GameObject>();
 	public GameObject healthBar;

@@ -8,6 +8,7 @@ import javax.swing.Timer;
 import Engine.Directory;
 import MathHelp.Vector;
 import Objects.*;
+import Objects.Triggers.Trigger;
 
 /**
  * Projectile state defines behavior which will cause a gameObject to travel towards a target
@@ -19,20 +20,22 @@ public class ProjectileState extends TargetableState{
 
 	//Attributes
 	//TODO: Find way to make this slower!
-	static double speed = .05;		//speed in px/s
+	static double speed = 50;		//speed in px/s
 	Vector heading, initialPosition;
-	double time, distance;
+	double time, distance, previousTime;
 	Entity target;
+	GameObject shotBy;
 	long timeStart;
 	
 	/**
 	 * Constructs a projectile state
 	 * @param x The entity being targetted that this projectile should seek
 	 */
-	public ProjectileState(Entity x) {
+	public ProjectileState(Entity target, GameObject shooter) {
 		super(true);
-		//X marks the spot
-		target = x;
+		//Set member variables
+		this.target = target;
+		shotBy = shooter;
 	
 	}
 
@@ -46,36 +49,46 @@ public class ProjectileState extends TargetableState{
 	public void enter() {
 		super.enter();
 		
+		//Attach trigger to damage target when hit
+		attachedTo.setTriggerable(true);
+		attachedTo.addTrigger(new Trigger(){
+
+			/**
+			 * If the projectile collides with its target, 
+			 * Decrement the targets health by the attached gameObject's power
+			 * Remove the attached gameObject from the current state
+			 * Set the attached gameobject's state to null
+			 * Set the attached gameObject's visibility to false.
+			 */
+			@Override
+			public void action(GameObject triggeredBy) {
+				if(triggeredBy == target){
+					target.decrementCurrentHealth(((Entity)attachedTo).getPower());
+					Directory.engine.getCurrentState().removeObj(attachedTo);	
+					attachedTo.setState(null);	
+					attachedTo.setVisible(false);
+					attachedTo.removeTrigger(this);
+					attachedTo.setTriggerable(false);
+					
+				}
+			}
+			
+		});
+		
 		//Determine the amount of miliseconds until this projectile hits it's target
-		//Find distance from this obj to target
 		//Find vector from this obj to target
 		Vector direction = new Vector(target.getPos());
-		//direction.setComponent(1, target.getYPos()+100);
 		direction.subtract(attachedTo.getPos());
-		
-		//Find the magnitude of this vector and store as distance.
-		distance = direction.getMag();
-		
-		//Find the time it will take to reach target
-		//v = x/t, vt = x, x/v = t
-		time = (distance / speed) / 1000;
-		System.out.println(time);
-		
-		
 		
 		//Normalize direction vector and set as heading
 		direction.normalize();
 		heading = direction;
 		
 		//Set initial Position
-		initialPosition = attachedTo.getPos();
+		//initialPosition = attachedTo.getPos();
 		
-		timeStart = System.currentTimeMillis();
-		
-		
-		
-		//Start the timer
-		//timer.start();
+		//timeStart = System.currentTimeMillis();
+		previousTime = System.currentTimeMillis();
 	}
 
 	/**
@@ -90,22 +103,14 @@ public class ProjectileState extends TargetableState{
 		//iP + tM = fP
 		
 		//GEt elapsed time since "firing" in seconds
-		double elapsedTime = (System.currentTimeMillis() - timeStart) / 1000.0;
+		double currentTime = System.currentTimeMillis();
+		double elapsedTimeSince = (currentTime - previousTime) / 1000.0;
 		
 		//Set position to initialPosition + heading * distance(elapsedTime/time) to get current Position
-		attachedTo.setPos(Vector.add(initialPosition, Vector.setMag(heading, distance * (elapsedTime/time))));
-		
-		if(attachedTo.isColliding(target))
-		{
-			target.decrementCurrentHealth(((Entity)attachedTo).getPower());
-			
-			System.out.println("Hurt");
-			
-			Directory.engine.getCurrentState().removeObj(attachedTo);
-			//attachedTo.setRunning(false);	
-			attachedTo.setState(null);	//Sets running to false
-			attachedTo.setVisible(false);
-		}
+		//attachedTo.setPos(Vector.add(initialPosition, Vector.setMag(heading, distance * (elapsedTime/time))));
+		this.getAttachedMObj().move(Vector.setMag(heading, speed * (elapsedTimeSince)));
+
+		previousTime = currentTime;
 		
 		//Update the objects shape
 		attachedTo.updateShape();
@@ -116,7 +121,16 @@ public class ProjectileState extends TargetableState{
 	 */
 	@Override
 	public void exit() {
-		
+		//Remove trigger
+	}
+	
+	/**
+	 * Returns true if the object is not the object that shot this projectile
+	 * @param Object to check with
+	 */
+	@Override
+	public boolean isColliding(GameObject obj){
+		return obj != shotBy;
 	}
 
 }

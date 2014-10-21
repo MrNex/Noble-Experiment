@@ -51,6 +51,13 @@ public class MovableGameObject extends GameObject {
 		updateShape();
 	}
 	
+	/**
+	 * Sets the object's previousPosition to the object's current position
+	 */
+	public void refresh(){
+		previousPosition.copy(position);
+	}
+	
 
 
 }

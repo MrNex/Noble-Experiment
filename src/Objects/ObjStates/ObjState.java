@@ -55,4 +55,14 @@ public abstract class ObjState{
 	public void setAttachedGameObject(GameObject attachTo){
 		attachedTo = attachTo;
 	}
+	
+	/**
+	 * States have an isColliding method, allowing states to modify which objects
+	 * will register as colliding.
+	 * By default, all object states return true unless changed.
+	 * @param obj Object to check with
+	 */
+	public boolean isColliding(GameObject obj){
+		return true;
+	}
 }

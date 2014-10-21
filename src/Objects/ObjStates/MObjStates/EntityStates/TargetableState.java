@@ -115,6 +115,12 @@ public class TargetableState extends EntityState{
 
 	}
 
+	/**
+	 * Draws the effects of a targetableState
+	 * Sets the color of the equationBox
+	 * Fills in the equationBox
+	 * Sets color to black, and draws equation
+	 */
 	@Override
 	public void draw(Graphics2D g2d) {
 		//If the equation isn't null
@@ -126,6 +132,9 @@ public class TargetableState extends EntityState{
 		}
 	}
 
+	/**
+	 * Exits the current targetableState
+	 */
 	@Override
 	public void exit() {
 		// TODO Auto-generated method stub

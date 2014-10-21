@@ -21,6 +21,11 @@ public class PlayerOverworldState extends MObjState{
 	//Attributes
 	double movementSpeed;
 	
+	/**
+	 * Constructs a playerOverworldState
+	 * 
+	 * Sets the movementSpeed.
+	 */
 	public PlayerOverworldState() {
 		super();
 		
@@ -28,6 +33,13 @@ public class PlayerOverworldState extends MObjState{
 		movementSpeed = 0.0001;
 	}
 
+	/**
+	 * Is called upon an object entering PlayerOverworldState
+	 * 
+	 * Sets overworld dimensions to 20, 20
+	 * Sets shape as a green ellipse and updates it
+	 * removes image from object
+	 */
 	@Override
 	public void enter() {
 		//Update dimensions
@@ -41,10 +53,14 @@ public class PlayerOverworldState extends MObjState{
 		//Set the image to null (until image for overworld state is made)
 		attachedTo.setImage(null);
 		
-		//((Entity)attachedTo).setEquationVisibility(false);
-		
 	}
 
+	/**
+	 * Updates the player's overworld state
+	 * If a button (WASD) is being pressed, creates a proper translation vector
+	 * Calls MovableGameObject's move method, sending it the translationVector
+	 * 		This call sets position, previous position, and updates the shape.
+	 */
 	@Override
 	public void update() {
 		//Create a translation vector
@@ -73,12 +89,18 @@ public class PlayerOverworldState extends MObjState{
 		getAttachedMObj().move(translation);
 	}
 
+	/**
+	 * Exits an object from PlayerOverworldState
+	 */
 	@Override
 	public void exit() {
 		// TODO Auto-generated method stub
 		
 	}
 
+	/**
+	 * No drawing effects occur specifically for PlayerOverworldState
+	 */
 	@Override
 	public void draw(Graphics2D g2d) {
 		

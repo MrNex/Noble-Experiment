@@ -6,6 +6,7 @@ import Engine.Directory;
 import Objects.GameObject;
 import Objects.MovableGameObject;
 import Objects.Entity;
+import Objects.ObjStates.MObjStates.EntityStates.ProjectileState;
 import Objects.Triggers.Trigger;
 
 
@@ -25,13 +26,13 @@ public class CollisionManager extends Manager{
 	 */
 	public CollisionManager() { }
 
-	
+
 	@Override
 	public void init() {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
+
 	/**
 	 * Checks for any colliding gameObjects in the current state and resolves them
 	 */
@@ -43,9 +44,21 @@ public class CollisionManager extends Manager{
 		//For each gameObject in the current state
 		for(GameObject obj1 : copyList){
 
+			/*
+			if(obj1.getState() instanceof ProjectileState){
+				System.out.println("Checking for projectiles");
+				if(obj1.isSolid())
+				{
+					System.out.println("Solid projectile");
+					
+				}
+			}*/
+			
 			//Only check for collisions if the object moves and is solid
 			if(obj1 instanceof MovableGameObject && obj1.isSolid()){
 
+				
+				
 				//If this object does move, check if it is colliding with any other solid or triggerable game object
 				for(GameObject obj2 : copyList){
 
@@ -60,26 +73,26 @@ public class CollisionManager extends Manager{
 
 
 						//If o is a trigger
-						if(obj2.isTriggerable()){
+						//if(obj2.isTriggerable()){
 
-							//If object 1 is triggerable
-							if(obj1.isTriggerable()){
-								//For each trigger it has
-								for(Trigger t : obj1.getTriggers()){
-									t.action(obj2);
-								}
-							}
-
-							//If object 2 is triggerable
-							if(obj2.isTriggerable()){
-								//pull each trigger it has
-								for(Trigger t : obj2.getTriggers()){
-									t.action(obj1);
-								}
+						//If object 1 is triggerable
+						if(obj1.isTriggerable()){
+							//For each trigger it has
+							for(Trigger t : obj1.getTriggers()){
+								t.action(obj2);
 							}
 						}
 
-						
+						//If object 2 is triggerable
+						if(obj2.isTriggerable()){
+							//pull each trigger it has
+							for(Trigger t : obj2.getTriggers()){
+								t.action(obj1);
+							}
+						}
+						//}
+
+
 
 					}//Ends if colliding
 

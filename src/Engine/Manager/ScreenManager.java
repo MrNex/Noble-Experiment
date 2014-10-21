@@ -7,6 +7,7 @@ import java.awt.Graphics2D;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Ellipse2D.Double;
 import java.awt.geom.Line2D;
+import java.util.ArrayList;
 
 import javax.swing.JPanel;
 import javax.swing.JFrame;
@@ -39,7 +40,10 @@ public class ScreenManager extends Manager {
 	
 	/**
 	 * Initializes all member variables
-	 * Makes call to Input Manager, Must be called after InputManager is constructed!
+	 * Sets window dimensions
+	 * Creates panel
+	 * Defines draw instructions
+	 * Makes call to Input Manager, this Must be called after InputManager is constructed!
 	 */
 	@Override
 	public void init()
@@ -72,7 +76,8 @@ public class ScreenManager extends Manager {
 				
 				
 				//Start draw calls
-				Directory.engine.getCurrentState().draw(g2d);
+				if(Directory.engine.getCurrentState() != null)
+					Directory.engine.getCurrentState().draw(g2d);
 				
 				if(Directory.engine.getCurrentState() instanceof BattleState){
 					hud.healthBar.draw(g2d);
