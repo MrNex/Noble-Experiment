@@ -163,6 +163,8 @@ public class Engine {
 		while(running)
 		{
 			getCurrentState().update();
+			Directory.screenManager.updateHud();
+
 		}
 	}
 

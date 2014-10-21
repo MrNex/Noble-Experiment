@@ -9,7 +9,13 @@ import Objects.GameObject;
 public class OverworldState extends State {
 
 	public OverworldState() {
-		// TODO Auto-generated constructor stub
+		super();
+		
+	}
+	
+	@Override
+	public void init(){
+		super.init();
 	}
 
 	/**

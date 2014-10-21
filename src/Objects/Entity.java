@@ -53,6 +53,14 @@ public class Entity extends MovableGameObject{
 	public int getCurrentHealth(){
 		return currentHealth;
 	}
+	
+	/**
+	 * Gets the total health of the entity
+	 * @return The total health
+	 */
+	public int getTotalHealth(){
+		return totalHealth;
+	}
 
 	/**
 	 * Gets the power of the entity

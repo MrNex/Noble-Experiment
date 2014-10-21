@@ -14,7 +14,6 @@ public abstract class State {
 	protected ArrayList<GameObject> toAdd;				//Current list of objs being added this update loop
 	
 	public State() {
-		
 		init();
 		
 	}

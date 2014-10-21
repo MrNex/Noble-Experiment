@@ -3,11 +3,15 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.Rectangle2D;
+import java.awt.geom.Rectangle2D.Double;
 import java.util.ArrayList;
 
 import Engine.Directory;
+import Engine.Manager.ScreenManager;
 import Objects.Entity;
 import Objects.GameObject;
+import Objects.ObjStates.HealthBarState;
 
 //TODO: Clean up to keep track of two entities and a list of projectile gameObjects.
 //TODO: Have all state-Ending and cleanup logic in here instead of PlayerBattleState and EnemyBattleState!
@@ -24,6 +28,14 @@ public class BattleState extends State{
 	private Entity competitor2;
 	private ArrayList<Entity> entities;
 
+	//Accessors / Modifiers
+	/**
+	 * GEts the list of entities in this state
+	 * @return
+	 */
+	public ArrayList<Entity> getEntities(){
+		return entities;
+	}
 
 	/**
 	 * Constructs battle state
@@ -36,6 +48,9 @@ public class BattleState extends State{
 		competitor1 = triggeredBy;
 		competitor2 = attachedTo;
 
+		
+		//Set hud up
+		initHud();
 	}
 
 	/**
@@ -49,12 +64,24 @@ public class BattleState extends State{
 		//Initialize array list of Destructables
 		entities = new ArrayList<Entity>();
 
+		
 	}
 
-
-	public ArrayList<Entity> getEntities(){
-		return entities;
+	/**
+	 * Creates the hud for this state
+	 */
+	private void initHud(){
+		//First clear hud
+		Directory.screenManager.clearHud();
+		
+		//create healthbar
+		GameObject healthBar = new GameObject(5, 15, 250, 25);
+		healthBar.setShape(new Rectangle2D.Double(), Color.red);
+		healthBar.setVisible(true);
+		healthBar.pushState(new HealthBarState(competitor1));
+		Directory.screenManager.AddObjToHud(healthBar);
 	}
+	
 
 	/**
 	 * Updates this state
@@ -158,6 +185,9 @@ public class BattleState extends State{
 		//loser.setRunning(false);
 		loser.setState(null);
 		loser.setVisible(false);
+		
+		//Clear hud
+		Directory.screenManager.clearHud();
 
 		//Pop state of engine reverting back to whatever was previous
 		Directory.engine.popState();

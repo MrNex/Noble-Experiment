@@ -29,15 +29,18 @@ public class ScreenManager extends Manager {
 	private JPanel drawPanel;
 	private Color backgroundColor;
 	private int width, height;
-	private HUD hud;
-	
+	//private HUD hud;
+	private ArrayList<GameObject> hud;
+	private ArrayList<GameObject> toAddToHud;
+	private ArrayList<GameObject> toRemoveFromHud;
+
 	/**
 	 * Constructs a screenManager
 	 */
 	public ScreenManager() {
 		super();
 	}
-	
+
 	/**
 	 * Initializes all member variables
 	 * Sets window dimensions
@@ -51,14 +54,17 @@ public class ScreenManager extends Manager {
 		//Set internals
 		width = 800;
 		height = 600;
-		
+
 		//Initialize hud
-		hud = new HUD();
-		
+		//hud = new HUD();
+		hud = new ArrayList<GameObject>();
+		toAddToHud = new ArrayList<GameObject>();
+		toRemoveFromHud = new ArrayList<GameObject>();
+
 		//Create the window
 		window = new JFrame("Mathemancy V 0.1");
 		window.setSize(width, height);
-		
+
 		//Create the panel
 		drawPanel = new JPanel(){
 
@@ -67,43 +73,46 @@ public class ScreenManager extends Manager {
 			{
 				super.paintComponent(g);
 				//Paint background
+				//TODO: But background image stuff here.
 				g.setColor(backgroundColor);
 				g.fillRect(0, 0, width, height);
-				
+
 				//Cast to graphics2d
 				Graphics2D g2d = (Graphics2D)g;
-				
-				
-				
+
 				//Start draw calls
 				if(Directory.engine.getCurrentState() != null)
 					Directory.engine.getCurrentState().draw(g2d);
+
+				//Draw hud
+				//Declare copy list
+				ArrayList<GameObject> copy;
 				
-				if(Directory.engine.getCurrentState() instanceof BattleState){
-					hud.healthBar.draw(g2d);
-					hud.updateHealth();
-				}	
+				copy = new ArrayList<GameObject>(hud);
+				for(GameObject hudElement : copy){
+					hudElement.draw(g2d);
+				}
 			}
-			
+
 		};
-		
+
 		drawPanel.setPreferredSize(new Dimension(800, 600));
-		
+
 		//window.setContentPane(this);
 		window.add(drawPanel);
-		
+
 		window.setVisible(true);
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
+
 		//Set the background
 		backgroundColor = Color.white;
-		
+
 		//Set input manager
 		drawPanel.addKeyListener(Directory.inputManager);
 		//Set as a focusable component to detect key presses
 		drawPanel.setFocusable(true);
 	}
-	
+
 	/**
 	 * Gets the graphics renderer of drawPanel
 	 * @return An instance of the graphics renderer in drawPanel.
@@ -111,7 +120,7 @@ public class ScreenManager extends Manager {
 	public Graphics getGraphics(){
 		return drawPanel.getGraphics();
 	}
-	
+
 
 
 	/**
@@ -123,7 +132,7 @@ public class ScreenManager extends Manager {
 	{
 		return width / 100.0 * percent;
 	}
-	
+
 	/**
 	 * Gets a percentage of the height of the screen
 	 * @param percent The percent of the height that you want
@@ -134,6 +143,23 @@ public class ScreenManager extends Manager {
 		return height / 100.0 * percent;
 	}
 
+	//Methods
+	/**
+	 * Queues an object to be Added to the HUD 
+	 * @param obj Object to add to hud
+	 */
+	public void AddObjToHud(GameObject obj){
+		toAddToHud.add(obj);
+	}
+
+	/**
+	 * Queues an object to be removed from the hud
+	 * @param obj Object to remove from hud
+	 */
+	public void RemoveFromHud(GameObject obj){
+		toRemoveFromHud.add(obj);
+	}
+
 	/**
 	 * Updates the screen manager
 	 * Repaints the drawPanel
@@ -141,6 +167,35 @@ public class ScreenManager extends Manager {
 	@Override
 	public void update() {
 		drawPanel.repaint();
+
+	}
+
+	/**
+	 * Updates every gameObject in the hud
+	 * Adds objects to the hud which need to be added
+	 * Removes objects from the hud which need to be removed
+	 */
+	public void updateHud(){
 		
+		for(GameObject hudElement : hud){
+			hudElement.update();
+		}
+
+		//Copy toRemove list
+		hud.removeAll(toRemoveFromHud);
+		toRemoveFromHud.clear();
+
+		//Copy toAdd list
+		hud.addAll(toAddToHud);
+		toAddToHud.clear();
+		
+	}
+	
+	/**
+	 * Queues everything to be removed from the hud
+	 */
+	public void clearHud(){
+		toRemoveFromHud.clear();
+		toRemoveFromHud.addAll(hud);
 	}
 }
