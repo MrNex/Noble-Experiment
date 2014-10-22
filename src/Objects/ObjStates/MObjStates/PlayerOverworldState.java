@@ -9,6 +9,7 @@ import MathHelp.Vector;
 import Objects.Entity;
 import Objects.MovableGameObject;
 import Objects.ObjStates.ObjState;
+import Objects.Sprites.Sprite;
 
 /**
  * Defines behavior which will allow the player to move in a top-down manner
@@ -38,20 +39,34 @@ public class PlayerOverworldState extends MObjState{
 	 * 
 	 * Sets overworld dimensions to 20, 20
 	 * Sets shape as a green ellipse and updates it
+	 * Sets test animation as image (until real animation is put in)
+	 * Queues up walking animation to repeat
 	 * removes image from object
 	 */
 	@Override
 	public void enter() {
 		//Update dimensions
-		attachedTo.setWidth(20);
-		attachedTo.setHeight(20);
+		attachedTo.setWidth(100);
+		attachedTo.setHeight(100);
 		
 		//set image of player to overworld image
 		attachedTo.setShape(new Ellipse2D.Double(), Color.green);
 		attachedTo.updateShape();
 		
+		//Create sprite for overworld
+		int[] numColumns = new int[1];
+		numColumns[0] = 5;
+		
+		Sprite s = new Sprite(Directory.imageLibrary.get("SpriteSheetTest"), 1, numColumns, 193, 198);
+		
+		
+		
 		//Set the image to null (until image for overworld state is made)
-		attachedTo.setImage(null);
+		attachedTo.setImage(s);
+		//attachedTo.setImage(null);
+		
+		s.queueAnimation(0, true);
+		
 		
 	}
 

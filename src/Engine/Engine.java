@@ -164,6 +164,7 @@ public class Engine {
 		while(running)
 		{
 			getCurrentState().update();
+			Directory.spriteManager.update();
 			Directory.screenManager.updateHud();
 
 		}

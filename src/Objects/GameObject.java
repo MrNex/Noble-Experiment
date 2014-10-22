@@ -350,6 +350,11 @@ public class GameObject {
 		if(isRunning()){
 			getState().update();
 		}
+		if(isVisible()){
+			if(image != null){
+				image.update();
+			}
+		}
 	}
 
 	/**

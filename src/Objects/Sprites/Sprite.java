@@ -71,7 +71,7 @@ public class Sprite {
 	 * @param row The row of the animation to play
 	 * @param repeat Should this animation repeat so long as no others are queued
 	 */
-	public void QueueAnimation(int row, boolean repeat){
+	public void queueAnimation(int row, boolean repeat){
 		//Create instruction set
 		animationQueue.add(new AnimationInstruction(row, repeat));
 	}
@@ -97,7 +97,7 @@ public class Sprite {
 		//If the current column is the last column
 		if(currentColumn == numColumns[currentRow] - 1){
 			//If there is another set of drawing instructions ready
-			if(animationQueue.size() > 0){
+			if(animationQueue.size() > 0){				
 				//Dequeue next set of instructions
 				AnimationInstruction instructionSet = animationQueue.poll();
 				//Load next animation
@@ -129,6 +129,8 @@ public class Sprite {
 		
 		//Finally, once frame variables are ready, set the frame
 		setFrame();
+		
+		//System.out.println(currentColumn);
 	}
 	
 	/**
@@ -139,6 +141,6 @@ public class Sprite {
 		//Draw the spriteSheet
 		g2d.drawImage(spriteSheet,
 				xPos, yPos, xPos + width, yPos + height, 
-				frameXPos, frameYPos, frameWidth, frameHeight, null);
+				frameXPos, frameYPos, frameXPos + frameWidth, frameYPos + frameHeight, null);
 	}
 }

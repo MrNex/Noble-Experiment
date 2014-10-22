@@ -74,7 +74,7 @@ public class PlayerBattleState extends TargetableState{
 
 
 		//Update dimensions
-		attachedTo.setWidth(500);
+		attachedTo.setWidth(200);
 		attachedTo.setHeight(300);
 
 		//Create sprite for player out of PlayerBattleImage
