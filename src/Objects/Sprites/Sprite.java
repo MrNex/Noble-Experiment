@@ -138,7 +138,7 @@ public class Sprite {
 	public void draw(Graphics2D g2d, int xPos, int yPos, int width, int height){
 		//Draw the spriteSheet
 		g2d.drawImage(spriteSheet,
-				xPos, yPos, xPos + width, yPos + width, 
+				xPos, yPos, xPos + width, yPos + height, 
 				frameXPos, frameYPos, frameWidth, frameHeight, null);
 	}
 }

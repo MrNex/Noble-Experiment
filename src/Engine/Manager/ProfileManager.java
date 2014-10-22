@@ -46,7 +46,7 @@ public class ProfileManager extends Manager{
 		player = new Entity(500, 0, 200, 300, 10, 1, 1);
 
 		//Set the image
-		player.setImage(Directory.imageLibrary.get("PlayerBattleIdle"));
+		//player.setImage(Directory.imageLibrary.get("PlayerBattleIdle"));
 		player.setVisible(true);
 
 	}

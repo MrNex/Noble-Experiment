@@ -13,6 +13,7 @@ import Engine.Manager.CollisionManager;
 import Engine.Manager.InputManager;
 import Engine.Manager.ProfileManager;
 import Engine.Manager.ScreenManager;
+import Engine.Manager.SpriteManager;
 import Engine.States.*;
 import Loaders.ImageLoader;
 import Loaders.Loader;
@@ -22,7 +23,6 @@ import Objects.ObjStates.MObjStates.PlayerOverworldState;
 import Objects.ObjStates.MObjStates.EntityStates.EnemyBattleState;
 import Objects.ObjStates.MObjStates.EntityStates.PlayerBattleState;
 import Objects.Triggers.BattleStartTrigger;
-
 
 /**
  * Engine which runs on finite state machine.
@@ -65,6 +65,7 @@ public class Engine {
 		Directory.collisionManager = new CollisionManager();	//Create Collision manager
 		Directory.inputManager = new InputManager();			//Create input manager
 		Directory.screenManager = new ScreenManager();			//Create screen manager
+		Directory.spriteManager = new SpriteManager();			//Create sprite manager
 		Directory.profile = new ProfileManager();				//Create player profile & Constructs player
 
 

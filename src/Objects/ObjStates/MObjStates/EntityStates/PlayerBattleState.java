@@ -9,6 +9,7 @@ import Equations.*;
 import MathHelp.Vector;
 import Objects.Entity;
 import Objects.ObjStates.MObjStates.PlayerOverworldState;
+import Objects.Sprites.Sprite;
 
 /**
  * State which governs the player during the engine's BattleState
@@ -73,11 +74,16 @@ public class PlayerBattleState extends TargetableState{
 
 
 		//Update dimensions
-		attachedTo.setWidth(200);
+		attachedTo.setWidth(500);
 		attachedTo.setHeight(300);
 
-		//Set the image of player to the battleImage
-		player.setImage(Directory.imageLibrary.get("PlayerBattleIdle"));
+		//Create sprite for player out of PlayerBattleImage
+		int[] numColumns = new int[1];
+		numColumns[0] = 1;
+		Sprite s = new Sprite(Directory.imageLibrary.get("PlayerBattleIdle"), 1, numColumns, 670, 798);
+		
+		//SEt players image as sprite
+		player.setImage(s);
 
 		//Toggle target to select first target
 		toggleTarget();

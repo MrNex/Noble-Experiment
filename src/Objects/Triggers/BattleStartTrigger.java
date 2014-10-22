@@ -7,6 +7,7 @@ import Objects.Entity;
 import Objects.ObjStates.MObjStates.EntityStates.EnemyBattleState;
 import Objects.ObjStates.MObjStates.EntityStates.PlayerBattleState;
 import Objects.ObjStates.MObjStates.EntityStates.TargetableState;
+import Objects.Sprites.Sprite;
 
 
 /**
@@ -39,7 +40,14 @@ public class BattleStartTrigger extends Trigger {
 			GameObject background = new GameObject(0, 0, Directory.screenManager.getPercentageWidth(100.0), Directory.screenManager.getPercentageHeight(100.0));
 			// set background values
 			background.setVisible(true);
-			background.setImage(Directory.imageLibrary.get("Background_Forest_1"));
+			
+			//Create sprite for background out of BackgroundForest 1 image
+			int[] numColumns = new int[1];
+			numColumns[0] = 1;
+			Sprite s = new Sprite(Directory.imageLibrary.get("Background_Forest_1"), 1, numColumns, 800, 475);
+			//Set image of background as sprite
+			background.setImage(s);
+
 			
 			Directory.engine.getCurrentState().addObj(background);
 			

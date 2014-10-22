@@ -8,6 +8,7 @@ import java.util.Stack;
 
 import MathHelp.Vector;
 import Objects.ObjStates.ObjState;
+import Objects.Sprites.Sprite;
 import Objects.Triggers.Trigger;
 
 /**
@@ -23,7 +24,8 @@ public class GameObject {
 	protected boolean visible/*, running*/;
 	protected boolean triggerable, solid;
 	protected RectangularShape shape;
-	protected BufferedImage image;
+	//protected BufferedImage image;
+	protected Sprite image;
 	protected Color color;
 	protected Stack<ObjState> stateStack;
 	protected ArrayList<Trigger> triggers;
@@ -318,7 +320,7 @@ public class GameObject {
 	 * IF both an image and a shape are set, the image will be drawn
 	 * @param newImage The new image of this gameObject
 	 */
-	public void setImage(BufferedImage newImage){
+	public void setImage(Sprite newImage){
 		image = newImage;
 	}
 
@@ -362,10 +364,13 @@ public class GameObject {
 		{
 			//If they have an image
 			if(image != null){
+				/*
 				g2d.drawImage(image,
 						(int)position.getComponent(0), (int)position.getComponent(1), 
 						(int)(position.getComponent(0) + width), (int)(position.getComponent(1) + height), 
-						0, 0, image.getWidth(), image.getHeight(), null);
+						0, 0, image.getWidth(), image.getHeight(), null);*/
+				image.draw(g2d, (int)position.getComponent(0), (int)position.getComponent(1), (int)width, (int)height);
+				//System.out.println(width + " " + height);
 			}
 			else{
 				//Set the color
