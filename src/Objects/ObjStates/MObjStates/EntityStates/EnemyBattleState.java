@@ -113,12 +113,12 @@ public class EnemyBattleState extends TargetableState{
 		
 		
 		//Create sprite out of Bullet_Yellow image
-		int[] numColumns = new int[1];
-		numColumns[0] = 1;
-		Sprite s = new Sprite(Directory.imageLibrary.get("Bullet_Yellow"), 1, numColumns, 21, 21);
+		//int[] numColumns = new int[1];
+		//numColumns[0] = 1;
+		//Sprite s = new Sprite(Directory.imageLibrary.get("Bullet_Yellow"), 1, numColumns, 21, 21);
 		
 		//Attach sprites
-		projectile.setImage(s);
+		projectile.setImage(Directory.spriteLibrary.get("Bullet_Yellow"));
 		
 		
 		// Set image

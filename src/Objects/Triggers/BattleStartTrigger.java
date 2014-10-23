@@ -42,11 +42,11 @@ public class BattleStartTrigger extends Trigger {
 			background.setVisible(true);
 			
 			//Create sprite for background out of BackgroundForest 1 image
-			int[] numColumns = new int[1];
-			numColumns[0] = 1;
-			Sprite s = new Sprite(Directory.imageLibrary.get("Background_Forest_1"), 1, numColumns, 800, 475);
+			//int[] numColumns = new int[1];
+			//numColumns[0] = 1;
+			//Sprite s = new Sprite(Directory.imageLibrary.get("Background_Forest_1"), 1, numColumns, 800, 475);
 			//Set image of background as sprite
-			background.setImage(s);
+			background.setImage(Directory.spriteLibrary.get("Background_Forest_1"));
 
 			
 			Directory.engine.getCurrentState().addObj(background);

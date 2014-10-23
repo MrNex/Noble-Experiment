@@ -316,6 +316,13 @@ public class GameObject {
 	}
 	
 	/**
+	 * Gets the sprite of this GameObject.
+	 */
+	public Sprite getSprite(){
+		return image;
+	}
+	
+	/**
 	 * Set the image of this gameObject
 	 * IF both an image and a shape are set, the image will be drawn
 	 * @param newImage The new image of this gameObject

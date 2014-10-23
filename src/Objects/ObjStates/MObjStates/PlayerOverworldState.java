@@ -54,18 +54,18 @@ public class PlayerOverworldState extends MObjState{
 		attachedTo.updateShape();
 		
 		//Create sprite for overworld
-		int[] numColumns = new int[1];
-		numColumns[0] = 5;
+		//int[] numColumns = new int[1];
+		//numColumns[0] = 5;
 		
-		Sprite s = new Sprite(Directory.imageLibrary.get("SpriteSheetTest"), 1, numColumns, 193, 198);
+		//Sprite s = new Sprite(Directory.imageLibrary.get("SpriteSheetTest"), 1, numColumns, 193, 198);
 		
 		
 		
 		//Set the image to null (until image for overworld state is made)
-		attachedTo.setImage(s);
+		attachedTo.setImage(Directory.spriteLibrary.get("SpriteSheetTest"));
 		//attachedTo.setImage(null);
 		
-		s.queueAnimation(0, true);
+		attachedTo.getSprite().queueAnimation(0, true);
 		
 		
 	}

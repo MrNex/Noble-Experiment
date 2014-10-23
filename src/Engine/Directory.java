@@ -8,6 +8,7 @@ import Engine.Manager.InputManager;
 import Engine.Manager.ProfileManager;
 import Engine.Manager.ScreenManager;
 import Engine.Manager.SpriteManager;
+import Objects.Sprites.Sprite;
 
 /**
  * This class defines the main messenging system for the engine.
@@ -23,6 +24,6 @@ public class Directory {
 	public static CollisionManager collisionManager;
 	public static SpriteManager spriteManager;
 	
-	public static HashMap<String, BufferedImage> imageLibrary;
-	
+	//public static HashMap<String, BufferedImage> imageLibrary;
+	public static HashMap<String, Sprite> spriteLibrary;	
 }

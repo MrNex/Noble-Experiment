@@ -17,6 +17,7 @@ import Engine.Manager.SpriteManager;
 import Engine.States.*;
 import Loaders.ImageLoader;
 import Loaders.Loader;
+import Loaders.SpriteLoader;
 import MathHelp.Vector;
 import Objects.*;
 import Objects.ObjStates.MObjStates.PlayerOverworldState;
@@ -86,10 +87,11 @@ public class Engine {
 	 */
 	private void loadContent(){
 		//Initialize loader
-		Loader imageLoader = new ImageLoader();
-
+		//Loader imageLoader = new ImageLoader();
+		Loader spriteLoader = new SpriteLoader();
+		
 		//Get images
-		Directory.imageLibrary = imageLoader.loadAll();
+		Directory.spriteLibrary = spriteLoader.loadAll();
 
 	}
 
