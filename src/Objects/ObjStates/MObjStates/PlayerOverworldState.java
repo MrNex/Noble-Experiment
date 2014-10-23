@@ -61,10 +61,12 @@ public class PlayerOverworldState extends MObjState{
 		
 		
 		
-		//Set the image to null (until image for overworld state is made)
-		attachedTo.setImage(Directory.spriteLibrary.get("SpriteSheetTest"));
+		//Set the sprite to null (until image for overworld state is made)
 		//attachedTo.setImage(null);
+		//Now sets the sprite to a test spritesheet
+		attachedTo.setSprite(Directory.spriteLibrary.get("SpriteSheetTest"));
 		
+		//Queue up an animation of row 0 in spritesheet to repeat
 		attachedTo.getSprite().queueAnimation(0, true);
 		
 		

@@ -21,11 +21,11 @@ public class GameObject {
 	//Attributes
 	protected Vector position;
 	protected double width, height;
-	protected boolean visible/*, running*/;
+	protected boolean visible;
 	protected boolean triggerable, solid;
 	protected RectangularShape shape;
 	//protected BufferedImage image;
-	protected Sprite image;
+	protected Sprite sprite;
 	protected Color color;
 	protected Stack<ObjState> stateStack;
 	protected ArrayList<Trigger> triggers;
@@ -50,14 +50,13 @@ public class GameObject {
 
 		//Set default attributes
 		visible = false;
-		//running = false;
 		
 		stateStack = new Stack<ObjState>();
 
 		shape = null;
 		color = Color.black;
 		
-		image = null;
+		sprite = null;
 	}
 
 	//Accessors
@@ -319,7 +318,7 @@ public class GameObject {
 	 * Gets the sprite of this GameObject.
 	 */
 	public Sprite getSprite(){
-		return image;
+		return sprite;
 	}
 	
 	/**
@@ -327,8 +326,8 @@ public class GameObject {
 	 * IF both an image and a shape are set, the image will be drawn
 	 * @param newImage The new image of this gameObject
 	 */
-	public void setImage(Sprite newImage){
-		image = newImage;
+	public void setSprite(Sprite newSprite){
+		sprite = newSprite;
 	}
 
 	/**
@@ -352,38 +351,34 @@ public class GameObject {
 
 	/**
 	 * Updates the current state of the gameObject if this object is running
+	 * If the object is visible- regardless of whether it is running it's sprite will get updated.
 	 */
 	public void update(){
 		if(isRunning()){
 			getState().update();
 		}
 		if(isVisible()){
-			if(image != null){
-				image.update();
+			if(sprite != null){
+				sprite.update();
 			}
 		}
 	}
 
 	/**
-	 * Draws the image (Or shape if image is null) representing this gameObject.
+	 * Draws the sprite (Or shape if sprite is null) representing this gameObject.
 	 * If this object has a running state, it will draw the state as well.
 	 * 
-	 * If the gameobject is visible AND running, the currentState's draw method will also be called
 	 * @param g2d reference to renderer to draw
 	 */
 	public void draw(Graphics2D g2d){
 		if(visible)
 		{
-			//If they have an image
-			if(image != null){
-				/*
-				g2d.drawImage(image,
-						(int)position.getComponent(0), (int)position.getComponent(1), 
-						(int)(position.getComponent(0) + width), (int)(position.getComponent(1) + height), 
-						0, 0, image.getWidth(), image.getHeight(), null);*/
-				image.draw(g2d, (int)position.getComponent(0), (int)position.getComponent(1), (int)width, (int)height);
-				//System.out.println(width + " " + height);
+			//If this object has a sprite
+			if(sprite != null){
+				//Draw it at the current position
+				sprite.draw(g2d, (int)position.getComponent(0), (int)position.getComponent(1), (int)width, (int)height);
 			}
+			//If this object does not have a sprite
 			else{
 				//Set the color
 				g2d.setColor(color);

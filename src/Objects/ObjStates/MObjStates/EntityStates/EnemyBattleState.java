@@ -111,25 +111,16 @@ public class EnemyBattleState extends TargetableState{
 		Entity projectile = new Entity(attachedTo.getXPos(), attachedTo.getYPos(), 50, 50, 1, 1, 1);
 		projectile.setSolid(true);
 		
+		//Attach sprite to projectile
+		projectile.setSprite(Directory.spriteLibrary.get("Bullet_Yellow"));
 		
-		//Create sprite out of Bullet_Yellow image
-		//int[] numColumns = new int[1];
-		//numColumns[0] = 1;
-		//Sprite s = new Sprite(Directory.imageLibrary.get("Bullet_Yellow"), 1, numColumns, 21, 21);
-		
-		//Attach sprites
-		projectile.setImage(Directory.spriteLibrary.get("Bullet_Yellow"));
-		
-		
-		// Set image
-		//projectile.setImage(Directory.imageLibrary.get("Bullet_Yellow"));
 		//Set the shape
 		//projectile.setShape(new Ellipse2D.Double(), Color.black);
 		
 		
 		//Set visible
 		projectile.setVisible(true);
-		//Set the state, which sets running to true
+		//Set the state
 		projectile.setState(new ProjectileState(Directory.profile.getPlayer(), attachedTo));
 		//Add projectile to current engine state
 		Directory.engine.getCurrentState().addObj(projectile);

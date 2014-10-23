@@ -76,14 +76,9 @@ public class PlayerBattleState extends TargetableState{
 		//Update dimensions
 		attachedTo.setWidth(200);
 		attachedTo.setHeight(300);
-
-		//Create sprite for player out of PlayerBattleImage
-		//int[] numColumns = new int[1];
-		//numColumns[0] = 1;
-		//Sprite s = new Sprite(Directory.imageLibrary.get("PlayerBattleIdle"), 1, numColumns, 670, 798);
 		
-		//SEt players image as sprite
-		player.setImage(Directory.spriteLibrary.get("PlayerBattleIdle"));
+		//SEt players sprite
+		player.setSprite(Directory.spriteLibrary.get("PlayerBattleIdle"));
 
 		//Toggle target to select first target
 		toggleTarget();
@@ -398,8 +393,8 @@ public class PlayerBattleState extends TargetableState{
 		//Set position back to worldPos
 		attachedTo.setPos(worldPos);
 
-		//Set image to null
-		attachedTo.setImage(null);
+		//Set Sprite to null
+		attachedTo.setSprite(null);
 	}
 
 }
