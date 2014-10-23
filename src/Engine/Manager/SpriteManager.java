@@ -35,7 +35,7 @@ public class SpriteManager extends Manager {
 	 * Initialize all member variables
 	 */
 	public SpriteManager() {
-		fps = 240.0;
+		fps = 6.0;
 		
 	}
 
