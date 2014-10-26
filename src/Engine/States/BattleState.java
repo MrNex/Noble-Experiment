@@ -1,5 +1,6 @@
 package Engine.States;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.geom.Ellipse2D;
@@ -153,7 +154,9 @@ public class BattleState extends State{
 		
 		//Draw Answer String
 		PlayerBattleState playerState = (PlayerBattleState)competitor1.getState();
-		g2d.drawString(playerState.getAnswerString(),50, 50);
+		g2d.setFont(new Font("Serif", Font.BOLD, 50));
+		g2d.setColor(Color.WHITE);
+		g2d.drawString(playerState.getAnswerString(),350, 100);
 	}
 
 	/**

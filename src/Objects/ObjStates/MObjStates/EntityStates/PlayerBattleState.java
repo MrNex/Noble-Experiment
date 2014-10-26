@@ -83,6 +83,11 @@ public class PlayerBattleState extends TargetableState{
 		//Toggle target to select first target
 		toggleTarget();
 	}
+	
+	public String getAnswerString()
+	{
+		return answerString;
+	}
 
 	/**
 	 * Updates the player's BattleState
