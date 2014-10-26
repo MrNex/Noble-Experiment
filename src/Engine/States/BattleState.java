@@ -12,6 +12,7 @@ import Engine.Manager.ScreenManager;
 import Objects.Entity;
 import Objects.GameObject;
 import Objects.ObjStates.HealthBarState;
+import Objects.ObjStates.MObjStates.EntityStates.*;
 
 //TODO: Clean up to keep track of two entities and a list of projectile gameObjects.
 //TODO: Have all state-Ending and cleanup logic in here instead of PlayerBattleState and EnemyBattleState!
@@ -149,6 +150,10 @@ public class BattleState extends State{
 			//System.out.println("Drawing at: " + obj.getPos().toString() + "\nWidtn, Height: " + obj.getWidth() + ", " + obj.getHeight() + "\nVisibility: " + obj.isVisible() + "\nRunning: " + obj.isRunning());
 			obj.draw(g2d);
 		}
+		
+		//Draw Answer String
+		PlayerBattleState playerState = (PlayerBattleState)competitor1.getState();
+		g2d.drawString(playerState.getAnswerString(),50, 50);
 	}
 
 	/**
