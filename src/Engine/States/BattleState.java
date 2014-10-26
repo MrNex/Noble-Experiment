@@ -1,5 +1,6 @@
 package Engine.States;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.geom.Ellipse2D;
@@ -12,6 +13,7 @@ import Engine.Manager.ScreenManager;
 import Objects.Entity;
 import Objects.GameObject;
 import Objects.ObjStates.HealthBarState;
+import Objects.ObjStates.MObjStates.EntityStates.*;
 
 //TODO: Clean up to keep track of two entities and a list of projectile gameObjects.
 //TODO: Have all state-Ending and cleanup logic in here instead of PlayerBattleState and EnemyBattleState!
@@ -149,6 +151,12 @@ public class BattleState extends State{
 			//System.out.println("Drawing at: " + obj.getPos().toString() + "\nWidtn, Height: " + obj.getWidth() + ", " + obj.getHeight() + "\nVisibility: " + obj.isVisible() + "\nRunning: " + obj.isRunning());
 			obj.draw(g2d);
 		}
+		
+		//Draw Answer String
+		PlayerBattleState playerState = (PlayerBattleState)competitor1.getState();
+		g2d.setFont(new Font("Serif", Font.BOLD, 50));
+		g2d.setColor(Color.WHITE);
+		g2d.drawString(playerState.getAnswerString(),350, 100);
 	}
 
 	/**
