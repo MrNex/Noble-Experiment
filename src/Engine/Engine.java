@@ -24,6 +24,7 @@ import Objects.ObjStates.MObjStates.PlayerOverworldState;
 import Objects.ObjStates.MObjStates.EntityStates.EnemyBattleState;
 import Objects.ObjStates.MObjStates.EntityStates.PlayerBattleState;
 import Objects.Triggers.BattleStartTrigger;
+import Objects.Triggers.ShopStartTrigger;
 
 /**
  * Engine which runs on finite state machine.
@@ -135,6 +136,23 @@ public class Engine {
 
 		//Add enemy to state
 		Directory.engine.getCurrentState().addObj(enemy);
+		
+		
+		
+		//Create shop as a gameObject
+		GameObject shop = new GameObject(Directory.screenManager.getPercentageWidth(55.0), Directory.screenManager.getPercentageHeight(20.0), 20, 20);
+		//Set shop shape and visibility
+		shop.setShape(new Ellipse2D.Double(), Color.BLUE);
+		shop.setVisible(true);
+		//Set the shop as triggerable
+		shop.setTriggerable(true);
+		//Set shop trigger
+		shop.addTrigger(new ShopStartTrigger());
+
+		shop.setSolid(true);
+
+		//Add shop to state
+		Directory.engine.getCurrentState().addObj(shop);
 
 
 

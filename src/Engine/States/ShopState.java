@@ -1,4 +1,5 @@
 package Engine.States;
+
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
@@ -11,48 +12,45 @@ import Engine.Directory;
 import Engine.Manager.ScreenManager;
 import Objects.Entity;
 import Objects.GameObject;
-import Objects.ObjStates.HealthBarState;
 
-//TODO: Clean up to keep track of two entities and a list of projectile gameObjects.
-//TODO: Have all state-Ending and cleanup logic in here instead of PlayerBattleState and EnemyBattleState!
+//TODO: add button, button selection, as means of leaving
+
 /**
- * A class which defines the engine state which runs during a battle
- * @author Nex
+ * A class which defines the engine state which runs when the player enters the shop
+ * @author Robert Schrupp
  *
  */
-public class BattleState extends State{
-
+public class ShopState extends State {
+	
 	//Attributes
-	public static int difficulty = 1;
-	private Entity competitor1;
-	private Entity competitor2;
+	private Entity player;
+	private GameObject shop;
 	private ArrayList<Entity> entities;
-
+	
 	//Accessors / Modifiers
 	/**
 	 * GEts the list of entities in this state
-	 * @return
-	 */
+	* @return
+	*/
 	public ArrayList<Entity> getEntities(){
 		return entities;
 	}
-
+	
 	/**
-	 * Constructs battle state
+	 * Constructs shop state
 	 * Calls super constructor -> Makes call to init()
 	 */
-	public BattleState(Entity triggeredBy, Entity attachedTo) {
+	public ShopState(Entity triggeredBy, GameObject attachedTo) {
 		super();
-
-		//Assign member variables
-		competitor1 = triggeredBy;
-		competitor2 = attachedTo;
-
 		
-		//Set hud up
-		initHud();
+		//Assign member variables
+		player = triggeredBy;
+		shop = attachedTo;
+		
+		//Setup shop
+		initShop();		
 	}
-
+	
 	/**
 	 * Initializes member variables
 	 */
@@ -60,28 +58,17 @@ public class BattleState extends State{
 	protected void init() {
 		//Initialize super
 		super.init();
-
+		
 		//Initialize array list of Destructible
 		entities = new ArrayList<Entity>();
-
-		
-	}
-
-	/**
-	 * Creates the hud for this state
-	 */
-	private void initHud(){
-		//First clear hud
-		Directory.screenManager.clearHud();
-		
-		//create healthbar
-		GameObject healthBar = new GameObject(5, 15, 250, 25);
-		healthBar.setShape(new Rectangle2D.Double(), Color.red);
-		healthBar.setVisible(true);
-		healthBar.pushState(new HealthBarState(competitor1));
-		Directory.screenManager.AddObjToHud(healthBar);
 	}
 	
+	/**
+	 * Creates the shop for this state
+	 */
+	private void initShop(){
+		//
+	}
 
 	/**
 	 * Updates this state
@@ -127,9 +114,9 @@ public class BattleState extends State{
 		}
 		toAdd.removeAll(copyList);
 
-		//Check if the battle is over
-		if(isBattleOver()){
-			endBattle();
+		//Check if leaving shop
+		if(isLeaving()){
+			leaveShop();
 		}
 
 	}
@@ -139,8 +126,7 @@ public class BattleState extends State{
 	 * Calls draw on all gameObjects in the state's list of gameobjects
 	 */
 	@Override
-	public void draw(Graphics2D g2d){
-
+	public void draw(Graphics2D g2d) {
 		ArrayList<GameObject> drawList = getObjListCopy();
 
 		//For every game object in objects
@@ -150,50 +136,22 @@ public class BattleState extends State{
 			obj.draw(g2d);
 		}
 	}
-
+	
 	/**
-	 * Determines if the battle is over
-	 * @return true if one of the two competitors are dead, else false
+	 * Determines if player is leaving the shop
 	 */
-	private boolean isBattleOver(){
-		if(competitor1.getCurrentHealth() <=0 || competitor2.getCurrentHealth() <= 0) return true;
+	private boolean isLeaving(){
+		
 		return false;
 	}
-
+	
 	/**
-	 * Resolves battleState and pops state off stack, moving back to overworld state
-	 * The competitor which died will be removed from the underlying state.
+	 * Resolves shopState and pops state off stack, moving back to overworld state
 	 */
-	private void endBattle(){
-		//Determine winner and loser
-		Entity loser;
-		Entity winner;
-
-		if(competitor1.getCurrentHealth() <= 0){
-			loser = competitor1;
-			winner = competitor2;
-		}
-		else{
-			loser = competitor2;
-			winner = competitor1;
-		}
-
-		//Pop the state of the winner (Revert to whatever state was prior the battle)
-		winner.popState();
-
-		//Loser is no longer running or visible
-		//loser.setRunning(false);
-		loser.setState(null);
-		loser.setVisible(false);
+	private void leaveShop(){
+		player.popState();
+		shop.popState();
 		
-		//Clear hud
-		Directory.screenManager.clearHud();
-
-		//Pop state of engine reverting back to whatever was previous
 		Directory.engine.popState();
-
-		//Remove the loser from the engine's currentState
-		Directory.engine.getCurrentState().removeObj(loser);
-
 	}
 }
