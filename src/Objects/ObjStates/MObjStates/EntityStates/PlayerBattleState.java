@@ -65,7 +65,7 @@ public class PlayerBattleState extends TargetableState{
 
 		//Update position
 		Vector posVector = new Vector(2);
-		posVector.setComponent(0, Directory.screenManager.getPercentageWidth(5.0));
+		posVector.setComponent(0, Directory.screenManager.getPercentageWidth(1.0));
 		posVector.setComponent(1, Directory.screenManager.getPercentageHeight(45.0));
 		attachedTo.setPos(posVector);
 

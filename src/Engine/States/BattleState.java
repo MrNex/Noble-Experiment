@@ -80,8 +80,19 @@ public class BattleState extends State{
 		GameObject healthBar = new GameObject(5, 15, 250, 25);
 		healthBar.setShape(new Rectangle2D.Double(), Color.red);
 		healthBar.setVisible(true);
-		healthBar.pushState(new HealthBarState(competitor1));
+		healthBar.pushState(new HealthBarState(competitor1, true));
+		
 		Directory.screenManager.AddObjToHud(healthBar);
+		
+		//Create opponent healthbar
+		GameObject healthBar2 = new GameObject(530, 15, 250, 25);
+		healthBar2.setShape(new Rectangle2D.Double(), Color.red);
+		healthBar2.setVisible(true);
+		healthBar2.pushState(new HealthBarState(competitor2, false));
+		
+		Directory.screenManager.AddObjToHud(healthBar2);
+		
+		
 	}
 	
 

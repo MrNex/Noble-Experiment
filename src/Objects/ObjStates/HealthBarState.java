@@ -18,20 +18,23 @@ import Objects.Entity;
 public class HealthBarState extends ObjState {
 
 	//Attributes
-	Entity tracking;
-	Rectangle2D healthOverlay;
-	Color healthOverlayColor;
-	double width;
+	private Entity tracking;
+	private Rectangle2D healthOverlay;
+	private Color healthOverlayColor;
+	private double width;
+	private boolean leftAligned;
 	
 	/**
 	 * Constructs a health bar
 	 * @param toTrack Entity who's health this bar should track
+	 * @param left Should the bar deplete to the left?
 	 */
-	public HealthBarState(Entity toTrack) {
+	public HealthBarState(Entity toTrack, boolean left) {
 		tracking = toTrack;
 		healthOverlay = new Rectangle2D.Double();
 		width = 0;
 		healthOverlayColor = Color.green;
+		leftAligned = left;
 	}
 
 	@Override
@@ -50,7 +53,10 @@ public class HealthBarState extends ObjState {
 	 * Update the health overlay this state displays
 	 */
 	private void updateShape(){
-		healthOverlay.setFrame(attachedTo.getXPos(), attachedTo.getYPos(), width, attachedTo.getHeight());
+		if(leftAligned)
+			healthOverlay.setFrame(attachedTo.getXPos(), attachedTo.getYPos(), width, attachedTo.getHeight());
+		else
+			healthOverlay.setFrame(attachedTo.getXPos() + (attachedTo.getWidth() - width), attachedTo.getYPos(), width, attachedTo.getHeight());
 	}
 
 	@Override
