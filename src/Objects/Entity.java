@@ -61,6 +61,14 @@ public class Entity extends MovableGameObject{
 	public int getTotalHealth(){
 		return totalHealth;
 	}
+	
+	/**
+	 * Increments the entities total health
+	 * @param healthPointsGained The amount of health points to add to the totalhealth
+	 */
+	public void incrementTotalHealth(int healthPointsGained){
+		totalHealth += healthPointsGained;
+	}
 
 	/**
 	 * Gets the power of the entity
@@ -71,11 +79,27 @@ public class Entity extends MovableGameObject{
 	}
 	
 	/**
+	 * Increments the entities power
+	 * @param powerToAdd the amount of power to add to the current power
+	 */
+	public void incrementPower(int powerToAdd){
+		power += powerToAdd;
+	}
+	
+	/**
 	 * Gets the defense of the entity
 	 * @return The defense of the entity
 	 */
 	public int getDefense(){
 		return defense;
+	}
+	
+	/**
+	 * Increments the entities defense
+	 * @param defenseToAdd The amount of defense to add to the current defense
+	 */
+	public void incrementDefense(int defenseToAdd){
+		defense += defenseToAdd;
 	}
 	
 	/**
@@ -118,8 +142,6 @@ public class Entity extends MovableGameObject{
 
 		//If the entity is dead
 		else if(currentHealth <= 0){
-			//Set running to false
-			//setRunning(false);
 			//SEt the state of the entity to null which sets running to false
 			setState(null);							//Causes exit conditions to run on current state (Could potentially be important)
 			//Remove entity from current engine state
