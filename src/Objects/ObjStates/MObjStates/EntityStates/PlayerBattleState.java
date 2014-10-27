@@ -100,6 +100,11 @@ public class PlayerBattleState extends TargetableState{
 	public void update() {
 		super.update();
 
+		//If at any point there is no target or the target is dead, or the target is no longer targetable find a target
+		if(currentTarget == null || currentTarget.getCurrentHealth() <= 0 || !(currentTarget.getState() instanceof TargetableState)){
+			toggleTarget();
+		}
+		
 		//Declare character to retrieve keys in the order that they were pressed since last update
 		Integer chCode;
 		//While the next character pressed isn't null
@@ -108,13 +113,10 @@ public class PlayerBattleState extends TargetableState{
 			//Cast characterCode to character
 			char ch = (char)((int)chCode);
 			
-			
 			//If ch is a number (from number bar) or an operator (Non-numpad)
 			if(Character.isDigit(ch) || chCode == (int)'+' || chCode == (int)'-' || chCode == (int)'*' || chCode == (int)'/'){
 				//If you start typing an answer and there isn't a target yet, toggle target
-				if(currentTarget == null){
-					toggleTarget();
-				}
+				
 
 				//Add to the answerString
 				answerString += ch;
@@ -268,7 +270,10 @@ public class PlayerBattleState extends TargetableState{
 			else
 			{
 				//Set target as selected
-				currObjState.toggleSelected();
+				//But first check that the target's state is still there as sometimes 
+				//In rare cases a state is removed on a target as this is occurring.
+				if(currObjState != null)
+					currObjState.toggleSelected();
 			}
 		}
 		else{
