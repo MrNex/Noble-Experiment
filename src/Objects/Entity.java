@@ -148,5 +148,18 @@ public class Entity extends MovableGameObject{
 			Directory.engine.getCurrentState().removeObj(this);
 		}
 	}
+	
+	/**
+	 * Deals damage to this entity
+	 * The amount of damage is reduced based on the entities defense.
+	 * If the defense is greater than the power then the damage dealt is reduced to 1 (If it was originally greater than 0).
+	 * 		If the power was not originally greater than 0, it is set to 0. To heal see incrementCurrentHealth()
+	 * Else the damage dealt is equal to: power - defense
+	 * @param pow Amount of damage being dealt. "Power" of the hit
+	 */
+	public void damage(int pow){
+		pow = pow > defense ? pow - defense : pow > 0 ? 1 : 0;
+		decrementCurrentHealth(pow);
+	}
 
 }

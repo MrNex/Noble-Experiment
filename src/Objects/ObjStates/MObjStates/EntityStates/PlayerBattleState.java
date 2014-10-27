@@ -27,7 +27,6 @@ public class PlayerBattleState extends TargetableState{
 	private String answerString;
 	private Entity currentTarget;
 	private int targetIndex;
-	private Entity player;
 
 	/**
 	 * Creates player battle state
@@ -60,9 +59,7 @@ public class PlayerBattleState extends TargetableState{
 		//Save current position
 		worldPos = new Vector(attachedTo.getPos());
 
-		//downcast attachedTo gameobject to player
-		player = getAttachedEntity();
-
+		
 		//Update position
 		Vector posVector = new Vector(2);
 		posVector.setComponent(0, Directory.screenManager.getPercentageWidth(1.0));
@@ -78,7 +75,7 @@ public class PlayerBattleState extends TargetableState{
 		attachedTo.setHeight(300);
 		
 		//SEt players sprite
-		player.setSprite(Directory.spriteLibrary.get("PlayerBattleIdle"));
+		getAttachedEntity().setSprite(Directory.spriteLibrary.get("PlayerBattleIdle"));
 
 		//Toggle target to select first target
 		toggleTarget();
@@ -302,7 +299,7 @@ public class PlayerBattleState extends TargetableState{
 				TargetableState targetState = (TargetableState)currentTarget.getState();
 
 				//send answer to current target
-				if(targetState.submitAnswer(submission, player.getPower())){
+				if(targetState.submitAnswer(submission, getAttachedEntity().getPower())){
 					Directory.profile.incrementEquationsMade();
 
 					//If the target wasn't killed, generate a new equation for it
@@ -310,18 +307,20 @@ public class PlayerBattleState extends TargetableState{
 						targetState.generateNewEquation();
 					}
 				}
+				//Else, answer is wrong
 				else{
 					Directory.profile.incrementWrongAnswers();
 					System.out.println("Wrong, answer is " + targetState.getEquation().getSolution() + " your answer was " + submission.getSolution());
 				}
 			}
+			//Else, the player does not have the required operators
 			else{
 				System.out.println("You do not have enough operators!");
 			}
 		}
+		//Else, an invalid equation was submitted
 		else{
 			System.out.println("Invalid Equation");
-
 			Directory.profile.incrementWrongAnswers();
 		}
 	}
@@ -350,8 +349,10 @@ public class PlayerBattleState extends TargetableState{
 		}
 
 		//If targeting yourself, make the power 0.
-		int submitPower = currentTarget == player ? 0 : getAttachedEntity().getPower();
+		int submitPower = currentTarget == getAttachedEntity() ? 0 : getAttachedEntity().getPower();
 
+		System.out.println("Submit power: " + submitPower);
+		
 		//Get targets battle state
 		TargetableState targetState = (TargetableState)currentTarget.getState();
 

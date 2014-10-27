@@ -171,14 +171,13 @@ public class TargetableState extends EntityState{
 	public boolean submitAnswer(Equation answer, int pow){
 		//Check answer
 		if(answer.getSolution() == equation.getSolution()){
-			//If correct, decrement attached entities health by submitted power
-			getAttachedEntity().decrementCurrentHealth(pow);
+			//If correct, damage entity by submitted power
+			getAttachedEntity().damage(pow);
+			
+			System.out.println("Damaged!");
 			
 			//Check if the entity has died
 			if(getAttachedEntity().getCurrentHealth() <= 0){
-				//Dead targetable is no longer running
-				//attachedTo.setRunning(false);/
-				
 				//Dead targetable is no longer in this state because dead targetable is no longer targetable
 				attachedTo.setState(null);
 				
