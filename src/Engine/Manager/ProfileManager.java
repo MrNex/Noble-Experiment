@@ -19,6 +19,7 @@ public class ProfileManager extends Manager{
 	private int equationsSolved;
 	private int equationsMade;
 	private int wrongAnswers;
+	private int gold;
 	private int level;
 	private int currentExp, expNeeded;
 
@@ -38,6 +39,7 @@ public class ProfileManager extends Manager{
 		equationsSolved = 0;
 		equationsMade = 0;
 		wrongAnswers = 0;
+		gold = 0;
 		level = 0;
 		currentExp = 0;
 		expNeeded = generateNextExpTier();
@@ -66,6 +68,27 @@ public class ProfileManager extends Manager{
 	 */
 	public Entity getPlayer(){
 		return player;
+	}
+	
+	/**
+	 * Adds gold to the profile
+	 * @param goldToAdd The amount of gold to add
+	 */
+	public void addGold(int goldToAdd){
+		gold += goldToAdd;
+	}
+	
+	/**
+	 * Attempts to remove an amount of gold from the profile
+	 * Returns true if the transaction was a success,
+	 * returns false if the profile does not have enough gold
+	 * @param goldToRemove The amount of gold to remove
+	 * @return Boolean indicating whether or not the transaction was successful
+	 */
+	public boolean removeGold(int goldToRemove){
+		if(gold < goldToRemove) return false;
+		gold -= goldToRemove;
+		return true;
 	}
 
 	/**
