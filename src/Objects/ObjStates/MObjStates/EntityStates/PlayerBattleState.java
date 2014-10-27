@@ -1,5 +1,6 @@
 package Objects.ObjStates.MObjStates.EntityStates;
 
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
@@ -100,11 +101,16 @@ public class PlayerBattleState extends TargetableState{
 		super.update();
 
 		//Declare character to retrieve keys in the order that they were pressed since last update
-		Character ch;
+		Integer chCode;
 		//While the next character pressed isn't null
-		while((ch = Directory.inputManager.getNextKeyPressed()) != null){			//getNextKeyPressed dequeues the next key pressed from a queue of all keypresses
-			//If ch is a number or a negative sign
-			if(Character.isDigit(ch) || ch == (int)'+' || ch == (int)'-' || ch == (int)'*' || ch == (int)'/'){
+		while((chCode = Directory.inputManager.getNextKeyPressed()) != null){			//getNextKeyPressed dequeues the next key pressed from a queue of all keypresses
+			
+			//Cast characterCode to character
+			char ch = (char)((int)chCode);
+			
+			
+			//If ch is a number (from number bar) or an operator (Non-numpad)
+			if(Character.isDigit(ch) || chCode == (int)'+' || chCode == (int)'-' || chCode == (int)'*' || chCode == (int)'/'){
 				//If you start typing an answer and there isn't a target yet, toggle target
 				if(currentTarget == null){
 					toggleTarget();
@@ -114,8 +120,43 @@ public class PlayerBattleState extends TargetableState{
 				answerString += ch;
 				System.out.println(answerString);
 			}
+			
+			//Else if chCode is a numeric keycode from the number pad
+			else if(chCode <= KeyEvent.VK_NUMPAD9 && chCode >= KeyEvent.VK_NUMPAD0){
+				//If you start typing an answer and there isn't a target yet, toggle target
+				if(currentTarget == null){
+					toggleTarget();
+				}
+				
+				//Convert key code to value between 0 and 9
+				int value = chCode - KeyEvent.VK_NUMPAD0;
+				//append answerstring
+				answerString += value;
+				
+			}
+			
+			//Else if chCode is a keycode for an operator from the number pad
+			else if(chCode == KeyEvent.VK_ADD || chCode == KeyEvent.VK_SUBTRACT || chCode == KeyEvent.VK_MULTIPLY || chCode == KeyEvent.VK_DIVIDE){
+				char val = '+';
+				switch(chCode){
+				case KeyEvent.VK_ADD:
+					val = '+';
+					break;
+				case KeyEvent.VK_SUBTRACT:
+					val = '-';
+					break;
+				case KeyEvent.VK_MULTIPLY:
+					val = '*';
+					break;
+				case KeyEvent.VK_DIVIDE:
+					val = '/';
+					break;
+				}
+				answerString += val;
+			}
+			
 			//Else if ch is a newline or return
-			else if((int)ch == (int)'\n' || (int)ch == (int)'\r'){
+			else if(chCode == KeyEvent.VK_ENTER){
 				//Cast current taget's state as targetable
 				TargetableState targetState = (TargetableState)currentTarget.getState();
 				//If the target has a targetable state
@@ -133,15 +174,39 @@ public class PlayerBattleState extends TargetableState{
 				//Clear answerString
 				answerString = "";
 
-
 			}
-			//Else if ch is whitespace
-			else if(Character.isWhitespace(ch)){
+			//Else if ch is down arrow
+			else if(chCode == KeyEvent.VK_DOWN){
 				//Toggle current target
 				toggleTarget();
 			}
+			//Else if ch is left arrow
+			else if(chCode == KeyEvent.VK_LEFT){
+				//Deselect current target
+				if(currentTarget != null)
+					((TargetableState)currentTarget.getState()).toggleSelected();
+				//Target self
+				currentTarget = getAttachedEntity();
+				targetIndex = -1;
+				
+				//Select self
+				((TargetableState)currentTarget.getState()).toggleSelected();
+			}
+			//Else if ch is right arrow
+			else if(chCode == KeyEvent.VK_RIGHT){
+				//Deselect current target
+				if(currentTarget != null)
+					((TargetableState)currentTarget.getState()).toggleSelected();
+				
+				//Target opponent
+				currentTarget = ((BattleState)Directory.engine.getCurrentState()).getCompetitor2();
+				targetIndex = -1;
+				
+				//Select opponent
+				((TargetableState)currentTarget.getState()).toggleSelected();
+			}
 			//Else if backspace was pressed (casts to int 8)
-			else if((int)ch == 8){
+			else if(chCode == KeyEvent.VK_BACK_SPACE){
 				//Clear answerString
 				answerString = "";
 			}
@@ -188,8 +253,8 @@ public class PlayerBattleState extends TargetableState{
 
 		//If targetIndex is within the bounds of the 
 		//battlestate's array of destructables assign the next index as the current target
-		if(targetIndex < gameState.getEntities().size()){
-			currentTarget = gameState.getEntities().get(targetIndex);
+		if(targetIndex < gameState.getTargetables().size()){
+			currentTarget = gameState.getTargetables().get(targetIndex);
 			currObjState = (TargetableState)currentTarget.getState();
 
 			//Make sure the current target is alive and targetable
@@ -208,7 +273,7 @@ public class PlayerBattleState extends TargetableState{
 		}
 		else{
 			//Are there any destructables
-			if(gameState.getEntities().size() <= 1){
+			if(gameState.getTargetables().size() <= 1){
 				//No destructables in gameState, set targetIndex to -1 and currentTarget to null
 				targetIndex = -1;
 				currentTarget = null;
@@ -216,12 +281,12 @@ public class PlayerBattleState extends TargetableState{
 			else{
 				//Set targetIndex to 0 and set currentTarget
 				targetIndex = 0;
-				currentTarget = gameState.getEntities().get(targetIndex);
+				currentTarget = gameState.getTargetables().get(targetIndex);
 				currObjState = (TargetableState)currentTarget.getState();
 				//Make sure the current target is alive
 				if(currentTarget.getCurrentHealth() <= 0){
 					//Make sure there is another target to choose from (else the only target on the screen is dead
-					if(gameState.getEntities().size() > 1){
+					if(gameState.getTargetables().size() > 1){
 						//If so toggle target again
 						toggleTarget();
 					}

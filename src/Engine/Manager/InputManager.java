@@ -16,7 +16,7 @@ import java.util.Queue;
 public class InputManager extends Manager implements KeyListener{
 
 	//Attributes
-	private Queue<Character>keysPressed;		//Holds the keys pressed this game loop in the order of being pressed
+	private Queue<Integer>keysPressed;		//Holds the keys pressed this game loop in the order of being pressed
 	private boolean keys[];						//Indicates whether any key code is currently pressed
 
 
@@ -33,16 +33,16 @@ public class InputManager extends Manager implements KeyListener{
 	@Override
 	public void init() {
 		//Initialize array (lists)
-		keysPressed = new LinkedList<Character>();
+		keysPressed = new LinkedList<Integer>();
 
 		keys = new boolean[256];
 	}
 
 	/**
 	 * Dequeues the next key pressed from the queue of keyPresses and returns it
-	 * @return The most recent keypress that hasn't been retrieved yet.
+	 * @return The keycode of most recent keypress that hasn't been retrieved yet.
 	 */
-	public Character getNextKeyPressed(){
+	public Integer getNextKeyPressed(){
 		return keysPressed.poll();
 	}
 
@@ -55,6 +55,16 @@ public class InputManager extends Manager implements KeyListener{
 	 */
 	public boolean isKeyPressed(char key){
 		return keys[(int)Character.toLowerCase(key)] || keys[(int)Character.toUpperCase(key)];
+	}
+	
+	/**
+	 * Checks if a certain keycode is being pressed
+	 * Case sensitive
+	 * @param keyCode Keycode of key to check
+	 * @return Whether the key with the corresponding keycode is pressed
+	 */
+	public boolean isKeyPressed(int keyCode){
+		return keys[keyCode];
 	}
 
 	/**
@@ -77,7 +87,7 @@ public class InputManager extends Manager implements KeyListener{
 			//Set keys at index of keyCode true
 			keys[keyPress.getKeyCode()] = true;
 			//Add this key to the list of keys pressed this loop
-			keysPressed.add(keyPress.getKeyChar());
+			keysPressed.add(keyPress.getKeyCode());
 		}
 	}
 

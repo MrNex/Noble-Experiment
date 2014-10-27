@@ -28,15 +28,32 @@ public class BattleState extends State{
 	public static int difficulty = 1;
 	private Entity competitor1;
 	private Entity competitor2;
-	private ArrayList<Entity> entities;
+	private ArrayList<Entity> targetables;
 
 	//Accessors / Modifiers
 	/**
-	 * GEts the list of entities in this state
-	 * @return
+	 * GEts the list of targetables in this state
+	 * Does not include competitors
+	 * @return A list of entities with targetable states
 	 */
-	public ArrayList<Entity> getEntities(){
-		return entities;
+	public ArrayList<Entity> getTargetables(){
+		return targetables;
+	}
+	
+	/**
+	 * Get the first entity partaking in this battle
+	 * @return Entity representing the player
+	 */
+	public Entity getCompetitor1(){
+		return competitor1;
+	}
+	
+	/**
+	 * Get the second entity partaking in this battle
+	 * @return Entity representing the player's opponent
+	 */
+	public Entity getCompetitor2(){
+		return competitor2;
 	}
 
 	/**
@@ -50,6 +67,11 @@ public class BattleState extends State{
 		competitor1 = triggeredBy;
 		competitor2 = attachedTo;
 
+		//Add the competitors to the list of objects
+		//Doing this here avoids them from being put in the list of targetables
+		//As these will be targeted directly
+		objects.add(competitor1);
+		objects.add(competitor2);
 		
 		//Set hud up
 		initHud();
@@ -63,8 +85,8 @@ public class BattleState extends State{
 		//Initialize super
 		super.init();
 
-		//Initialize array list of Destructible
-		entities = new ArrayList<Entity>();
+		//Initialize array list of entities
+		targetables = new ArrayList<Entity>();
 
 		
 	}
@@ -109,6 +131,10 @@ public class BattleState extends State{
 		{
 			obj.update();
 		}
+		
+		//Update competitors
+		competitor1.update();
+		competitor2.update();
 
 		//Check for collisions
 		Directory.collisionManager.update();
@@ -119,7 +145,7 @@ public class BattleState extends State{
 			//if obj is a destructable
 			if(obj instanceof Entity){
 				//Remove from destructables
-				entities.remove((Entity)obj);
+				targetables.remove((Entity)obj);
 			}
 		}
 		toRemove.clear();
@@ -135,7 +161,7 @@ public class BattleState extends State{
 			//if obj is a entity
 			if(obj instanceof Entity){
 				//Add to entities
-				entities.add((Entity)obj);
+				targetables.add((Entity)obj);
 			}
 		}
 		toAdd.removeAll(copyList);
@@ -162,6 +188,10 @@ public class BattleState extends State{
 			//System.out.println("Drawing at: " + obj.getPos().toString() + "\nWidtn, Height: " + obj.getWidth() + ", " + obj.getHeight() + "\nVisibility: " + obj.isVisible() + "\nRunning: " + obj.isRunning());
 			obj.draw(g2d);
 		}
+		
+		//Draw competitors
+		competitor1.draw(g2d);
+		competitor2.draw(g2d);
 		
 		//Draw Answer String
 		PlayerBattleState playerState = (PlayerBattleState)competitor1.getState();

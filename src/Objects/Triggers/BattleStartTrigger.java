@@ -57,8 +57,8 @@ public class BattleStartTrigger extends Trigger {
 			triggeredBy.pushState(new PlayerBattleState());
 			
 			//Add this obj to the next state
-			Directory.engine.getCurrentState().addObj(attachedTo);
-			Directory.engine.getCurrentState().addObj(triggeredBy);
+			//Directory.engine.getCurrentState().addObj(attachedTo);
+			//Directory.engine.getCurrentState().addObj(triggeredBy);
 		}
 	}
 
