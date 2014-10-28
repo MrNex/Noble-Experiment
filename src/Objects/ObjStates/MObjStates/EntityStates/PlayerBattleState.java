@@ -1,5 +1,8 @@
 package Objects.ObjStates.MObjStates.EntityStates;
 
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -80,11 +83,6 @@ public class PlayerBattleState extends TargetableState{
 
 		//Toggle target to select first target
 		toggleTarget();
-	}
-	
-	public String getAnswerString()
-	{
-		return answerString;
 	}
 
 	/**
@@ -394,7 +392,20 @@ public class PlayerBattleState extends TargetableState{
 			Directory.profile.incrementWrongAnswers();
 		}
 	}
-
+	
+	/**
+	 * Draws the answerString, and restores the font
+	 */
+	public void draw(Graphics2D g2d)
+	{
+		super.draw(g2d);
+		Font font = g2d.getFont();
+		g2d.setFont(new Font("Serif", Font.BOLD, 50));
+		g2d.setColor(Color.WHITE);
+		g2d.drawString(answerString,350, 100);
+		
+		g2d.setFont(font);
+	}
 
 	/**
 	 * Takes your current answerString, parses it to an integer, and submits it to the current target

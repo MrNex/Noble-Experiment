@@ -194,10 +194,8 @@ public class BattleState extends State{
 		competitor2.draw(g2d);
 		
 		//Draw Answer String
-		PlayerBattleState playerState = (PlayerBattleState)competitor1.getState();
-		g2d.setFont(new Font("Serif", Font.BOLD, 50));
-		g2d.setColor(Color.WHITE);
-		g2d.drawString(playerState.getAnswerString(),350, 100);
+		//PlayerBattleState playerState = (PlayerBattleState)competitor1.getState();
+		
 	}
 
 	/**
