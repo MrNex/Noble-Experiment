@@ -5,6 +5,7 @@ import Engine.States.BattleState;
 import Objects.GameObject;
 import Objects.Entity;
 import Objects.ObjStates.MObjStates.EntityStates.EnemyBattleState;
+import Objects.ObjStates.MObjStates.EntityStates.EntityState;
 import Objects.ObjStates.MObjStates.EntityStates.PlayerBattleState;
 import Objects.ObjStates.MObjStates.EntityStates.TargetableState;
 import Objects.Sprites.Sprite;
@@ -18,11 +19,17 @@ import Objects.Sprites.Sprite;
  */
 public class BattleStartTrigger extends Trigger {
 
+	private TargetableState battleState;
+	
 	/**
 	 * Constructs a battleState trigger
+	 * 
+	 * @param stateForBattle The state you want the attached gameObject to take upon starting the battle
 	 */
-	public BattleStartTrigger() {
+	public BattleStartTrigger(TargetableState stateForBattle) {
 		super();
+		
+		battleState = stateForBattle;
 	}
 
 	/**
@@ -49,7 +56,7 @@ public class BattleStartTrigger extends Trigger {
 			Directory.engine.getCurrentState().addObj(background);
 			
 			//Set stae of the attached obj
-			attachedTo.pushState(new EnemyBattleState());
+			attachedTo.pushState(battleState);
 			attachedTo.removeTrigger(this);
 			attachedTo.setTriggerable(false);
 			
@@ -57,6 +64,7 @@ public class BattleStartTrigger extends Trigger {
 			triggeredBy.pushState(new PlayerBattleState());
 			
 			//Add this obj to the next state
+			//Not needed anymore since separation of competitors from projectiles (list of targetables) in battlestate
 			//Directory.engine.getCurrentState().addObj(attachedTo);
 			//Directory.engine.getCurrentState().addObj(triggeredBy);
 		}

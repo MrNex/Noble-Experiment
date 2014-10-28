@@ -21,6 +21,7 @@ import Loaders.SpriteLoader;
 import MathHelp.Vector;
 import Objects.*;
 import Objects.ObjStates.MObjStates.PlayerOverworldState;
+import Objects.ObjStates.MObjStates.EntityStates.EnemyBurstFireState;
 import Objects.ObjStates.MObjStates.EntityStates.EnemyBattleState;
 import Objects.ObjStates.MObjStates.EntityStates.PlayerBattleState;
 import Objects.Triggers.BattleStartTrigger;
@@ -130,13 +131,35 @@ public class Engine {
 		//Set the enemy as triggerable
 		enemy.setTriggerable(true);
 		//Set enemy trigger
-		enemy.addTrigger(new BattleStartTrigger());
+		enemy.addTrigger(new BattleStartTrigger(new EnemyBattleState()));
 
 		enemy.setSolid(true);
 
 		//Add enemy to state
 		Directory.engine.getCurrentState().addObj(enemy);
 		
+		
+		
+		//Create second burstFireEnemy
+		GameObject burstEnemy = new Entity(
+				Directory.screenManager.getPercentageWidth(40),		//XPos
+				Directory.screenManager.getPercentageHeight(90),	//YPos
+				20,													//Width
+				20,													//Height
+				10,													//Health
+				2,													//Power
+				1													//Defense
+				);
+		
+		burstEnemy.setShape(new Ellipse2D.Double(), Color.magenta);
+		burstEnemy.setVisible(true);
+		
+		burstEnemy.setTriggerable(true);
+		burstEnemy.addTrigger(new BattleStartTrigger(new EnemyBurstFireState()));
+		
+		burstEnemy.setSolid(true);
+		
+		Directory.engine.getCurrentState().addObj(burstEnemy);
 		
 		
 		//Create shop as a gameObject

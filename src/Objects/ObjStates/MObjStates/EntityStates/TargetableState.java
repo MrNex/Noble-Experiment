@@ -68,6 +68,14 @@ public class TargetableState extends EntityState{
 	}
 	
 	/**
+	 * Sets the current equation
+	 * @param newEq The new equation this state should have
+	 */
+	public void setEquation(Equation newEq){
+		equation = newEq;
+	}
+	
+	/**
 	 * Gets whether this targetable state holds equations or numerical values
 	 * @return True if state holds equations, false if state holds a single value wrapped in an equation.
 	 */
@@ -102,8 +110,14 @@ public class TargetableState extends EntityState{
 	 */
 	@Override
 	public void enter() {
-		generateNewEquation();
-
+		//If an equation has not been manually assigned create one conforming to attached object
+		if(equation == null){
+			generateNewEquation();
+		}
+		else{
+			//Else, an equation already exists, measure a box to fit it (USually called by generate new equation)
+			measureEquation();
+		}
 	}
 
 	/**

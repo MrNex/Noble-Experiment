@@ -157,18 +157,26 @@ public class PlayerBattleState extends TargetableState{
 			
 			//Else if ch is a newline or return
 			else if(chCode == KeyEvent.VK_ENTER){
-				//Cast current taget's state as targetable
-				TargetableState targetState = (TargetableState)currentTarget.getState();
-				//If the target has a targetable state
-				if(targetState != null){
-					//If the current target has an equation
-					if(targetState.holdsEquation()){
-						answerEquation();
+				if(currentTarget != null){
+					//Cast current taget's state as targetable
+					TargetableState targetState = (TargetableState)currentTarget.getState();
+					//If the target has a targetable state
+					if(targetState != null){
+						//If the current target has an equation
+						if(targetState.holdsEquation()){
+							answerEquation();
 
-					}else{
-						submitEquation();
+						}else{
+							submitEquation();
 
+						}
 					}
+					else{
+						System.out.println("Target does not have a valid targetable state!");
+					}
+				}
+				else{
+					System.out.println("No target selected!");
 				}
 
 				//Clear answerString

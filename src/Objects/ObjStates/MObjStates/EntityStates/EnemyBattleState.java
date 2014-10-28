@@ -20,9 +20,12 @@ import Objects.Sprites.Sprite;
  */
 public class EnemyBattleState extends TargetableState{
 
+	//Static attributes
+	private static int attackSpeed = 5;				//Set all basic enemys attack speeds to 5 seconds to start
+	private static double shotSpeed = 50;			//Set all basic enemys projectile speed to 50
+	
 	//Attributes
 	private Vector worldPos;
-	private static int attackSpeed = 5;				//Set all enemies attack speeds to 5 seconds to start
 	private Timer attackTimer;
 	private double previousTime;
 	private double elapsedTime;
@@ -121,7 +124,7 @@ public class EnemyBattleState extends TargetableState{
 		//Set visible
 		projectile.setVisible(true);
 		//Set the state
-		projectile.setState(new ProjectileState(Directory.profile.getPlayer(), attachedTo));
+		projectile.setState(new ProjectileState(Directory.profile.getPlayer(), attachedTo, EnemyBattleState.shotSpeed));
 		//Add projectile to current engine state
 		Directory.engine.getCurrentState().addObj(projectile);
 	}

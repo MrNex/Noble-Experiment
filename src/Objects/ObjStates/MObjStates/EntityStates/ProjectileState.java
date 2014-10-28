@@ -20,22 +20,23 @@ public class ProjectileState extends TargetableState{
 
 	//Attributes
 	//TODO: Find way to make this slower!
-	static double speed = 50;		//speed in px/s
-	Vector heading, initialPosition;
-	double time, distance, previousTime;
-	Entity target;
-	GameObject shotBy;
-	long timeStart;
+	private double speed;		//speed in px/s
+	private Vector heading, initialPosition;
+	private double time, distance, previousTime;
+	private Entity target;
+	private GameObject shotBy;
+	private long timeStart;
 	
 	/**
 	 * Constructs a projectile state
 	 * @param x The entity being targetted that this projectile should seek
 	 */
-	public ProjectileState(Entity target, GameObject shooter) {
+	public ProjectileState(Entity target, GameObject shooter, double shootSpeed) {
 		super(true);
 		//Set member variables
 		this.target = target;
 		shotBy = shooter;
+		speed = shootSpeed;
 	
 	}
 
@@ -84,10 +85,7 @@ public class ProjectileState extends TargetableState{
 		direction.normalize();
 		heading = direction;
 		
-		//Set initial Position
-		//initialPosition = attachedTo.getPos();
-		
-		//timeStart = System.currentTimeMillis();
+		//Set previous time to construction time to start
 		previousTime = System.currentTimeMillis();
 	}
 
