@@ -250,6 +250,6 @@ public class TargetableState extends EntityState{
 	 * and attached entities position.
 	 */
 	private void updateEquationBox(){
-		equationBox.setFrame(getAttachedEntity().getXPos(), getAttachedEntity().getYPos() - hoverMag, width, height);
+		equationBox.setFrame((getAttachedEntity().getXPos() + getAttachedEntity().getWidth() / 2) - width/2, getAttachedEntity().getYPos() - hoverMag, width, height);
 	}
 }
