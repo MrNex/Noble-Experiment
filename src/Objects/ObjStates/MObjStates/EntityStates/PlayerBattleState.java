@@ -178,12 +178,12 @@ public class PlayerBattleState extends TargetableState{
 
 			}
 			//Else if ch is down arrow
-			else if(chCode == KeyEvent.VK_DOWN){
+			else if(chCode == KeyEvent.VK_DOWN || chCode == KeyEvent.VK_S){
 				//Toggle current target
 				toggleTarget();
 			}
 			//Else if ch is left arrow
-			else if(chCode == KeyEvent.VK_LEFT){
+			else if(chCode == KeyEvent.VK_LEFT || chCode == KeyEvent.VK_A){
 				//Deselect current target
 				if(currentTarget != null)
 					((TargetableState)currentTarget.getState()).toggleSelected();
@@ -195,7 +195,7 @@ public class PlayerBattleState extends TargetableState{
 				((TargetableState)currentTarget.getState()).toggleSelected();
 			}
 			//Else if ch is right arrow
-			else if(chCode == KeyEvent.VK_RIGHT){
+			else if(chCode == KeyEvent.VK_RIGHT || chCode == KeyEvent.VK_D){
 				//Deselect current target
 				if(currentTarget != null)
 					((TargetableState)currentTarget.getState()).toggleSelected();
