@@ -196,6 +196,7 @@ public class ScreenManager extends Manager {
 	 */
 	public void clearHud(){
 		toRemoveFromHud.clear();
+		toAddToHud.clear();
 		toRemoveFromHud.addAll(hud);
 	}
 }

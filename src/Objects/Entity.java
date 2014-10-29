@@ -1,12 +1,16 @@
 package Objects;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.geom.Rectangle2D;
+import java.awt.geom.Rectangle2D.Double;
 import java.util.ArrayList;
 
 import Engine.Directory;
 import Equations.Equation;
 import Equations.Expression;
 import Equations.OperatorExpression;
+import Objects.ObjStates.DamageDisplayState;
 
 /**
  * Class defines a gameobject with health, power, and defense
@@ -155,11 +159,18 @@ public class Entity extends MovableGameObject{
 	 * If the defense is greater than the power then the damage dealt is reduced to 1 (If it was originally greater than 0).
 	 * 		If the power was not originally greater than 0, it is set to 0. To heal see incrementCurrentHealth()
 	 * Else the damage dealt is equal to: power - defense
+	 * Adds a gameobject with a DamageDisplayState to the hud
 	 * @param pow Amount of damage being dealt. "Power" of the hit
 	 */
 	public void damage(int pow){
 		pow = pow > defense ? pow - defense : pow > 0 ? 1 : 0;
 		decrementCurrentHealth(pow);
+		
+		GameObject damageDisplay = new GameObject(getXPos(), getYPos(), 0, 0);
+		damageDisplay.setShape(new Rectangle2D.Double(), new Color(0, 0, 0, 0));
+		damageDisplay.setVisible(true);
+		damageDisplay.setState(new DamageDisplayState(pow));
+		Directory.screenManager.AddObjToHud(damageDisplay);
 	}
 
 }
