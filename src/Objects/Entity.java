@@ -165,12 +165,14 @@ public class Entity extends MovableGameObject{
 	public void damage(int pow){
 		pow = pow > defense ? pow - defense : pow > 0 ? 1 : 0;
 		decrementCurrentHealth(pow);
-		
-		GameObject damageDisplay = new GameObject(getXPos(), getYPos(), 0, 0);
-		damageDisplay.setShape(new Rectangle2D.Double(), new Color(0, 0, 0, 0));
-		damageDisplay.setVisible(true);
-		damageDisplay.setState(new DamageDisplayState(pow));
-		Directory.screenManager.AddObjToHud(damageDisplay);
+		if(pow > 0)
+		{
+			GameObject damageDisplay = new GameObject(getXPos(), getYPos(), 0, 0);
+			damageDisplay.setShape(new Rectangle2D.Double(), new Color(0, 0, 0, 0));
+			damageDisplay.setVisible(true);
+			damageDisplay.setState(new DamageDisplayState(pow));
+			Directory.screenManager.AddObjToHud(damageDisplay);
+		}
 	}
 
 }

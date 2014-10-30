@@ -13,6 +13,7 @@ import Engine.Manager.ScreenManager;
 import Objects.Entity;
 import Objects.GameObject;
 import Objects.ObjStates.HealthBarState;
+import Objects.ObjStates.TargetEquationDisplayState;
 import Objects.ObjStates.MObjStates.EntityStates.*;
 
 //TODO: Clean up to keep track of two entities and a list of projectile gameObjects.
@@ -113,6 +114,17 @@ public class BattleState extends State{
 		healthBar2.pushState(new HealthBarState(competitor2, false));
 		
 		Directory.screenManager.AddObjToHud(healthBar2);
+		
+		
+		//Create Equation display gameobject
+		GameObject equationDisplay = new GameObject(0, Directory.screenManager.getPercentageHeight(80.0),
+				Directory.screenManager.getPercentageWidth(100.0), Directory.screenManager.getPercentageHeight(20.0));
+		equationDisplay.setShape(new Rectangle2D.Double(), new Color(230, 230, 230, 200));
+		equationDisplay.setVisible(true);
+		equationDisplay.pushState(new TargetEquationDisplayState());
+		
+		Directory.screenManager.AddObjToHud(equationDisplay);
+		
 		
 		
 	}

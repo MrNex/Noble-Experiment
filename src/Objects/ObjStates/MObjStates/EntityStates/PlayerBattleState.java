@@ -31,6 +31,24 @@ public class PlayerBattleState extends TargetableState{
 	private String answerString;
 	private Entity currentTarget;
 	private int targetIndex;
+	
+	//Accessors / Modifiers
+	/**
+	 * Get the current answer string from the player's battle state
+	 * @return The currently stored answer from player
+	 */
+	public String getAnswerString(){
+		return answerString;
+	}
+	
+	
+	/**
+	 * Get the player's current target
+	 * @return The current target of the player
+	 */
+	public Entity getCurrentTarget(){
+		return currentTarget;
+	}
 
 	/**
 	 * Creates player battle state
@@ -402,17 +420,11 @@ public class PlayerBattleState extends TargetableState{
 	}
 	
 	/**
-	 * Draws the answerString, and restores the font
+	 * No drawing action needed
 	 */
 	public void draw(Graphics2D g2d)
 	{
 		super.draw(g2d);
-		Font font = g2d.getFont();
-		g2d.setFont(new Font("Serif", Font.BOLD, 50));
-		g2d.setColor(Color.WHITE);
-		g2d.drawString(answerString,350, 100);
-		
-		g2d.setFont(font);
 	}
 
 	/**

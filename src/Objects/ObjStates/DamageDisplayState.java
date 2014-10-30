@@ -13,7 +13,7 @@ public class DamageDisplayState extends ObjState {
 	private static double riseSpeed = -35.0;	//Rate at which display damage rises
 	
 	private static Color fontColor = Color.red;
-	private static Font font = new Font("Serif", Font.BOLD, 48);
+	private static Font font = new Font("Serif", Font.BOLD, 35);
 	
 	//Attributes
 	private int damageDealt;
@@ -73,9 +73,7 @@ public class DamageDisplayState extends ObjState {
 		elapsedTime += diff;
 		
 		attachedTo.getPos().incrementComponent(1, DamageDisplayState.riseSpeed * diff);
-		
-		System.out.println("diff: " + diff);
-		
+				
 		if(elapsedTime > DamageDisplayState.displayTime || attachedTo.getYPos() + DamageDisplayState.font.getSize() < 0){
 			Directory.screenManager.RemoveFromHud(attachedTo);
 		}
