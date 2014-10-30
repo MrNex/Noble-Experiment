@@ -1,10 +1,17 @@
 package Engine.Manager;
 
+import java.awt.MouseInfo;
+import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
+
+import Engine.Directory;
+import MathHelp.Vector;
 
 /**
  * Defines a component of the engine which manages, observes, and records keyboard input
@@ -13,12 +20,24 @@ import java.util.Queue;
  * @author Nex
  *
  */
-public class InputManager extends Manager implements KeyListener{
+public class InputManager extends Manager implements KeyListener, MouseListener{
 
 	//Attributes
 	private Queue<Integer>keysPressed;		//Holds the keys pressed this game loop in the order of being pressed
-	private boolean keys[];						//Indicates whether any key code is currently pressed
-
+	private boolean keys[];					//Indicates whether any key code is currently pressed
+	private boolean mButtons[];
+	private Vector mousePosition;
+	private Vector previousMousePosition;
+	
+	//Accessors
+	/**
+	 * Get the mouses current position in window space
+	 * @return A vector storing the mouses position in window space
+	 */
+	public Vector getMousePosition(){
+		return mousePosition;
+	}
+	
 
 	/**
 	 * Constructs an input manager
@@ -36,6 +55,11 @@ public class InputManager extends Manager implements KeyListener{
 		keysPressed = new LinkedList<Integer>();
 
 		keys = new boolean[256];
+		
+		mButtons = new boolean[MouseInfo.getNumberOfButtons()];
+		
+		mousePosition = new Vector(2);
+		previousMousePosition = new Vector(2);
 	}
 
 	/**
@@ -65,6 +89,18 @@ public class InputManager extends Manager implements KeyListener{
 	 */
 	public boolean isKeyPressed(int keyCode){
 		return keys[keyCode];
+	}
+	
+	/**
+	 * Gets whether a mouse button is pressed.
+	 * 1 - Left mouse button
+	 * 2 - Middle mouse button
+	 * 3 - Right mouse button
+	 * @param mouseButton Mouse button to check
+	 * @return If the specified mouse button is pressed
+	 */
+	public boolean isMouseButtonPressed(int mouseButton){
+		return mButtons[mouseButton];
 	}
 
 	/**
@@ -115,11 +151,79 @@ public class InputManager extends Manager implements KeyListener{
 	}
 
 	/**
-	 * Unused.
+	 * Updates the mouse position in window space
 	 */
 	@Override
 	public void update() {
-		// TODO Auto-generated method stub
-
+		previousMousePosition.copy(mousePosition);
+		mousePosition = getUpdatedMousePosition();
+		
 	}
+	
+	/**
+	 * Gets the current mouse position in window space
+	 * @return A vector containing the mouse positionin window space
+	 */
+	private Vector getUpdatedMousePosition(){
+		//Get the mouse's screen position
+		Point globalMousePos = MouseInfo.getPointerInfo().getLocation();
+		//Retrieve reference to screen manager
+		ScreenManager ref = (ScreenManager)Directory.screenManager;
+		//Retrieve windows position
+		Point windowPos = ref.getWindow().getLocation();
+		
+		//Create a vector for the mouse position
+		Vector relMousePos = new Vector(2);
+		relMousePos.setComponent(0, globalMousePos.x - windowPos.x);
+		relMousePos.setComponent(1, globalMousePos.y - windowPos.y);
+		
+		return relMousePos;
+	}
+
+	/**
+	 * Not currently in use
+	 */
+	@Override
+	public void mouseClicked(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	/**
+	 * Not currently in use
+	 */
+	@Override
+	public void mouseEntered(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	/**
+	 * Not currently in use
+	 */
+	@Override
+	public void mouseExited(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	/**
+	 * Registers a mouse button press and stores true under the correct index of mouse button presses
+	 */
+	@Override
+	public void mousePressed(MouseEvent mousePress) {
+		mButtons[mousePress.getButton()] = true;
+		
+	}
+
+	/**
+	 * Registers a mouse button release and stores false under the correct index of mouse button presses
+	 */
+	@Override
+	public void mouseReleased(MouseEvent mouseRelease) {
+		mButtons[mouseRelease.getButton()] = false;
+		
+	}
+
 }

@@ -361,6 +361,9 @@ public class GameObject {
 			if(sprite != null){
 				sprite.update();
 			}
+			else{
+				updateShape();
+			}
 		}
 	}
 
@@ -398,8 +401,10 @@ public class GameObject {
 	 * And the current object dimensions.
 	 */
 	public void updateShape(){
-		if(shape != null)
+		if(shape != null){
 			shape.setFrame(position.getComponent(0), position.getComponent(1), width, height);
+		}
+			
 	}
 
 	/**
@@ -425,11 +430,14 @@ public class GameObject {
 	}
 
 	/**
-	 * Checks if the bounding box of this obj is intersecting the bounding box of another obj
-	 * @param obj GameObject to check with
-	 * @return Whether this gameobject is intersecting with obj
+	 * Checks if the bounding box of this obj is contains a given point
+	 * @param xx X Position of point to check
+	 * @param yy Y Position of point to check
+	 * @return Whether this gameobject is intersecting with point xx, yy
 	 */
 	public boolean contains(double xx, double yy){
+		//System.out.println(position.toString());
+		//System.out.println("Point: " + xx + ", " + yy);
 		return 
 				xx < position.getComponent(0) + width && 
 				xx > position.getComponent(0) && 

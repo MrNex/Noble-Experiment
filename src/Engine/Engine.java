@@ -206,6 +206,7 @@ public class Engine {
 	{
 		while(running)
 		{
+			Directory.inputManager.update();
 			getCurrentState().update();
 			Directory.spriteManager.update();
 			Directory.screenManager.updateHud();

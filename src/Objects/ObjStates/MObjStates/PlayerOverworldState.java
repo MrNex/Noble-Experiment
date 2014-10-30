@@ -20,7 +20,8 @@ import Objects.Sprites.Sprite;
 public class PlayerOverworldState extends MObjState{
 
 	//Attributes
-	double movementSpeed;
+	private double movementSpeed;
+	private double previousTime;
 	
 	/**
 	 * Constructs a playerOverworldState
@@ -30,8 +31,8 @@ public class PlayerOverworldState extends MObjState{
 	public PlayerOverworldState() {
 		super();
 		
-		//Set movementSpeed
-		movementSpeed = 0.0001;
+		//Set movementSpeed in px/ms
+		movementSpeed = 100;
 	}
 
 	/**
@@ -69,17 +70,24 @@ public class PlayerOverworldState extends MObjState{
 		//Queue up an animation of row 0 in spritesheet to repeat
 		attachedTo.getSprite().queueAnimation(0, true);
 		
-		
+		//Start timing movement by getting previous time
+		previousTime = System.currentTimeMillis();
 	}
 
 	/**
 	 * Updates the player's overworld state
-	 * If a button (WASD) is being pressed, creates a proper translation vector
+	 * Calculates elapsed time since last update and scales movement speed by time passed
+	 * If a button (WASD) is being pressed, creates a proper translation vector using scaled movement speed
 	 * Calls MovableGameObject's move method, sending it the translationVector
 	 * 		This call sets position, previous position, and updates the shape.
 	 */
 	@Override
 	public void update() {
+
+		//Get current time
+		double currentTime = System.currentTimeMillis();
+		double movement = ((currentTime - previousTime) * movementSpeed) / 1000.0;
+		
 		//Create a translation vector
 		Vector translation = new Vector(2);
 
@@ -87,23 +95,28 @@ public class PlayerOverworldState extends MObjState{
 		//Determine which keys are pressed
 		if(Directory.inputManager.isKeyPressed('w')){
 			//Set translation Vector to move up
-			translation.setComponent(1, translation.getComponent(1)-movementSpeed);
+			translation.setComponent(1, translation.getComponent(1)-movement);
 		}
 		if(Directory.inputManager.isKeyPressed('s')){
 			//Set translation vector to move down
-			translation.setComponent(1, translation.getComponent(1) + movementSpeed);
+			translation.setComponent(1, translation.getComponent(1) + movement);
 		}
 		if(Directory.inputManager.isKeyPressed('a')){
 			//Set translation Vector to move left
-			translation.setComponent(0, translation.getComponent(0)-movementSpeed);
+			translation.setComponent(0, translation.getComponent(0)-movement);
 		}
 		if(Directory.inputManager.isKeyPressed('d')){
 			//Set translation Vector to move right
-			translation.setComponent(0, translation.getComponent(0)+movementSpeed);
+			translation.setComponent(0, translation.getComponent(0)+movement);
 		}
+
 		
 		//Move this gameObject
 		getAttachedMObj().move(translation);
+		
+		//Update previous time
+		previousTime = currentTime;
+			
 	}
 
 	/**

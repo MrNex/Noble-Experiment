@@ -34,23 +34,8 @@ public class ShopStartTrigger extends Trigger {
 		if(triggeredBy == Directory.profile.getPlayer()){
 			//Push a shopState to the stateStack
 			Directory.engine.pushState(new ShopState((Entity)triggeredBy, (GameObject)attachedTo));
+			
 
-			// Create custom background as gameObject
-			GameObject background = new GameObject(0, 0, Directory.screenManager.getPercentageWidth(100.0), Directory.screenManager.getPercentageHeight(100.0));
-			// set background values
-			background.setVisible(true);
-			
-			//Create sprite for background out of BackgroundForest 1 image
-			//Set sprite of background
-			background.setSprite(Directory.spriteLibrary.get("Background_Forest_1"));
-
-			
-			Directory.engine.getCurrentState().addObj(background);
-			
-			//Set state of the attached obj
-			//attachedTo.pushState(new EnemyBattleState());
-			//attachedTo.removeTrigger(this);
-			//attachedTo.setTriggerable(false);
 			
 			//Set state of player
 			triggeredBy.pushState(new PlayerShopState());

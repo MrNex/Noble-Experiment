@@ -12,6 +12,7 @@ import Engine.Directory;
 import Engine.Manager.ScreenManager;
 import Objects.Entity;
 import Objects.GameObject;
+import Objects.ObjStates.ButtonState;
 
 //TODO: add button, button selection, as means of leaving
 
@@ -21,54 +22,86 @@ import Objects.GameObject;
  *
  */
 public class ShopState extends State {
-	
+
 	//Attributes
 	private Entity player;
-	private GameObject shop;
-	private ArrayList<Entity> entities;
-	
-	//Accessors / Modifiers
-	/**
-	 * GEts the list of entities in this state
-	* @return
-	*/
-	public ArrayList<Entity> getEntities(){
-		return entities;
-	}
-	
+	private GameObject shop;	
+
 	/**
 	 * Constructs shop state
 	 * Calls super constructor -> Makes call to init()
 	 */
 	public ShopState(Entity triggeredBy, GameObject attachedTo) {
 		super();
-		
+
 		//Assign member variables
 		player = triggeredBy;
 		shop = attachedTo;
-		
-		//Setup shop
-		initShop();		
+
 	}
-	
+
 	/**
 	 * Initializes member variables
+	 * 
+	 * creates background object and adds it
+	 * Creates exit button object and adds it
 	 */
 	@Override
 	protected void init() {
 		//Initialize super
 		super.init();
+
+		// Create custom background as gameObject
+		GameObject background = new GameObject(0, 0, Directory.screenManager.getPercentageWidth(100.0), Directory.screenManager.getPercentageHeight(100.0));
+		// set background values
+		background.setVisible(true);
+
+		//Create sprite for background out of BackgroundForest 1 image
+		//Set sprite of background
+		background.setSprite(Directory.spriteLibrary.get("Background_Forest_1"));
+
+		//Add background
+		addObj(background);
+
+
+		//Create exit button
+		GameObject exitButton = new GameObject(
+				Directory.screenManager.getPercentageWidth(85.0), Directory.screenManager.getPercentageHeight(5.0),
+				Directory.screenManager.getPercentageWidth(10.0), Directory.screenManager.getPercentageHeight(5.0));
+
+		//Debug
+		System.out.println("Exit button pos: " + exitButton.getPos().toString());
+		System.out.println("Percentage 5 height: " + Directory.screenManager.getPercentageHeight(5.0));
 		
-		//Initialize array list of Destructible
-		entities = new ArrayList<Entity>();
+		exitButton.setShape(new Rectangle2D.Double(), Color.white);
+		exitButton.setVisible(true);
+		exitButton.setState(new ButtonState("Quit"){
+
+			/**
+			 * This button will do nothing on hover
+			 */
+			@Override
+			protected void onHover() {
+				// TODO Auto-generated method stub
+				System.out.println("Hovering!");
+			}
+
+			/**
+			 * The action of this button will call leaveShop
+			 */
+			@Override
+			protected void action() {
+				ShopState state = (ShopState)Directory.engine.getCurrentState();
+				state.leaveShop();
+
+			}
+
+		});
+
+		//Add exit button
+		addObj(exitButton);
 	}
-	
-	/**
-	 * Creates the shop for this state
-	 */
-	private void initShop(){
-		//
-	}
+
 
 	/**
 	 * Updates this state
@@ -90,34 +123,17 @@ public class ShopState extends State {
 		//remove every game object in toRemove
 		for(GameObject obj : toRemove){
 			objects.remove(obj);
-			//if obj is a destructable
-			if(obj instanceof Entity){
-				//Remove from destructables
-				entities.remove((Entity)obj);
-			}
 		}
 		toRemove.clear();
 
 
 
-		//Get copyList
-		ArrayList<GameObject> copyList = new ArrayList<GameObject>(toAdd);
 		//add every game object in toAdd
-		for(GameObject obj : copyList)
+		for(GameObject obj : toAdd)
 		{
 			objects.add(obj);
-			//if obj is a entity
-			if(obj instanceof Entity){
-				//Add to entities
-				entities.add((Entity)obj);
-			}
 		}
-		toAdd.removeAll(copyList);
-
-		//Check if leaving shop
-		if(isLeaving()){
-			leaveShop();
-		}
+		toAdd.clear();
 
 	}
 
@@ -132,26 +148,17 @@ public class ShopState extends State {
 		//For every game object in objects
 		for(GameObject obj : drawList)
 		{
-			//System.out.println("Drawing at: " + obj.getPos().toString() + "\nWidtn, Height: " + obj.getWidth() + ", " + obj.getHeight() + "\nVisibility: " + obj.isVisible() + "\nRunning: " + obj.isRunning());
 			obj.draw(g2d);
 		}
 	}
-	
-	/**
-	 * Determines if player is leaving the shop
-	 */
-	private boolean isLeaving(){
-		
-		return false;
-	}
-	
+
 	/**
 	 * Resolves shopState and pops state off stack, moving back to overworld state
 	 */
 	private void leaveShop(){
 		player.popState();
-		shop.popState();
-		
+		//shop.popState();		Do not pop the state twice, it will cause the game to crash with empty stack exception
+
 		Directory.engine.popState();
 	}
 }

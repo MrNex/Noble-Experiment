@@ -34,6 +34,46 @@ public class ScreenManager extends Manager {
 	private ArrayList<GameObject> toAddToHud;
 	private ArrayList<GameObject> toRemoveFromHud;
 
+	//Accesors / Modifiers
+	
+	/**
+	 * Gets the window the application is running in
+	 * @return The JFrame the application runs in.
+	 */
+	public JFrame getWindow(){
+		return window;
+	}
+	
+	/**
+	 * Gets the graphics renderer of drawPanel
+	 * @return An instance of the graphics renderer in drawPanel.
+	 */
+	public Graphics getGraphics(){
+		return drawPanel.getGraphics();
+	}
+
+
+
+	/**
+	 * Gets a percentage of the width of the screen
+	 * @param percent The percent you want
+	 * @return The specified percentage of the screenWidth
+	 */
+	public double getPercentageWidth(double percent)
+	{
+		return width / 100.0 * percent;
+	}
+
+	/**
+	 * Gets a percentage of the height of the screen
+	 * @param percent The percent of the height that you want
+	 * @return The specified percentage of the screenHeight
+	 */
+	public double getPercentageHeight(double percent)
+	{
+		return height / 100.0 * percent;
+	}
+	
 	/**
 	 * Constructs a screenManager
 	 */
@@ -109,38 +149,9 @@ public class ScreenManager extends Manager {
 
 		//Set input manager
 		drawPanel.addKeyListener(Directory.inputManager);
+		drawPanel.addMouseListener(Directory.inputManager);
 		//Set as a focusable component to detect key presses
 		drawPanel.setFocusable(true);
-	}
-
-	/**
-	 * Gets the graphics renderer of drawPanel
-	 * @return An instance of the graphics renderer in drawPanel.
-	 */
-	public Graphics getGraphics(){
-		return drawPanel.getGraphics();
-	}
-
-
-
-	/**
-	 * Gets a percentage of the width of the screen
-	 * @param percent The percent you want
-	 * @return The specified percentage of the screenWidth
-	 */
-	public double getPercentageWidth(double percent)
-	{
-		return width / 100.0 * percent;
-	}
-
-	/**
-	 * Gets a percentage of the height of the screen
-	 * @param percent The percent of the height that you want
-	 * @return The specified percentage of the screenHeight
-	 */
-	public double getPercentageHeight(double percent)
-	{
-		return height / 100.0 * percent;
 	}
 
 	//Methods
