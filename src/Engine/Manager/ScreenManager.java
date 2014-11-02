@@ -121,7 +121,7 @@ public class ScreenManager extends Manager {
 				Graphics2D g2d = (Graphics2D)g;
 
 				//Start draw calls
-				if(Directory.engine.getCurrentState() != null)
+				if(Directory.engine != null && Directory.engine.getCurrentState() != null)
 					Directory.engine.getCurrentState().draw(g2d);
 
 				//Draw hud

@@ -4,6 +4,7 @@ import Engine.Directory;
 import Engine.States.ShopState;
 import Objects.GameObject;
 import Objects.Entity;
+import Objects.ObjStates.ObjectShopState;
 import Objects.ObjStates.MObjStates.EntityStates.PlayerShopState;
 import Objects.ObjStates.MObjStates.EntityStates.TargetableState;
 import Objects.Sprites.Sprite;
@@ -35,7 +36,8 @@ public class ShopStartTrigger extends Trigger {
 			//Push a shopState to the stateStack
 			Directory.engine.pushState(new ShopState((Entity)triggeredBy, (GameObject)attachedTo));
 			
-
+			//Set state of shop
+			attachedTo.pushState(new ObjectShopState());
 			
 			//Set state of player
 			triggeredBy.pushState(new PlayerShopState());
