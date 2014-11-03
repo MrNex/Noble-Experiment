@@ -22,6 +22,8 @@ public class ProfileManager extends Manager{
 	private int gold;
 	private int level;
 	private int currentExp, expNeeded;
+	
+	
 
 	/**
 	 * Constructs a profile manager
@@ -100,6 +102,14 @@ public class ProfileManager extends Manager{
 	}
 
 	/**
+	 * Returns the number of equations solved
+	 * @return The number of equations solved
+	 */
+	public int getEquationsSolved(){
+		return equationsSolved;
+	}
+	
+	/**
 	 * Increments the players number of equations solved
 	 */
 	public void incrementEquationsSolved(){
@@ -107,12 +117,28 @@ public class ProfileManager extends Manager{
 	}
 
 	/**
+	 * Returns the number of wrong answers submitted
+	 * @return The number of wrong answers which were submitted
+	 */
+	public int getWrongAnswers(){
+		return wrongAnswers;
+	}
+	
+	/**
 	 * Increments the players number of wrong answers
 	 */
 	public void incrementWrongAnswers(){
 		wrongAnswers++;
 	}
 
+	/**
+	 * Returns the number of correct equations made
+	 * @return The number of correct equations made
+	 */
+	public int getEquationsMade(){
+		return equationsSolved;
+	}
+	
 	/**
 	 * Increments the players number of equations made
 	 */

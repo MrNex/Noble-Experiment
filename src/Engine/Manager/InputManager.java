@@ -139,7 +139,6 @@ public class InputManager extends Manager implements KeyListener, MouseListener{
 			//Set keys at index of keyCode false
 			keys[keyRelease.getKeyCode()] = false;
 		}
-
 	}
 
 	/**
@@ -168,32 +167,11 @@ public class InputManager extends Manager implements KeyListener, MouseListener{
 	}
 
 	/**
-	 * Gets the current mouse position in window space
-	 * @return A vector containing the mouse positionin window space
-	 */
-	private Vector getUpdatedMousePosition(){
-		//Get the mouse's screen position
-		Point globalMousePos = MouseInfo.getPointerInfo().getLocation();
-		//Retrieve reference to screen manager
-		ScreenManager ref = (ScreenManager)Directory.screenManager;
-		//Retrieve windows position
-		Point windowPos = ref.getWindow().getLocation();
-
-		//Create a vector for the mouse position
-		Vector relMousePos = new Vector(2);
-		relMousePos.setComponent(0, globalMousePos.x - windowPos.x);
-		relMousePos.setComponent(1, globalMousePos.y - windowPos.y);
-
-		return relMousePos;
-	}
-
-	/**
 	 * Not currently in use
 	 */
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
 		// TODO Auto-generated method stub
-
 	}
 
 	/**
@@ -202,7 +180,6 @@ public class InputManager extends Manager implements KeyListener, MouseListener{
 	@Override
 	public void mouseEntered(MouseEvent arg0) {
 		// TODO Auto-generated method stub
-
 	}
 
 	/**
@@ -211,7 +188,6 @@ public class InputManager extends Manager implements KeyListener, MouseListener{
 	@Override
 	public void mouseExited(MouseEvent arg0) {
 		// TODO Auto-generated method stub
-
 	}
 
 
@@ -221,7 +197,6 @@ public class InputManager extends Manager implements KeyListener, MouseListener{
 	@Override
 	public void mousePressed(MouseEvent mousePress) {
 		mButtons[mousePress.getButton()] = true;
-
 	}
 
 	/**
@@ -230,7 +205,6 @@ public class InputManager extends Manager implements KeyListener, MouseListener{
 	@Override
 	public void mouseReleased(MouseEvent mouseRelease) {
 		mButtons[mouseRelease.getButton()] = false;
-
 	}
 
 }

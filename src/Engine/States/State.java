@@ -25,8 +25,18 @@ public abstract class State {
 		toAdd = new ArrayList<GameObject>();
 	}
 	
+	/**
+	 * This method is called upon this state reaching the top of a stateStack
+	 */
+	abstract public void enter();
+	
 	public abstract void update();
 	public abstract void draw(Graphics2D g2d);
+	
+	/**
+	 * This method is called when this state is removed from the top of a stateStack, whether pushed down or popped off.
+	 */
+	abstract public void exit();
 	
 	
 	//Methods

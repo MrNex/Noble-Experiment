@@ -22,8 +22,7 @@ public abstract class ObjState{
 	}
 	
 	/**
-	 * This method is called upon attaching this state to a gameObject
-	 * You attach a state to a gameObject by calling setState on the gameObject, this will get called via that.
+	 * This method is called upon this state reaching the top of a stateStack
 	 */
 	abstract public void enter();
 	

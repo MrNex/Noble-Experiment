@@ -217,10 +217,16 @@ public class Engine {
 	/**
 	 * Removes and returns the current state from the stateStack.
 	 * The current state will become the next state in the stack.
+	 * Upon removing the current state from the top of the stack, it's exit method is called
 	 * @return The removed state
 	 */
 	public State popState(){
-		return stateStack.pop();
+		State poppedState = stateStack.pop();
+		if(poppedState != null){
+			poppedState.exit();
+		}
+		
+		return poppedState;
 	}
 
 	/**
@@ -235,10 +241,14 @@ public class Engine {
 	/**
 	 * Pushes a new state to the state stack.
 	 * Current state will become this pushed state
+	 * The new current state will have it's enter method pushed
 	 * @param stateToPush The new current state
 	 */
 	public void pushState(State stateToPush){
 		stateStack.push(stateToPush);
+		if(stateStack.peek() != null){
+			stateStack.peek().enter();
+		}
 	}
 
 }

@@ -6,13 +6,17 @@ import java.awt.event.KeyEvent;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.Rectangle2D.Double;
+import java.awt.geom.RoundRectangle2D;
 import java.util.ArrayList;
 
 import Engine.Directory;
 import Engine.Manager.ScreenManager;
 import Objects.Entity;
 import Objects.GameObject;
+import Objects.ObjStates.BattleResultDisplayState;
+import Objects.ObjStates.EndBattleButtonState;
 import Objects.ObjStates.HealthBarState;
+import Objects.ObjStates.PopStateButtonState;
 import Objects.ObjStates.TargetEquationDisplayState;
 import Objects.ObjStates.MObjStates.EntityStates.*;
 
@@ -30,6 +34,7 @@ public class BattleState extends State{
 	private Entity competitor1;
 	private Entity competitor2;
 	private ArrayList<Entity> targetables;
+	private boolean isBattleOver;
 
 	//Accessors / Modifiers
 	/**
@@ -74,8 +79,9 @@ public class BattleState extends State{
 		objects.add(competitor1);
 		objects.add(competitor2);
 		
-		//Set hud up
-		initHud();
+		isBattleOver = false;
+		
+		
 	}
 
 	/**
@@ -90,6 +96,15 @@ public class BattleState extends State{
 		targetables = new ArrayList<Entity>();
 
 		
+	}
+	
+	/**
+	 * Uponentering this state the hud must be setup
+	 */
+	@Override
+	public void enter() {
+		//Set hud up
+		initHud();
 	}
 
 	/**
@@ -138,50 +153,54 @@ public class BattleState extends State{
 	 */
 	@Override
 	public void update() {
-		//For every game object in gameObjects
-		for(GameObject obj : objects)
-		{
-			obj.update();
+		if(!isBattleOver){
+			//For every game object in gameObjects
+			for(GameObject obj : objects)
+			{
+				obj.update();
+			}
+			
+			//Update competitors
+			competitor1.update();
+			competitor2.update();
+
+			//Check for collisions
+			Directory.collisionManager.update();
+
+			//remove every game object in toRemove
+			for(GameObject obj : toRemove){
+				objects.remove(obj);
+				//if obj is a destructable
+				if(obj instanceof Entity){
+					//Remove from destructables
+					targetables.remove((Entity)obj);
+				}
+			}
+			toRemove.clear();
+
+
+
+			//Get copyList
+			ArrayList<GameObject> copyList = new ArrayList<GameObject>(toAdd);
+			//add every game object in toAdd
+			for(GameObject obj : copyList)
+			{
+				objects.add(obj);
+				//if obj is a entity
+				if(obj instanceof Entity){
+					//Add to entities
+					targetables.add((Entity)obj);
+				}
+			}
+			toAdd.removeAll(copyList);
+
+			//Check if the battle is over
+			if(isBattleOver()){
+				isBattleOver = true;
+				displayResults();
+			}
 		}
 		
-		//Update competitors
-		competitor1.update();
-		competitor2.update();
-
-		//Check for collisions
-		Directory.collisionManager.update();
-
-		//remove every game object in toRemove
-		for(GameObject obj : toRemove){
-			objects.remove(obj);
-			//if obj is a destructable
-			if(obj instanceof Entity){
-				//Remove from destructables
-				targetables.remove((Entity)obj);
-			}
-		}
-		toRemove.clear();
-
-
-
-		//Get copyList
-		ArrayList<GameObject> copyList = new ArrayList<GameObject>(toAdd);
-		//add every game object in toAdd
-		for(GameObject obj : copyList)
-		{
-			objects.add(obj);
-			//if obj is a entity
-			if(obj instanceof Entity){
-				//Add to entities
-				targetables.add((Entity)obj);
-			}
-		}
-		toAdd.removeAll(copyList);
-
-		//Check if the battle is over
-		if(isBattleOver()){
-			endBattle();
-		}
 
 	}
 
@@ -218,12 +237,48 @@ public class BattleState extends State{
 		if(competitor1.getCurrentHealth() <=0 || competitor2.getCurrentHealth() <= 0) return true;
 		return false;
 	}
+	
+	/**
+	 * Displays the results of the battle on the HUD
+	 * And adds an end battle state button to hud
+	 */
+	private void displayResults(){
+		//Create display results object
+		GameObject results = new GameObject(
+				Directory.screenManager.getPercentageWidth(5), 
+				Directory.screenManager.getPercentageHeight(5), 
+				Directory.screenManager.getPercentageWidth(90),
+				Directory.screenManager.getPercentageHeight(80));
+		
+		results.setShape(new RoundRectangle2D.Double(0, 0, 0, 0, 15, 15), new Color(255, 180, 0, 200));
+		results.setVisible(true);
+		results.setState(new BattleResultDisplayState(competitor1.getCurrentHealth() > 0));
+		
+		Directory.screenManager.AddObjToHud(results);
+		
+		//Create end battle button
+		GameObject endButton = new GameObject(
+				Directory.screenManager.getPercentageWidth(40), 
+				Directory.screenManager.getPercentageHeight(90), 
+				Directory.screenManager.getPercentageWidth(20), 
+				Directory.screenManager.getPercentageHeight(5));
+		
+		endButton.setShape(new Rectangle2D.Double(), Color.red);
+		endButton.setVisible(true);
+		endButton.setState(new PopStateButtonState("Continue"));
+		
+		Directory.screenManager.AddObjToHud(endButton);
+	}
+
+
 
 	/**
-	 * Resolves battleState and pops state off stack, moving back to overworld state
-	 * The competitor which died will be removed from the underlying state.
+	 * Resolves battleState, moving back to overworld state
+	 * The competitor which died will be removed from the current state.
+	 * At this point this state has been popped from the stateStack
 	 */
-	private void endBattle(){
+	@Override
+	public void exit() {
 		//Determine winner and loser
 		Entity loser;
 		Entity winner;
@@ -249,10 +304,9 @@ public class BattleState extends State{
 		Directory.screenManager.clearHud();
 
 		//Pop state of engine reverting back to whatever was previous
-		Directory.engine.popState();
+		//Directory.engine.popState();
 
 		//Remove the loser from the engine's currentState
 		Directory.engine.getCurrentState().removeObj(loser);
-
 	}
 }

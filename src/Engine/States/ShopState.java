@@ -13,6 +13,7 @@ import Engine.Manager.ScreenManager;
 import Objects.Entity;
 import Objects.GameObject;
 import Objects.ObjStates.ButtonState;
+import Objects.ObjStates.PopStateButtonState;
 
 //TODO: add button, button selection, as means of leaving
 
@@ -75,6 +76,7 @@ public class ShopState extends State {
 		
 		exitButton.setShape(new Rectangle2D.Double(), Color.white);
 		exitButton.setVisible(true);
+		
 		exitButton.setState(new ButtonState("Quit"){
 
 			/**
@@ -97,9 +99,20 @@ public class ShopState extends State {
 			}
 
 		});
+		
+		exitButton.setState(new PopStateButtonState("Quit"));
 
 		//Add exit button
 		addObj(exitButton);
+	}
+	
+	/**
+	 * On enter this state does not need to do anything
+	 */
+	@Override
+	public void enter() {
+		// TODO Auto-generated method stub
+		
 	}
 
 
@@ -159,5 +172,14 @@ public class ShopState extends State {
 		player.popState();
 		shop.popState();
 		Directory.engine.popState();
+	}
+
+	/**
+	 * Resolves shopState, moving back to overworld state
+	 */
+	@Override
+	public void exit() {
+		player.popState();
+		shop.popState();		
 	}
 }

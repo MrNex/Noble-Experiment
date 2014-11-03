@@ -72,4 +72,22 @@ public class OverworldState extends State {
 
 	}
 
+	/**
+	 * This state does not need to do anything upon entering
+	 */
+	@Override
+	public void enter() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	/**
+	 * This state does nothing upon exit
+	 */
+	@Override
+	public void exit() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
