@@ -157,8 +157,7 @@ public class ShopState extends State {
 	 */
 	private void leaveShop(){
 		player.popState();
-		//shop.popState();		Do not pop the state twice, it will cause the game to crash with empty stack exception
-
+		shop.popState();
 		Directory.engine.popState();
 	}
 }

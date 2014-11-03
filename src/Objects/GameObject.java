@@ -112,15 +112,15 @@ public class GameObject {
 	 * Sets the width of this gameobject's image/shape/bounding box
 	 * @param newWidth Width to set
 	 */
-	public void setWidth(int newWidth){
+	public void setWidth(double newWidth){
 		width = newWidth;
 	}
 	
 	/**
 	 * Sets the height of this gameObject's image/shape/bounding box
-	 * @param newHeight Height to set
+	 * @param worldHeight Height to set
 	 */
-	public void setHeight(int newHeight){
+	public void setHeight(double newHeight){
 		height = newHeight;
 	}
 	

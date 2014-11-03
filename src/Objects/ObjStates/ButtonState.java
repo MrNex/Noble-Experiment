@@ -32,6 +32,8 @@ abstract public class ButtonState extends ObjState {
 	 * @param text Text to display on button
 	 */
 	public ButtonState(String text) {
+		super();
+		
 		//Set variables to default class values
 		fontSize = ButtonState.defaultFontSize;
 		font = ButtonState.defaultFont;
