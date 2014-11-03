@@ -1,12 +1,12 @@
 package Objects.Triggers;
 
+import state.engine.ShopState;
+import state.object.ObjectShopState;
+import state.object.movable.entity.PlayerShopState;
+import state.object.movable.entity.TargetableState;
 import Engine.Directory;
-import Engine.States.ShopState;
 import Objects.GameObject;
 import Objects.Entity;
-import Objects.ObjStates.ObjectShopState;
-import Objects.ObjStates.MObjStates.EntityStates.PlayerShopState;
-import Objects.ObjStates.MObjStates.EntityStates.TargetableState;
 import Objects.Sprites.Sprite;
 
 

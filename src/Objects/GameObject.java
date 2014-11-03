@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Stack;
 
 import MathHelp.Vector;
-import Objects.ObjStates.ObjState;
+import state.object.ObjectState;
 import Objects.Sprites.Sprite;
 import Objects.Triggers.Trigger;
 
@@ -27,7 +27,7 @@ public class GameObject {
 	//protected BufferedImage image;
 	protected Sprite sprite;
 	protected Color color;
-	protected Stack<ObjState> stateStack;
+	protected Stack<ObjectState> stateStack;
 	protected ArrayList<Trigger> triggers;
 	
 
@@ -51,7 +51,7 @@ public class GameObject {
 		//Set default attributes
 		visible = false;
 		
-		stateStack = new Stack<ObjState>();
+		stateStack = new Stack<ObjectState>();
 
 		shape = null;
 		color = Color.black;
@@ -145,7 +145,7 @@ public class GameObject {
 	 * Else, the object is set to not running.
 	 * @param newState State to attach to object
 	 */
-	public void setState(ObjState newState){
+	public void setState(ObjectState newState){
 		//If not leaving a null state
 		if(getState() != null)
 			popState().exit();
@@ -163,7 +163,7 @@ public class GameObject {
 	 * Gets this gameObjects current state
 	 * @return The state currently attached to this gameObject
 	 */
-	public ObjState getState(){
+	public ObjectState getState(){
 		if(stateStack.size() > 0)
 			return stateStack.peek();
 		return null;
@@ -179,8 +179,8 @@ public class GameObject {
 	 * 
 	 * @param stateToPush The new current state
 	 */
-	public void pushState(ObjState stateToPush){
-		if(getState() != null) getState().exit();
+	public void pushState(ObjectState stateToPush){
+		//if(getState() != null) getState().exit();
 		stateStack.push(stateToPush);
 		if(getState() != null){
 			getState().setAttachedGameObject(this);
@@ -199,12 +199,12 @@ public class GameObject {
 	 * 
 	 * @return The (now) former state
 	 */
-	public ObjState popState(){
+	public ObjectState popState(){
 		if(getState() != null) getState().exit();
-		ObjState returnState = stateStack.pop();
+		ObjectState returnState = stateStack.pop();
 		
 		if(getState() != null){
-			getState().enter();
+			//getState().enter();
 		}
 		
 		return returnState;

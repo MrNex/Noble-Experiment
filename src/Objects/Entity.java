@@ -6,11 +6,11 @@ import java.awt.geom.Rectangle2D;
 import java.awt.geom.Rectangle2D.Double;
 import java.util.ArrayList;
 
+import state.object.DamageDisplayState;
 import Engine.Directory;
 import Equations.Equation;
 import Equations.Expression;
 import Equations.OperatorExpression;
-import Objects.ObjStates.DamageDisplayState;
 
 /**
  * Class defines a gameobject with health, power, and defense

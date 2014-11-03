@@ -2,11 +2,11 @@ package Engine.Manager;
 
 import java.util.ArrayList;
 
+import state.object.movable.entity.ProjectileState;
 import Engine.Directory;
 import Objects.GameObject;
 import Objects.MovableGameObject;
 import Objects.Entity;
-import Objects.ObjStates.MObjStates.EntityStates.ProjectileState;
 import Objects.Triggers.Trigger;
 
 

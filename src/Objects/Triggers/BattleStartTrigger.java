@@ -1,13 +1,13 @@
 package Objects.Triggers;
 
+import state.engine.BattleState;
+import state.object.movable.entity.EnemyBattleState;
+import state.object.movable.entity.EntityState;
+import state.object.movable.entity.PlayerBattleState;
+import state.object.movable.entity.TargetableState;
 import Engine.Directory;
-import Engine.States.BattleState;
 import Objects.GameObject;
 import Objects.Entity;
-import Objects.ObjStates.MObjStates.EntityStates.EnemyBattleState;
-import Objects.ObjStates.MObjStates.EntityStates.EntityState;
-import Objects.ObjStates.MObjStates.EntityStates.PlayerBattleState;
-import Objects.ObjStates.MObjStates.EntityStates.TargetableState;
 import Objects.Sprites.Sprite;
 
 

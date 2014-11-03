@@ -9,21 +9,23 @@ import java.awt.event.ActionListener;
 
 import javax.swing.Timer;
 
+
+import state.engine.EngineState;
+import state.engine.OverworldState;
+import state.object.movable.PlayerOverworldState;
+import state.object.movable.entity.EnemyBattleState;
+import state.object.movable.entity.EnemyBurstFireState;
+import state.object.movable.entity.PlayerBattleState;
 import Engine.Manager.CollisionManager;
 import Engine.Manager.InputManager;
 import Engine.Manager.ProfileManager;
 import Engine.Manager.ScreenManager;
 import Engine.Manager.SpriteManager;
-import Engine.States.*;
 import Loaders.ImageLoader;
 import Loaders.Loader;
 import Loaders.SpriteLoader;
 import MathHelp.Vector;
 import Objects.*;
-import Objects.ObjStates.MObjStates.PlayerOverworldState;
-import Objects.ObjStates.MObjStates.EntityStates.EnemyBurstFireState;
-import Objects.ObjStates.MObjStates.EntityStates.EnemyBattleState;
-import Objects.ObjStates.MObjStates.EntityStates.PlayerBattleState;
 import Objects.Triggers.BattleStartTrigger;
 import Objects.Triggers.ShopStartTrigger;
 
@@ -37,7 +39,7 @@ public class Engine {
 
 	//Attributes
 	private boolean running;
-	private Stack<State> stateStack;
+	private Stack<EngineState> stateStack;
 	private Timer drawTimer;
 
 	/**
@@ -56,7 +58,7 @@ public class Engine {
 		loadContent();
 
 		//Initialize the stateStack
-		stateStack = new Stack<State>();
+		stateStack = new Stack<EngineState>();
 
 		//Set internal variables
 		running = false;
@@ -220,8 +222,8 @@ public class Engine {
 	 * Upon removing the current state from the top of the stack, it's exit method is called
 	 * @return The removed state
 	 */
-	public State popState(){
-		State poppedState = stateStack.pop();
+	public EngineState popState(){
+		EngineState poppedState = stateStack.pop();
 		if(poppedState != null){
 			poppedState.exit();
 		}
@@ -233,7 +235,7 @@ public class Engine {
 	 * Gets the current state
 	 * @return The state on top of the state stack.
 	 */
-	public State getCurrentState()
+	public EngineState getCurrentState()
 	{
 		return stateStack.peek();
 	}
@@ -244,7 +246,7 @@ public class Engine {
 	 * The new current state will have it's enter method pushed
 	 * @param stateToPush The new current state
 	 */
-	public void pushState(State stateToPush){
+	public void pushState(EngineState stateToPush){
 		stateStack.push(stateToPush);
 		if(stateStack.peek() != null){
 			stateStack.peek().enter();
