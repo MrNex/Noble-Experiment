@@ -28,7 +28,7 @@ public class InputManager extends Manager implements KeyListener, MouseListener{
 	private boolean mButtons[];
 	private Vector mousePosition;
 	private Vector previousMousePosition;
-	
+
 	//Accessors
 	/**
 	 * Get the mouses current position in window space
@@ -37,7 +37,7 @@ public class InputManager extends Manager implements KeyListener, MouseListener{
 	public Vector getMousePosition(){
 		return mousePosition;
 	}
-	
+
 
 	/**
 	 * Constructs an input manager
@@ -55,9 +55,9 @@ public class InputManager extends Manager implements KeyListener, MouseListener{
 		keysPressed = new LinkedList<Integer>();
 
 		keys = new boolean[256];
-		
+
 		mButtons = new boolean[MouseInfo.getNumberOfButtons()];
-		
+
 		mousePosition = new Vector(2);
 		previousMousePosition = new Vector(2);
 	}
@@ -80,7 +80,7 @@ public class InputManager extends Manager implements KeyListener, MouseListener{
 	public boolean isKeyPressed(char key){
 		return keys[(int)Character.toLowerCase(key)] || keys[(int)Character.toUpperCase(key)];
 	}
-	
+
 	/**
 	 * Checks if a certain keycode is being pressed
 	 * Case sensitive
@@ -90,7 +90,7 @@ public class InputManager extends Manager implements KeyListener, MouseListener{
 	public boolean isKeyPressed(int keyCode){
 		return keys[keyCode];
 	}
-	
+
 	/**
 	 * Gets whether a mouse button is pressed.
 	 * 1 - Left mouse button
@@ -156,10 +156,17 @@ public class InputManager extends Manager implements KeyListener, MouseListener{
 	@Override
 	public void update() {
 		previousMousePosition.copy(mousePosition);
-		mousePosition = getUpdatedMousePosition();
-		
+		//mousePosition = getUpdatedMousePosition();
+
+		Point mousePos = Directory.screenManager.getPanel().getMousePosition();
+		if(mousePos != null){
+			mousePosition.setComponent(0, mousePos.x);
+			mousePosition.setComponent(1, mousePos.y);
+		}
+
+
 	}
-	
+
 	/**
 	 * Gets the current mouse position in window space
 	 * @return A vector containing the mouse positionin window space
@@ -171,12 +178,12 @@ public class InputManager extends Manager implements KeyListener, MouseListener{
 		ScreenManager ref = (ScreenManager)Directory.screenManager;
 		//Retrieve windows position
 		Point windowPos = ref.getWindow().getLocation();
-		
+
 		//Create a vector for the mouse position
 		Vector relMousePos = new Vector(2);
 		relMousePos.setComponent(0, globalMousePos.x - windowPos.x);
 		relMousePos.setComponent(1, globalMousePos.y - windowPos.y);
-		
+
 		return relMousePos;
 	}
 
@@ -186,7 +193,7 @@ public class InputManager extends Manager implements KeyListener, MouseListener{
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	/**
@@ -195,7 +202,7 @@ public class InputManager extends Manager implements KeyListener, MouseListener{
 	@Override
 	public void mouseEntered(MouseEvent arg0) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	/**
@@ -204,7 +211,7 @@ public class InputManager extends Manager implements KeyListener, MouseListener{
 	@Override
 	public void mouseExited(MouseEvent arg0) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 
@@ -214,7 +221,7 @@ public class InputManager extends Manager implements KeyListener, MouseListener{
 	@Override
 	public void mousePressed(MouseEvent mousePress) {
 		mButtons[mousePress.getButton()] = true;
-		
+
 	}
 
 	/**
@@ -223,7 +230,7 @@ public class InputManager extends Manager implements KeyListener, MouseListener{
 	@Override
 	public void mouseReleased(MouseEvent mouseRelease) {
 		mButtons[mouseRelease.getButton()] = false;
-		
+
 	}
 
 }

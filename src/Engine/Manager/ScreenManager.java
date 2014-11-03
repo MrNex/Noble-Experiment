@@ -45,6 +45,14 @@ public class ScreenManager extends Manager {
 	}
 	
 	/**
+	 * Gets the panel the application is drawing on
+	 * @return The panel which is drawing the game
+	 */
+	public JPanel getPanel(){
+		return drawPanel;
+	}
+	
+	/**
 	 * Gets the graphics renderer of drawPanel
 	 * @return An instance of the graphics renderer in drawPanel.
 	 */
