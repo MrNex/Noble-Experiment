@@ -15,7 +15,8 @@ public class SpriteManager extends Manager {
 	private long previousTime;		//Tracks the time previous cycle in ms
 	private long currentTime;			//Tracks the time current cycle in ms
 	private double deltaTime;			//Tracks the change in time from last frameChange to this frameChange in seconds
-	private int deltaFrames;			//Tracks the change in frames from last cycle to this cycle
+	private double deltaFrames;			//Tracks the change in frames from last cycle to this cycle
+	private boolean reset;
 	
 	
 	//Accessors
@@ -23,9 +24,10 @@ public class SpriteManager extends Manager {
 	 * GEts the number of frames passed since last update
 	 * @return
 	 */
-	public int getDeltaFrames(){
+	public double getDeltaFrames(){
 		return deltaFrames;
 	}
+	
 	
 	
 	/**
@@ -51,6 +53,15 @@ public class SpriteManager extends Manager {
 		deltaTime = 0;
 		deltaFrames = 0;
 	}
+	
+	private void resetDeltaFrames(){
+		deltaFrames = 0;
+		reset = false;
+	}
+	
+	public void flagDeltaFramesReset(){
+		reset = true;
+	}
 
 	/**
 	 * Updates the SpriteManager
@@ -62,14 +73,16 @@ public class SpriteManager extends Manager {
 	 */
 	@Override
 	public void update() {
+		if(reset) resetDeltaFrames();
 		
 		currentTime = System.currentTimeMillis();
 		
-		deltaTime += ((double)(currentTime - previousTime) / 1000.0);
-		deltaFrames = (int)(deltaTime * fps);
+		deltaTime += ((double)(currentTime - previousTime))/1000.0;
+		deltaFrames += (int)((deltaTime * fps));
 		
 		deltaTime -= ((double)deltaFrames) * (1.0/(double)fps);
 		previousTime = currentTime;
+		
 	}
 
 }

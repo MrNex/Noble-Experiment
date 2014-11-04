@@ -92,45 +92,54 @@ public class Sprite {
 	 */
 	public void update(){
 		//Get number of frames that passed
-		int dF = Directory.spriteManager.getDeltaFrames();
-		
-		//If the current column is the last column
-		if(currentColumn == numColumns[currentRow] - 1){
-			//If there is another set of drawing instructions ready
-			if(animationQueue.size() > 0){				
-				//Dequeue next set of instructions
-				AnimationInstruction instructionSet = animationQueue.poll();
-				//Load next animation
-				currentRow = instructionSet.animationRowIndex;
-				repeating = instructionSet.repeatAnimation;
-				
-				//Set column to 0 to start animation from beginning
-				currentColumn = 0;
+		double exactDF = Directory.spriteManager.getDeltaFrames();
+		if(exactDF >= 1){
+			int dF = 0;
+
+			dF = (int) Math.floor(exactDF);
+			Directory.spriteManager.flagDeltaFramesReset();
+			
+			//If the current column is the last column
+			if(currentColumn == numColumns[currentRow] - 1){
+				//If there is another set of drawing instructions ready
+				if(animationQueue.size() > 0){				
+					//Dequeue next set of instructions
+					AnimationInstruction instructionSet = animationQueue.poll();
+					//Load next animation
+					currentRow = instructionSet.animationRowIndex;
+					repeating = instructionSet.repeatAnimation;
+					
+					//Set column to 0 to start animation from beginning
+					currentColumn = 0;
+				}
+				//Else there is nothing queued, if the current animation is set to repeat
+				else if(repeating){
+					//Set column to 0 to start animation from beginning
+					currentColumn = 0;
+				}
 			}
-			//Else there is nothing queued, if the current animation is set to repeat
-			else if(repeating){
-				//Set column to 0 to start animation from beginning
-				currentColumn = 0;
-			}
-		}
-		//Else not at last column of animation yet
-		else{
-			//If the current column + the change in frames is still not greater than the last column
-			if(currentColumn + dF < numColumns[currentRow]){
-				//Increment the current column by the number of frame changes
-				currentColumn += dF;
-			}
-			//Else, the current column + the changes in frames results in an out of bounds frame
+			//Else not at last column of animation yet
 			else{
-				//Set current column to last column
-				currentColumn = numColumns[currentRow] - 1;
+				//If the current column + the change in frames is still not greater than the last column
+				if(currentColumn + dF < numColumns[currentRow]){
+					//Increment the current column by the number of frame changes
+					currentColumn += dF;
+				}
+				//Else, the current column + the changes in frames results in an out of bounds frame
+				else{
+					//Set current column to last column
+					currentColumn = numColumns[currentRow] - 1;
+				}
 			}
+			
+			//Finally, once frame variables are ready, set the frame
+			setFrame();
+			
+			System.out.println(currentColumn);
+			
 		}
 		
-		//Finally, once frame variables are ready, set the frame
-		setFrame();
 		
-		//System.out.println(currentColumn);
 	}
 	
 	/**

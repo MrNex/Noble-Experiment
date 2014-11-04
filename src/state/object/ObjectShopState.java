@@ -69,9 +69,9 @@ public class ObjectShopState extends ObjectState{
 		attachedTo.setHeight(300);
 		
 		//Set players sprite
-		attachedTo.setSprite(Directory.spriteLibrary.get("ShopKeeper"));
+		attachedTo.setSprite(Directory.spriteLibrary.get("wind"));
 		
-		//attachedTo.getSprite().queueAnimation(0, true);
+		attachedTo.getSprite().queueAnimation(0, true);
 	}
 
 	/**
