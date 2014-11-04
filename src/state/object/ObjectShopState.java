@@ -60,7 +60,7 @@ public class ObjectShopState extends ObjectState{
 
 		//Update position
 		Vector posVector = new Vector(2);
-		posVector.setComponent(0, Directory.screenManager.getPercentageWidth(75.0));
+		posVector.setComponent(0, Directory.screenManager.getPercentageWidth(50.0));
 		posVector.setComponent(1, Directory.screenManager.getPercentageHeight(45.0));
 		attachedTo.setPos(posVector);
 
@@ -69,7 +69,9 @@ public class ObjectShopState extends ObjectState{
 		attachedTo.setHeight(300);
 		
 		//Set players sprite
-		attachedTo.setSprite(Directory.spriteLibrary.get("Fireball1"));
+		attachedTo.setSprite(Directory.spriteLibrary.get("wind"));
+		
+		attachedTo.getSprite().queueAnimation(0, true);
 	}
 
 	/**
