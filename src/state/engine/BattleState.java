@@ -3,12 +3,15 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
+import java.awt.geom.Rectangle2D.Double;
 import java.util.ArrayList;
 
 import state.object.BattleResultDisplayState;
 import state.object.HealthBarState;
+import state.object.OperatorDisplayState;
 import state.object.PopStateButtonState;
 import state.object.TargetEquationDisplayState;
+import state.object.movable.entity.PlayerBattleState;
 import Engine.Directory;
 import Objects.Entity;
 import Objects.GameObject;
@@ -125,14 +128,86 @@ public class BattleState extends EngineState{
 		
 		
 		//Create Equation display gameobject
-		GameObject equationDisplay = new GameObject(0, Directory.screenManager.getPercentageHeight(80.0),
-				Directory.screenManager.getPercentageWidth(100.0), Directory.screenManager.getPercentageHeight(20.0));
+		GameObject equationDisplay = new GameObject(0, Directory.screenManager.getPercentageHeight(20.0),
+				Directory.screenManager.getPercentageWidth(100.0), Directory.screenManager.getPercentageHeight(10.0));
 		equationDisplay.setShape(new Rectangle2D.Double(), new Color(230, 230, 230, 200));
 		equationDisplay.setVisible(true);
 		equationDisplay.pushState(new TargetEquationDisplayState());
 		
 		Directory.screenManager.AddObjToHud(equationDisplay);
 		
+		
+		//Create operator displays
+		//Addition
+		GameObject additionDisplay = new GameObject(Directory.screenManager.getPercentageWidth(20.0), Directory.screenManager.getPercentageHeight(85.0),
+				Directory.screenManager.getPercentageWidth(5.0), Directory.screenManager.getPercentageHeight(15.0));
+		additionDisplay.setShape(new Rectangle2D.Double(), new Color(255, 0, 0, 255));
+		additionDisplay.setVisible(true);
+		additionDisplay.pushState(new OperatorDisplayState("+"){
+
+			@Override
+			public Integer invoke() {
+				// TODO Auto-generated method stub
+				return ((PlayerBattleState)Directory.profile.getPlayer().getState()).getNumAdditionOperators();
+			}
+			
+		});
+		
+		Directory.screenManager.AddObjToHud(additionDisplay);
+		
+		
+		//Subtraction
+		GameObject subtractionDisplay = new GameObject(Directory.screenManager.getPercentageWidth(40.0), Directory.screenManager.getPercentageHeight(85.0),
+				Directory.screenManager.getPercentageWidth(5.0), Directory.screenManager.getPercentageHeight(15.0));
+		subtractionDisplay.setShape(new Rectangle2D.Double(), new Color(255, 0, 0, 255));
+		subtractionDisplay.setVisible(true);
+		subtractionDisplay.pushState(new OperatorDisplayState("-"){
+
+			@Override
+			public Integer invoke() {
+				// TODO Auto-generated method stub
+				return ((PlayerBattleState)Directory.profile.getPlayer().getState()).getNumSubtractionOperators();
+			}
+			
+		});
+		
+		Directory.screenManager.AddObjToHud(subtractionDisplay);
+		
+		
+		//Multiplication
+		GameObject multiplicationDisplay = new GameObject(Directory.screenManager.getPercentageWidth(60.0), Directory.screenManager.getPercentageHeight(85.0),
+				Directory.screenManager.getPercentageWidth(5.0), Directory.screenManager.getPercentageHeight(15.0));
+		multiplicationDisplay.setShape(new Rectangle2D.Double(), new Color(255, 0, 0, 255));
+		multiplicationDisplay.setVisible(true);
+		multiplicationDisplay.pushState(new OperatorDisplayState("*"){
+
+			@Override
+			public Integer invoke() {
+				// TODO Auto-generated method stub
+				return ((PlayerBattleState)Directory.profile.getPlayer().getState()).getNumMultiplicationOperators();
+			}
+			
+		});
+		
+		Directory.screenManager.AddObjToHud(multiplicationDisplay);
+		
+		
+		//Division
+		GameObject divisionDisplay = new GameObject(Directory.screenManager.getPercentageWidth(80.0), Directory.screenManager.getPercentageHeight(85.0),
+				Directory.screenManager.getPercentageWidth(5.0), Directory.screenManager.getPercentageHeight(15.0));
+		divisionDisplay.setShape(new Rectangle2D.Double(), new Color(255, 0, 0, 255));
+		divisionDisplay.setVisible(true);
+		divisionDisplay.pushState(new OperatorDisplayState("/"){
+
+			@Override
+			public Integer invoke() {
+				// TODO Auto-generated method stub
+				return ((PlayerBattleState)Directory.profile.getPlayer().getState()).getNumDivisionOperators();
+			}
+			
+		});
+		
+		Directory.screenManager.AddObjToHud(divisionDisplay);
 		
 		
 	}

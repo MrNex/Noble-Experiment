@@ -53,6 +53,38 @@ public class PlayerBattleState extends TargetableState{
 	public Entity getCurrentTarget(){
 		return currentTarget;
 	}
+	
+	/**
+	 * Gets the number of addition operators the player has
+	 * @return the number of addition operators the player has
+	 */
+	public int getNumAdditionOperators(){
+		return numAddOp;
+	}
+	
+	/**
+	 * Gets the number of Subtraction operators the player has
+	 * @return the number of subtraction operators the player has
+	 */
+	public int getNumSubtractionOperators(){
+		return numSubOp;
+	}
+	
+	/**
+	 * Gets the number of multiplication operators the player has
+	 * @return the number of multiplication operators the player has
+	 */
+	public int getNumMultiplicationOperators(){
+		return numMultOp;
+	}
+	
+	/**
+	 * Gets the number of division operators the player has
+	 * @return the number of division operators the player has
+	 */
+	public int getNumDivisionOperators(){
+		return numDivOp;
+	}
 
 	/**
 	 * Creates player battle state
@@ -93,16 +125,7 @@ public class PlayerBattleState extends TargetableState{
 	public void enter() {
 		super.enter();
 
-		/*
-		//Save current position
-		worldPos = new Vector(attachedTo.getPos());
 
-		//Save current dimension
-		worldWidth = attachedTo.getWidth();
-		worldHeight = attachedTo.getHeight();
-
-		worldSprite = attachedTo.getSprite();
-		*/
 		
 		//Update position
 		Vector posVector = new Vector(2);
@@ -520,17 +543,6 @@ public class PlayerBattleState extends TargetableState{
 	@Override
 	public void exit() {
 		super.exit();
-		/*
-		//Set position back to worldPos
-		attachedTo.setPos(worldPos);
-		
-		attachedTo.setWidth(worldWidth);
-		attachedTo.setHeight(worldHeight);
-		
-		attachedTo.setSprite(worldSprite);
-		*/
-		//Set Sprite to null
-		//attachedTo.setSprite(null);
 	}
 
 }

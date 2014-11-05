@@ -70,7 +70,7 @@ public class ObjectShopState extends NestedState{
 		attachedTo.setHeight(300);
 		
 		//Set players sprite
-		attachedTo.setSprite(Directory.spriteLibrary.get("wind"));
+		attachedTo.setSprite(Directory.spriteLibrary.get("ShopKeeper"));
 		
 		attachedTo.getSprite().queueAnimation(0, true);
 	}

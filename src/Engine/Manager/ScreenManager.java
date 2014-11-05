@@ -68,7 +68,7 @@ public class ScreenManager extends Manager {
 	 */
 	public double getPercentageWidth(double percent)
 	{
-		return width / 100.0 * percent;
+		return drawPanel.getWidth() / 100.0 * percent;
 	}
 
 	/**
@@ -78,7 +78,7 @@ public class ScreenManager extends Manager {
 	 */
 	public double getPercentageHeight(double percent)
 	{
-		return height / 100.0 * percent;
+		return drawPanel.getHeight() / 100.0 * percent;
 	}
 	
 	/**
@@ -142,8 +142,9 @@ public class ScreenManager extends Manager {
 			}
 
 		};
+		
 
-		drawPanel.setPreferredSize(new Dimension(800, 600));
+		drawPanel.setPreferredSize(new Dimension(width, height));
 
 		//window.setContentPane(this);
 		window.add(drawPanel);

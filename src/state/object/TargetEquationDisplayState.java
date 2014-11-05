@@ -22,6 +22,7 @@ public class TargetEquationDisplayState extends ObjectState {
 	//Attributes
 	private String displayString;
 	private int stringWidth;
+	private int stringHeight;
 	private int fontSize;
 	private Font font;
 	private Color fontColor;
@@ -41,6 +42,8 @@ public class TargetEquationDisplayState extends ObjectState {
 		fontSize = 50;
 		font = new Font("Serif", Font.BOLD, fontSize);
 		fontColor = Color.black;
+		FontMetrics fMetrics = Directory.screenManager.getGraphics().getFontMetrics(font);
+		stringHeight = fMetrics.getMaxAscent() - fMetrics.getMaxDescent();
 		
 	}
 
@@ -125,7 +128,7 @@ public class TargetEquationDisplayState extends ObjectState {
 		g2d.setColor(fontColor);
 		g2d.drawString(displayString, 
 				(int)(attachedTo.getXPos() + attachedTo.getWidth() / 2.0 - stringWidth / 2.0), 
-				(int)(attachedTo.getYPos() + attachedTo.getHeight() / 2.0));
+				(int)(attachedTo.getYPos() + attachedTo.getHeight() / 2.0 + stringHeight / 2.0));
 
 		g2d.setFont(save);
 	}
