@@ -298,6 +298,10 @@ public class GameObject {
 	public void setSolid(boolean isSolid){
 		solid = isSolid;
 	}
+	
+	public RectangularShape getShape(){
+		return shape;
+	}
 
 	/**
 	 * Sets the shape of this gameobject

@@ -80,7 +80,7 @@ public class EnemyBurstFireState extends TargetableState{
 		super.enter();
 
 		//Store worldpos for later
-		worldPos = new Vector(attachedTo.getPos());
+		//worldPos = new Vector(attachedTo.getPos());
 
 		//Set position
 		Vector posVector = new Vector(2);
@@ -91,7 +91,7 @@ public class EnemyBurstFireState extends TargetableState{
 		attachedTo.setPos(posVector);
 		
 		//Refresh attached movable game object's previous position due to engine state change.
-		getAttachedMObj().refresh();
+		getAttachedEntity().refresh();
 
 		//Set battleState dimensions
 		attachedTo.setWidth(75);
@@ -190,13 +190,7 @@ public class EnemyBurstFireState extends TargetableState{
 	 */
 	@Override
 	public void exit() {
-		//Revert back to overworld pos
-		attachedTo.setPos(worldPos);
-
-		//Revert back to original overworld dimensions
-		attachedTo.setWidth(25);
-		attachedTo.setHeight(25);
-		attachedTo.updateShape();
+		super.exit();
 	}
 
 }

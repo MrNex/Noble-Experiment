@@ -62,7 +62,7 @@ public class EnemyBattleState extends TargetableState{
 	public void enter() {
 		super.enter();
 		//Store worldPos
-		worldPos = new Vector(attachedTo.getPos());
+		//worldPos = new Vector(attachedTo.getPos());
 
 		
 		
@@ -72,7 +72,7 @@ public class EnemyBattleState extends TargetableState{
 		posVector.setComponent(1, Directory.screenManager.getPercentageHeight(45.0));
 		
 		//Refresh attached movable game object's previous position due to engine state change.
-		getAttachedMObj().refresh();
+		getAttachedEntity().refresh();
 
 		//Set battleState dimensions
 		attachedTo.setWidth(75);
@@ -145,13 +145,9 @@ public class EnemyBattleState extends TargetableState{
 	 */
 	@Override
 	public void exit() {
-		//Revert back to overworld pos
-		attachedTo.setPos(worldPos);
+		super.exit();
+		
 
-		//Revert back to original overworld dimensions
-		attachedTo.setWidth(25);
-		attachedTo.setHeight(25);
-		attachedTo.updateShape();
 	}
 
 }

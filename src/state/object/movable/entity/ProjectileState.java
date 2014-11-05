@@ -107,7 +107,7 @@ public class ProjectileState extends TargetableState{
 		
 		//Set position to initialPosition + heading * distance(elapsedTime/time) to get current Position
 		//attachedTo.setPos(Vector.add(initialPosition, Vector.setMag(heading, distance * (elapsedTime/time))));
-		this.getAttachedMObj().move(Vector.setMag(heading, speed * (elapsedTimeSince)));
+		this.getAttachedEntity().move(Vector.setMag(heading, speed * (elapsedTimeSince)));
 
 		previousTime = currentTime;
 		
@@ -121,7 +121,7 @@ public class ProjectileState extends TargetableState{
 	 */
 	@Override
 	public void exit() {
-
+		
 	}
 	
 	/**

@@ -6,8 +6,10 @@ import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 import java.util.Random;
 
+import state.object.NestedState;
 import Engine.Directory;
 import Equations.Equation;
+import Objects.Entity;
 
 /**
  * TargetableState describes an entity state which can be targetted.
@@ -18,7 +20,7 @@ import Equations.Equation;
  * @author Nex
  *
  */
-public class TargetableState extends EntityState{
+public class TargetableState extends NestedState{
 
 	//Attributes
 	private Equation equation;
@@ -33,6 +35,14 @@ public class TargetableState extends EntityState{
 	
 	
 	//Accessors and mutators
+	/**
+	 * Gets the attached game object as an entity
+	 * @return The attached game object (attachedTo) cast to an entity
+	 */
+	protected Entity getAttachedEntity(){
+		return (Entity)attachedTo;
+	}
+	
 	/**
 	 * Gets whether or not this targetable state is selected
 	 * @return Is this targetable state selected
@@ -116,6 +126,8 @@ public class TargetableState extends EntityState{
 	 */
 	@Override
 	public void enter() {
+		super.enter();
+		
 		//If an equation has not been manually assigned create one conforming to attached object
 		if(equation == null){
 			generateNewEquation();
@@ -152,14 +164,7 @@ public class TargetableState extends EntityState{
 		}
 	}
 
-	/**
-	 * Exits the current targetableState
-	 */
-	@Override
-	public void exit() {
-		// TODO Auto-generated method stub
-
-	}
+	
 	
 	/**
 	 * Checks specified answer with actual answer to current equation
@@ -174,6 +179,7 @@ public class TargetableState extends EntityState{
 		
 		return false;
 	}
+	
 	
 	/**
 	 * Checks a potential solution to see if it is the answer
@@ -216,6 +222,7 @@ public class TargetableState extends EntityState{
 		return false;
 	}
 
+	
 	/**
 	 * Generates a new equation
 	 * 
@@ -241,6 +248,7 @@ public class TargetableState extends EntityState{
 		measureEquation();
 	}
 
+	
 	/**
 	 * Utilizes font metrics to get proper sizing and padding
 	 * on the equation which must hover above the attached obj
@@ -271,5 +279,14 @@ public class TargetableState extends EntityState{
 	 */
 	private void updateEquationBox(){
 		equationBox.setFrame((getAttachedEntity().getXPos() + getAttachedEntity().getWidth() / 2) - width/2, getAttachedEntity().getYPos() - hoverMag, width, height);
+	}
+	
+	/**
+	 * Exits the current targetableState
+	 */
+	@Override
+	public void exit() {
+		super.exit();
+		
 	}
 }

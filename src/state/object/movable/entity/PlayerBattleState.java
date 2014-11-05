@@ -93,6 +93,7 @@ public class PlayerBattleState extends TargetableState{
 	public void enter() {
 		super.enter();
 
+		/*
 		//Save current position
 		worldPos = new Vector(attachedTo.getPos());
 
@@ -101,6 +102,7 @@ public class PlayerBattleState extends TargetableState{
 		worldHeight = attachedTo.getHeight();
 
 		worldSprite = attachedTo.getSprite();
+		*/
 		
 		//Update position
 		Vector posVector = new Vector(2);
@@ -109,7 +111,7 @@ public class PlayerBattleState extends TargetableState{
 		attachedTo.setPos(posVector);
 
 		//Refresh the movable object's previous position due to engine state change
-		getAttachedMObj().refresh();
+		getAttachedEntity().refresh();
 
 
 		//Update dimensions
@@ -517,6 +519,8 @@ public class PlayerBattleState extends TargetableState{
 	 */
 	@Override
 	public void exit() {
+		super.exit();
+		/*
 		//Set position back to worldPos
 		attachedTo.setPos(worldPos);
 		
@@ -524,7 +528,7 @@ public class PlayerBattleState extends TargetableState{
 		attachedTo.setHeight(worldHeight);
 		
 		attachedTo.setSprite(worldSprite);
-
+		*/
 		//Set Sprite to null
 		//attachedTo.setSprite(null);
 	}

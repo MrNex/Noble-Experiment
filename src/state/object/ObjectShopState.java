@@ -14,7 +14,7 @@ import Objects.Sprites.Sprite;
  * @author Nex, Robert Schrupp
  *
  */
-public class ObjectShopState extends ObjectState{
+public class ObjectShopState extends NestedState{
 
 	//attributes
 	private Vector worldPos;
@@ -46,15 +46,16 @@ public class ObjectShopState extends ObjectState{
 	 */
 	@Override
 	public void enter() {
-		//super.enter();
+		super.enter();
 
+		/*
 		//Save current position
 		worldPos = new Vector(attachedTo.getPos());
 		
 		//Save current dimensions
 		worldWidth = attachedTo.getWidth();
 		worldHeight = attachedTo.getHeight();
-		
+		*/
 		//downcast attachedTo gameobject to player
 		object = attachedTo;
 
@@ -91,6 +92,9 @@ public class ObjectShopState extends ObjectState{
 	 */
 	@Override
 	public void exit() {
+		super.exit();
+		
+		/*
 		//Set position back to worldPos
 		attachedTo.setPos(worldPos);
 
@@ -99,7 +103,7 @@ public class ObjectShopState extends ObjectState{
 		attachedTo.setHeight(worldHeight);
 		
 		//Set Sprite to null
-		attachedTo.setSprite(null);
+		attachedTo.setSprite(null);*/
 	}
 
 	@Override
