@@ -1,12 +1,12 @@
 package state.object.movable.entity;
 
+import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
-import state.engine.BattleState;
+import state.object.NestedState;
 import state.object.movable.PlayerOverworldState;
 import Engine.Directory;
-import Equations.*;
 import MathHelp.Vector;
 import Objects.Entity;
 import Objects.GameObject;
@@ -17,7 +17,7 @@ import Objects.Sprites.Sprite;
  * @author Nex, Robert Schrupp
  *
  */
-public class PlayerShopState extends TargetableState{
+public class PlayerShopState extends NestedState{
 
 	//attributes
 	private Vector worldPos;
@@ -28,17 +28,15 @@ public class PlayerShopState extends TargetableState{
 
 	/**
 	 * Creates player shop state
-	 * 
-	 * Sets the currentTarget to null
 	 */
 	public PlayerShopState() {
-		super(true);
+		super();
 
 	}
 	
 	@Override
 	public void init(){
-		super.init();
+		//super.init();
 	}
 
 	/**
@@ -57,7 +55,7 @@ public class PlayerShopState extends TargetableState{
 		//Save current position
 		worldPos = new Vector(attachedTo.getPos());
 		
-		//Save current dimesions
+		//Save current dimensions
 		worldWidth = attachedTo.getWidth();
 		worldHeight = attachedTo.getHeight();
 		
@@ -65,7 +63,7 @@ public class PlayerShopState extends TargetableState{
 		worldSprite = attachedTo.getSprite();
 		*/
 		//downcast attachedTo gameobject to player
-		player = getAttachedEntity();
+		player = (Entity)getAttachedGameObject();
 
 		//Update position
 		Vector posVector = new Vector(2);
@@ -74,7 +72,7 @@ public class PlayerShopState extends TargetableState{
 		attachedTo.setPos(posVector);
 
 		//Refresh the movable object's previous position due to engine state change
-		getAttachedEntity().refresh();
+		player.refresh();
 
 
 		//Update dimensions
@@ -96,7 +94,7 @@ public class PlayerShopState extends TargetableState{
 	 */
 	@Override
 	public void update() {
-		super.update();
+		//super.update();
 		//Update shape in case of moving
 		attachedTo.updateShape();
 
@@ -124,6 +122,12 @@ public class PlayerShopState extends TargetableState{
 		
 		//Set Sprite to null
 		//attachedTo.setSprite(null);
+	}
+
+	@Override
+	public void draw(Graphics2D g2d) {
+		// Auto-generated method stub
+		
 	}
 
 }

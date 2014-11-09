@@ -20,7 +20,7 @@ public class ObjectShopState extends NestedState{
 	private Vector worldPos;
 	private double worldWidth;
 	private double worldHeight;
-	private GameObject object;
+	//private GameObject object;
 
 	/**
 	 * Creates player shop state
@@ -57,7 +57,7 @@ public class ObjectShopState extends NestedState{
 		worldHeight = attachedTo.getHeight();
 		*/
 		//downcast attachedTo gameobject to player
-		object = attachedTo;
+		//object = attachedTo;
 
 		//Update position
 		Vector posVector = new Vector(2);
