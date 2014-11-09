@@ -15,6 +15,7 @@ import state.engine.OverworldState;
 import state.object.movable.PlayerOverworldState;
 import state.object.movable.entity.EnemyBattleState;
 import state.object.movable.entity.EnemyBurstFireState;
+import state.object.movable.entity.EnemyScatterShotState;
 import state.object.movable.entity.PlayerBattleState;
 import Engine.Manager.CollisionManager;
 import Engine.Manager.InputManager;
@@ -142,7 +143,7 @@ public class Engine {
 		
 		
 		
-		//Create second burstFireEnemy
+		//Create second enemy: burstFireEnemy
 		GameObject burstEnemy = new Entity(
 				Directory.screenManager.getPercentageWidth(40),		//XPos
 				Directory.screenManager.getPercentageHeight(90),	//YPos
@@ -162,6 +163,31 @@ public class Engine {
 		burstEnemy.setSolid(true);
 		
 		Directory.engine.getCurrentState().addObj(burstEnemy);
+		
+		
+		
+		//Create third enemy: scatterShotEnemy
+		GameObject scatterEnemy = new Entity(
+				Directory.screenManager.getPercentageWidth(62),		//XPos
+				Directory.screenManager.getPercentageHeight(67),	//YPos
+				20,													//Width
+				20,													//Height
+				10,													//Health
+				1,													//Power
+				2													//Defense
+				);
+		
+		scatterEnemy.setShape(new Ellipse2D.Double(), Color.black);
+		scatterEnemy.setVisible(true);
+		
+		scatterEnemy.setTriggerable(true);
+		scatterEnemy.addTrigger(new BattleStartTrigger(new EnemyScatterShotState()));
+		
+		scatterEnemy.setSolid(true);
+		
+		Directory.engine.getCurrentState().addObj(scatterEnemy);
+		
+		
 		
 		
 		//Create shop as a gameObject
