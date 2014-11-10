@@ -147,7 +147,6 @@ public class BattleState extends EngineState{
 
 			@Override
 			public Integer invoke() {
-				// TODO Auto-generated method stub
 				return ((PlayerBattleState)Directory.profile.getPlayer().getState()).getNumAdditionOperators();
 			}
 			

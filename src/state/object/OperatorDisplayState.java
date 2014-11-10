@@ -4,6 +4,9 @@ import interfaces.Delegate;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
+import state.object.movable.entity.PlayerBattleState;
+import Engine.Directory;
+
 abstract public class OperatorDisplayState extends ObjectState implements Delegate<Integer>{
 
 	
@@ -49,7 +52,14 @@ abstract public class OperatorDisplayState extends ObjectState implements Delega
 	
 	private double calculateHeight(){
 		//Get the current amount of operators
-		int currentOps = invoke();
+		int currentOps;
+		
+		try{
+			currentOps = invoke();
+		}
+		catch(Exception e){
+			currentOps = 0;
+		}
 		
 		//If greater than max, set to max
 		if(currentOps > maxFill) currentOps = maxFill;

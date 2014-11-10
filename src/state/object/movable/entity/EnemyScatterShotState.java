@@ -110,15 +110,14 @@ public class EnemyScatterShotState extends TargetableState{
 			elapsedTime = 0;
 			
 			// TESTING
-			shoot(attachedTo.getYPos() + 50.00);
-			
+			//shoot(attachedTo.getYPos() + 50.00);
 			
 			// shoot numBulletsPerShot
-			/*
+			
 			for(int i=0; i<numBulletsPerShot; i++){
 				shoot(attachedTo.getYPos() + (50*(i-1)));
 			}
-			*/
+			
 		}
 		
 		previousTime = currentTime;
@@ -135,7 +134,7 @@ public class EnemyScatterShotState extends TargetableState{
 	private void shoot(double yPos){
 		//Create a  projectile
 		Entity projectile = new Entity(attachedTo.getXPos(), yPos, 50, 50, 1, 1, 1);
-		projectile.setSolid(true);
+		projectile.setSolid(false);
 		
 		//Attach sprite to projectile
 		projectile.setSprite(Directory.spriteLibrary.get("Bullet_Yellow"));

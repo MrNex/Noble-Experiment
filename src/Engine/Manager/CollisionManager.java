@@ -55,7 +55,7 @@ public class CollisionManager extends Manager{
 			}*/
 			
 			//Only check for collisions if the object moves and is solid
-			if(obj1 instanceof MovableGameObject && obj1.isSolid()){
+			if(obj1 instanceof MovableGameObject){
 
 				
 				
@@ -63,13 +63,16 @@ public class CollisionManager extends Manager{
 				for(GameObject obj2 : copyList){
 
 					//If obj2 is obj1, or obj2 is not solid, skip this object!
-					if(obj2 == obj1 || !obj2.isSolid()) continue;
+					if(obj2 == obj1 ) continue;
 
 					//If there is a collision
 					if(obj2.isColliding(obj1) && obj1.isColliding(obj2)){
 
-						//The movableGameObject obj must be moved to its previous position to resolve this collision
-						((MovableGameObject)obj1).revert();
+						if(obj1.isSolid() && obj2.isSolid()){
+							//The movableGameObject obj must be moved to its previous position to resolve this collision
+							((MovableGameObject)obj1).revert();
+						}
+						
 
 
 						//If o is a trigger
