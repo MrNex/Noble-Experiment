@@ -130,7 +130,7 @@ public class ProjectileState extends TargetableState{
 	 */
 	@Override
 	public boolean isColliding(GameObject obj){
-		return obj != shotBy;
+		return obj != shotBy && !(obj.getState() instanceof ProjectileState);
 	}
 
 }

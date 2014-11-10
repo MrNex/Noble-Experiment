@@ -134,7 +134,7 @@ public class EnemyScatterShotState extends TargetableState{
 	private void shoot(double yPos){
 		//Create a  projectile
 		Entity projectile = new Entity(attachedTo.getXPos(), yPos, 50, 50, 1, 1, 1);
-		projectile.setSolid(false);
+		projectile.setSolid(true);
 		
 		//Attach sprite to projectile
 		projectile.setSprite(Directory.spriteLibrary.get("Bullet_Yellow"));
