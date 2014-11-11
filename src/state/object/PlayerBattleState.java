@@ -440,8 +440,11 @@ public class PlayerBattleState extends TargetableState{
 				//Get current targets battle state
 				TargetableState targetState = (TargetableState)currentTarget.getState();
 
+				//Calculate power of answer
+				int pow = getAttachedEntity().getPower() * submission.getNumOperators();
+								
 				//send answer to current target
-				if(targetState.submitAnswer(submission, getAttachedEntity().getPower())){
+				if(targetState.submitAnswer(submission, pow)){
 					Directory.profile.incrementEquationsMade();
 
 					//If the target wasn't killed, generate a new equation for it
