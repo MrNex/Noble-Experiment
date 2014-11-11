@@ -137,7 +137,6 @@ public class Entity extends MovableGameObject{
 	 */
 	public void decrementCurrentHealth(int val){
 		currentHealth -= val;
-		System.out.println(currentHealth);
 		//if the currentHealth is over the limit
 		if(currentHealth > totalHealth){
 			//Set currenthealth to the totalHealth

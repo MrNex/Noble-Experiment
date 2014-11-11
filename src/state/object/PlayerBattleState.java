@@ -1,17 +1,13 @@
 package state.object;
 
-import java.awt.Color;
-import java.awt.Font;
+
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
-import java.util.LinkedList;
 
 import engine.Directory;
 import equations.*;
 import mathematics.Vector;
 import objects.Entity;
-import sprites.Sprite;
 import state.engine.BattleState;
 
 /**
@@ -22,11 +18,6 @@ import state.engine.BattleState;
 public class PlayerBattleState extends TargetableState{
 
 	//attributes
-	private Vector worldPos;
-	private double worldWidth;
-	private double worldHeight;
-	private Sprite worldSprite;
-	
 	private int numAddOp;
 	private int numSubOp;
 	private int numMultOp;
@@ -165,22 +156,35 @@ public class PlayerBattleState extends TargetableState{
 			toggleTarget();
 		}
 
-		//Declare character to retrieve keys in the order that they were pressed since last update
-		Integer chCode;
+		//Declare KeyEvent  to retrieve keys in the order that they were pressed since last update
+		KeyEvent e;
 		//While the next character pressed isn't null
-		while((chCode = Directory.inputManager.getNextKeyPressed()) != null){			//getNextKeyPressed dequeues the next key pressed from a queue of all keypresses
-
+		while((e = Directory.inputManager.getNextKeyPressed()) != null){			//getNextKeyPressed dequeues the next key pressed from a queue of all keypresses
+			int chCode = e.getKeyCode();
 			//Cast characterCode to character
 			char ch = (char)((int)chCode);
 
-			//If ch is a number (from number bar) or an operator (Non-numpad)
-			if(Character.isDigit(ch) || chCode == (int)'+' || chCode == (int)'-' || chCode == (int)'*' || chCode == (int)'/'){
+			System.out.println(ch);
+			
+			
+			//if ch is an operator which requires shift
+			if(e.isShiftDown()){
+				//If plus sign
+				if(e.getKeyCode() == KeyEvent.VK_EQUALS){
+					answerString += '+';
+				}
+				//Else if asterisk
+				else if(e.getKeyCode() == KeyEvent.VK_8){
+					answerString += '*';
+				}
+			}
+			//If ch is a number (from number bar) or an operator which doesn't require shift (Non-numpad)
+			else if(Character.isDigit(ch) || chCode == KeyEvent.VK_MINUS || chCode == KeyEvent.VK_SLASH){
 				//If you start typing an answer and there isn't a target yet, toggle target
 
 
 				//Add to the answerString
 				answerString += ch;
-				System.out.println(answerString);
 			}
 
 			//Else if chCode is a numeric keycode from the number pad

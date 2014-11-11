@@ -43,16 +43,6 @@ public class CollisionManager extends Manager{
 
 		//For each gameObject in the current state
 		for(GameObject obj1 : copyList){
-
-			/*
-			if(obj1.getState() instanceof ProjectileState){
-				System.out.println("Checking for projectiles");
-				if(obj1.isSolid())
-				{
-					System.out.println("Solid projectile");
-					
-				}
-			}*/
 			
 			//Only check for collisions if the object moves and is solid
 			if(obj1 instanceof MovableGameObject && obj1.isSolid()){

@@ -47,7 +47,6 @@ public class MovableGameObject extends GameObject {
 	 */
 	public void revert(){
 		position.copy(previousPosition);
-		System.out.println(position.toString());
 		updateShape();
 	}
 	

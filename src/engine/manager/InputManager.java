@@ -23,7 +23,7 @@ import mathematics.Vector;
 public class InputManager extends Manager implements KeyListener, MouseListener{
 
 	//Attributes
-	private Queue<Integer>keysPressed;		//Holds the keys pressed this game loop in the order of being pressed
+	private Queue<KeyEvent>keysPressed;		//Holds the keys pressed this game loop in the order of being pressed
 	private boolean keys[];					//Indicates whether any key code is currently pressed
 	private boolean mButtons[];
 	private Vector mousePosition;
@@ -52,7 +52,7 @@ public class InputManager extends Manager implements KeyListener, MouseListener{
 	@Override
 	public void init() {
 		//Initialize array (lists)
-		keysPressed = new LinkedList<Integer>();
+		keysPressed = new LinkedList<KeyEvent>();
 
 		keys = new boolean[256];
 		mButtons = new boolean[MouseInfo.getNumberOfButtons()];
@@ -65,7 +65,7 @@ public class InputManager extends Manager implements KeyListener, MouseListener{
 	 * Dequeues the next key pressed from the queue of keyPresses and returns it
 	 * @return The keycode of most recent keypress that hasn't been retrieved yet.
 	 */
-	public Integer getNextKeyPressed(){
+	public KeyEvent getNextKeyPressed(){
 		return keysPressed.poll();
 	}
 
@@ -122,7 +122,7 @@ public class InputManager extends Manager implements KeyListener, MouseListener{
 			//Set keys at index of keyCode true
 			keys[keyPress.getKeyCode()] = true;
 			//Add this key to the list of keys pressed this loop
-			keysPressed.add(keyPress.getKeyCode());
+			keysPressed.add(keyPress);
 		}
 	}
 

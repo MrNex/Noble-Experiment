@@ -63,7 +63,6 @@ abstract public class OperatorDisplayState extends ObjectState implements Delega
 		//If greater than max, set to max
 		if(currentOps > maxFill) currentOps = maxFill;
 		
-		System.out.println(label + ": " + currentOps);
 		
 		return((double)currentOps / (double)maxFill)*attachedTo.getHeight();
 		

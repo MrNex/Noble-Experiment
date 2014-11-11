@@ -440,8 +440,6 @@ public class GameObject {
 	 * @return Whether this gameobject is intersecting with point xx, yy
 	 */
 	public boolean contains(double xx, double yy){
-		//System.out.println(position.toString());
-		//System.out.println("Point: " + xx + ", " + yy);
 		return 
 				xx < position.getComponent(0) + width && 
 				xx > position.getComponent(0) && 
