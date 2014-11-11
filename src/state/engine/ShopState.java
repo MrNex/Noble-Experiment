@@ -8,15 +8,15 @@ import java.awt.geom.Rectangle2D;
 import java.awt.geom.Rectangle2D.Double;
 import java.util.ArrayList;
 
+import engine.Directory;
+import engine.manager.ScreenManager;
+import objects.Entity;
+import objects.GameObject;
 import state.object.ButtonState;
 import state.object.DefenseUpgradeButtonState;
 import state.object.HealthUpgradeButtonState;
 import state.object.PopStateButtonState;
 import state.object.PowerUpgradeButtonState;
-import Engine.Directory;
-import Engine.Manager.ScreenManager;
-import Objects.Entity;
-import Objects.GameObject;
 
 //TODO: add button, button selection, as means of leaving
 

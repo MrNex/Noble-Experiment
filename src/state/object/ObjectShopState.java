@@ -3,11 +3,16 @@ package state.object;
 import java.awt.Graphics2D;
 
 
-import Engine.Directory;
-import MathHelp.Vector;
-import Objects.Entity;
-import Objects.GameObject;
-import Objects.Sprites.Sprite;
+
+
+
+
+
+import engine.Directory;
+import mathematics.Vector;
+import objects.Entity;
+import objects.GameObject;
+import sprites.Sprite;
 
 /**
  * State which governs the object during the engine's ShopState

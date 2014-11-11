@@ -6,15 +6,15 @@ import java.awt.geom.RoundRectangle2D;
 import java.awt.geom.Rectangle2D.Double;
 import java.util.ArrayList;
 
+import engine.Directory;
+import objects.Entity;
+import objects.GameObject;
 import state.object.BattleResultDisplayState;
 import state.object.HealthBarState;
 import state.object.OperatorDisplayState;
+import state.object.PlayerBattleState;
 import state.object.PopStateButtonState;
 import state.object.TargetEquationDisplayState;
-import state.object.movable.entity.PlayerBattleState;
-import Engine.Directory;
-import Objects.Entity;
-import Objects.GameObject;
 
 //TODO: Clean up to keep track of two entities and a list of projectile gameObjects.
 //TODO: Have all state-Ending and cleanup logic in here instead of PlayerBattleState and EnemyBattleState!

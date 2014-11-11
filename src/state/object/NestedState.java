@@ -3,8 +3,8 @@ package state.object;
 import java.awt.Graphics2D;
 import java.awt.geom.RectangularShape;
 
-import MathHelp.Vector;
-import Objects.Sprites.Sprite;
+import mathematics.Vector;
+import sprites.Sprite;
 
 /**
  * Nested state describes a object state which preserves the

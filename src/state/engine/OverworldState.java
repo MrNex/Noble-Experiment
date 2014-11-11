@@ -3,8 +3,8 @@ package state.engine;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 
-import Engine.Directory;
-import Objects.GameObject;
+import engine.Directory;
+import objects.GameObject;
 
 public class OverworldState extends EngineState {
 

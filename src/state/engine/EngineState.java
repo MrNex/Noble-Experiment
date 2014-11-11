@@ -3,7 +3,7 @@ package state.engine;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 
-import Objects.GameObject;
+import objects.GameObject;
 import state.State;
 
 /**

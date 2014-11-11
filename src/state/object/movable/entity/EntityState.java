@@ -1,7 +1,7 @@
 package state.object.movable.entity;
 
+import objects.Entity;
 import state.object.movable.MovableObjectState;
-import Objects.Entity;
 
 /**
  * Defines any MObjState which must be attached to an entity.

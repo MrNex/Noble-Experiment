@@ -6,8 +6,8 @@ import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 
-import Engine.Directory;
-import MathHelp.Vector;
+import engine.Directory;
+import mathematics.Vector;
 
 abstract public class ButtonState extends ObjectState {
 

@@ -2,7 +2,7 @@ package state.object;
 
 import java.awt.Graphics2D;
 
-import Objects.GameObject;
+import objects.GameObject;
 import state.State;
 
 /**

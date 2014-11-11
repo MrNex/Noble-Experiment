@@ -1,5 +1,5 @@
-import Engine.*;
-import Loaders.*;
+import engine.*;
+import loaders.*;
 
 /**
  * Defines the entry point for the program

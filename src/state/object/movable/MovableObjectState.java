@@ -1,7 +1,7 @@
 package state.object.movable;
 
+import objects.MovableGameObject;
 import state.object.ObjectState;
-import Objects.MovableGameObject;
 
 /**
  * Defines any Object state which must be attached to an object which

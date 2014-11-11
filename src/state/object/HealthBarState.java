@@ -5,7 +5,7 @@ import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.Rectangle2D.Double;
 
-import Objects.Entity;
+import objects.Entity;
 
 /**
  * Defines a state which tracks an entities health and 

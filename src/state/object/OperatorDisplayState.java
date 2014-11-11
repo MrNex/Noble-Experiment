@@ -4,8 +4,7 @@ import interfaces.Delegate;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
-import state.object.movable.entity.PlayerBattleState;
-import Engine.Directory;
+import engine.Directory;
 
 abstract public class OperatorDisplayState extends ObjectState implements Delegate<Integer>{
 

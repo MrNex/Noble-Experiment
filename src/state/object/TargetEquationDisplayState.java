@@ -5,10 +5,8 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 
-import state.object.movable.entity.PlayerBattleState;
-import state.object.movable.entity.TargetableState;
-import Engine.Directory;
-import Objects.GameObject;
+import engine.Directory;
+import objects.GameObject;
 
 /**
  * Defines the state of an object on the HUD which

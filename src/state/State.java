@@ -3,7 +3,7 @@ package state;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 
-import Objects.GameObject;
+import objects.GameObject;
 
 /**
  * Defines a state in a finite state machine.

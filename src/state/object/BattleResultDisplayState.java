@@ -5,9 +5,9 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 
+import engine.Directory;
+import objects.Entity;
 import state.engine.BattleState;
-import Engine.Directory;
-import Objects.Entity;
 
 /**
  * Class defines the behavior of the HUD object which displays battle results
