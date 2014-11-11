@@ -267,8 +267,6 @@ public class BattleState extends EngineState{
 				displayResults();
 			}
 		}
-		
-
 	}
 
 	/**
@@ -283,17 +281,12 @@ public class BattleState extends EngineState{
 		//For every game object in objects
 		for(GameObject obj : drawList)
 		{
-			//System.out.println("Drawing at: " + obj.getPos().toString() + "\nWidtn, Height: " + obj.getWidth() + ", " + obj.getHeight() + "\nVisibility: " + obj.isVisible() + "\nRunning: " + obj.isRunning());
 			obj.draw(g2d);
 		}
 		
 		//Draw competitors
 		competitor1.draw(g2d);
-		competitor2.draw(g2d);
-		
-		//Draw Answer String
-		//PlayerBattleState playerState = (PlayerBattleState)competitor1.getState();
-		
+		competitor2.draw(g2d);		
 	}
 
 	/**
@@ -357,6 +350,12 @@ public class BattleState extends EngineState{
 		else{
 			loser = competitor2;
 			winner = competitor1;
+		}
+
+		//If the player is the winner
+		if(Directory.profile.getPlayer() == winner){
+			//Add gold to the player based on losers stats
+			Directory.profile.addGold(loser.getTotalHealth() * loser.getPower() * loser.getDefense());
 		}
 
 		//Pop the state of the winner (Revert to whatever state was prior the battle)

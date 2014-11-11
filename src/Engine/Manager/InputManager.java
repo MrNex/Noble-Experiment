@@ -55,7 +55,6 @@ public class InputManager extends Manager implements KeyListener, MouseListener{
 		keysPressed = new LinkedList<Integer>();
 
 		keys = new boolean[256];
-
 		mButtons = new boolean[MouseInfo.getNumberOfButtons()];
 
 		mousePosition = new Vector(2);
@@ -162,8 +161,7 @@ public class InputManager extends Manager implements KeyListener, MouseListener{
 			mousePosition.setComponent(0, mousePos.x);
 			mousePosition.setComponent(1, mousePos.y);
 		}
-
-
+		
 	}
 
 	/**

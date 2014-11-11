@@ -224,6 +224,8 @@ public class Engine {
 
 		//Add player
 		Directory.engine.getCurrentState().addObj(Directory.profile.getPlayer());
+		
+		Directory.profile.addGold(200);
 	}
 
 	/**
@@ -238,6 +240,7 @@ public class Engine {
 			getCurrentState().update();
 			Directory.spriteManager.update();
 			Directory.screenManager.updateHud();
+
 
 		}
 	}

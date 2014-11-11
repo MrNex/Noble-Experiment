@@ -9,7 +9,10 @@ import java.awt.geom.Rectangle2D.Double;
 import java.util.ArrayList;
 
 import state.object.ButtonState;
+import state.object.DefenseUpgradeButtonState;
+import state.object.HealthUpgradeButtonState;
 import state.object.PopStateButtonState;
+import state.object.PowerUpgradeButtonState;
 import Engine.Directory;
 import Engine.Manager.ScreenManager;
 import Objects.Entity;
@@ -64,55 +67,62 @@ public class ShopState extends EngineState {
 		//Add background
 		addObj(background);
 
+		//Create health purchase button
+		GameObject healthUpgradeButton = new GameObject(
+				Directory.screenManager.getPercentageWidth(15.0), Directory.screenManager.getPercentageHeight(10.0),
+				Directory.screenManager.getPercentageWidth(25.0), Directory.screenManager.getPercentageHeight(5.0));
+
+		healthUpgradeButton.setShape(new Rectangle2D.Double(), Color.white);
+		healthUpgradeButton.setVisible(true);
+
+		healthUpgradeButton.setState(new HealthUpgradeButtonState());
+		//Add health upgrade button
+		addObj(healthUpgradeButton);
+
+		//Create power button
+		GameObject powerUpgradeButton = new GameObject(
+				Directory.screenManager.getPercentageWidth(15.0), Directory.screenManager.getPercentageHeight(20.0),
+				Directory.screenManager.getPercentageWidth(25.0), Directory.screenManager.getPercentageHeight(5.0));
+
+		powerUpgradeButton.setShape(new Rectangle2D.Double(), Color.white);
+		powerUpgradeButton.setVisible(true);
+		powerUpgradeButton.setState(new PowerUpgradeButtonState());
+		//Add power upgrade button
+		addObj(powerUpgradeButton);
+
+		//Create defense purchase button
+		GameObject defenseUpgradeButton = new GameObject(
+				Directory.screenManager.getPercentageWidth(15.0), Directory.screenManager.getPercentageHeight(30.0),
+				Directory.screenManager.getPercentageWidth(25.0), Directory.screenManager.getPercentageHeight(5.0));
+
+		defenseUpgradeButton.setShape(new Rectangle2D.Double(), Color.white);
+		defenseUpgradeButton.setVisible(true);
+		defenseUpgradeButton.setState(new DefenseUpgradeButtonState());
+		//Add defense upgrade button
+		addObj(defenseUpgradeButton);
+
 
 		//Create exit button
 		GameObject exitButton = new GameObject(
 				Directory.screenManager.getPercentageWidth(85.0), Directory.screenManager.getPercentageHeight(5.0),
 				Directory.screenManager.getPercentageWidth(10.0), Directory.screenManager.getPercentageHeight(5.0));
 
-		//Debug
-		System.out.println("Exit button pos: " + exitButton.getPos().toString());
-		System.out.println("Percentage 5 height: " + Directory.screenManager.getPercentageHeight(5.0));
-		
 		exitButton.setShape(new Rectangle2D.Double(), Color.white);
 		exitButton.setVisible(true);
-		
-		exitButton.setState(new ButtonState("Quit"){
 
-			/**
-			 * This button will do nothing on hover
-			 */
-			@Override
-			protected void onHover() {
-				// TODO Auto-generated method stub
-				System.out.println("Hovering!");
-			}
-
-			/**
-			 * The action of this button will call leaveShop
-			 */
-			@Override
-			protected void action() {
-				ShopState state = (ShopState)Directory.engine.getCurrentState();
-				state.leaveShop();
-
-			}
-
-		});
-		
 		exitButton.setState(new PopStateButtonState("Quit"));
 
 		//Add exit button
 		addObj(exitButton);
 	}
-	
+
 	/**
 	 * On enter this state does not need to do anything
 	 */
 	@Override
 	public void enter() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 
