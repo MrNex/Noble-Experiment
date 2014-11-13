@@ -21,7 +21,7 @@ import sprites.Sprite;
 public class EnemyScatterShotState extends TargetableState{
 
 	//Static attributes
-	private static int attackSpeed = 10;				//Set enemy's attack speed to 10 seconds to start
+	private static int attackSpeed = 7;				//Set enemy's attack speed to 10 seconds to start
 	private static double shotSpeed = 50;			//Set enemy's projectile speed to 50
 	
 	//Attributes

@@ -128,11 +128,13 @@ public class PlayerBattleState extends TargetableState{
 
 
 		//Update dimensions
-		attachedTo.setWidth(200);
-		attachedTo.setHeight(300);
+		//attachedTo.setWidth(200);
+		//attachedTo.setHeight(300);
+		attachedTo.setWidth(100);
+		attachedTo.setHeight(150);
 
 		//SEt players sprite
-		getAttachedEntity().setSprite(Directory.spriteLibrary.get("PlayerBattleIdle"));
+		getAttachedEntity().setSprite(Directory.spriteLibrary.get("Arithmage"));
 
 		//Toggle target to select first target
 		toggleTarget();
@@ -531,6 +533,9 @@ public class PlayerBattleState extends TargetableState{
 				targetState.generateNewEquation();
 
 			}
+			
+			// change player's stance
+			attachedTo.getSprite().queueAnimation(1, false);
 		}
 		else{
 			System.out.println("Wrong");

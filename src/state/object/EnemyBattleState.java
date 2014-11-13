@@ -68,17 +68,25 @@ public class EnemyBattleState extends TargetableState{
 		
 		//Set position
 		Vector posVector = new Vector(2);
-		posVector.setComponent(0, Directory.screenManager.getPercentageWidth(85.0));
+		posVector.setComponent(0, Directory.screenManager.getPercentageWidth(80.0));
 		posVector.setComponent(1, Directory.screenManager.getPercentageHeight(45.0));
+		
+		getAttachedEntity().setPos(posVector);
 		
 		//Refresh attached movable game object's previous position due to engine state change.
 		getAttachedEntity().refresh();
 
 		//Set battleState dimensions
-		attachedTo.setWidth(75);
-		attachedTo.setHeight(300);
+		attachedTo.setWidth(150);
+		attachedTo.setHeight(200);
 
 		attachedTo.updateShape();
+		
+		//Set players sprite
+		getAttachedEntity().setSprite(Directory.spriteLibrary.get("Lich"));
+		
+		//Run animation
+		attachedTo.getSprite().queueAnimation(0, true);
 
 		//Upon entering this state, start timing
 		
