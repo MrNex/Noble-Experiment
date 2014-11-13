@@ -18,7 +18,7 @@ public class ProfileManager extends Manager{
 	private static final int NUM_ABILITIES = 1; 
 	
 	//Enumerations
-	public enum Abilities{
+	public static enum Abilities{
 		ADDATIVE_DAMAGE
 	}
 	
