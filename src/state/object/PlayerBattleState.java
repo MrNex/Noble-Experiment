@@ -5,6 +5,7 @@ import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 
 import engine.Directory;
+import engine.manager.ProfileManager.Abilities;
 import equations.*;
 import mathematics.Vector;
 import objects.Entity;
@@ -441,7 +442,12 @@ public class PlayerBattleState extends TargetableState{
 				TargetableState targetState = (TargetableState)currentTarget.getState();
 
 				//Calculate power of answer
-				int pow = getAttachedEntity().getPower() * submission.getNumOperators();
+				//If the player has that ability
+				int pow = getAttachedEntity().getPower();
+				if(Directory.profile.isAbilityUnlocked(Abilities.ADDATIVE_DAMAGE)){
+					//Multiply power by the number of operators used
+					pow *= submission.getNumOperators();
+				}
 								
 				//send answer to current target
 				if(targetState.submitAnswer(submission, pow)){
