@@ -9,9 +9,12 @@ import java.awt.geom.Rectangle2D.Double;
 import java.util.ArrayList;
 
 import engine.Directory;
+import engine.manager.ProfileManager;
+import engine.manager.ProfileManager.Abilities;
 import engine.manager.ScreenManager;
 import objects.Entity;
 import objects.GameObject;
+import state.object.AbilityPurchaseButtonState;
 import state.object.ButtonState;
 import state.object.DefenseUpgradeButtonState;
 import state.object.HealthUpgradeButtonState;
@@ -101,6 +104,17 @@ public class ShopState extends EngineState {
 		//Add defense upgrade button
 		addObj(defenseUpgradeButton);
 
+		//Create ability purchase buttons
+		GameObject addativeDamageAbilityButton = new GameObject(
+				Directory.screenManager.getPercentageWidth(15.0), Directory.screenManager.getPercentageHeight(40.0),
+				Directory.screenManager.getPercentageWidth(25.0), Directory.screenManager.getPercentageHeight(5.0));
+		
+		addativeDamageAbilityButton.setShape(new Rectangle2D.Double(), Color.white);
+		addativeDamageAbilityButton.setVisible(true);
+		addativeDamageAbilityButton.setState(new AbilityPurchaseButtonState(ProfileManager.Abilities.ADDATIVE_DAMAGE, "Addative Damage", 10 ));
+		//Add addativeDamage button
+		addObj(addativeDamageAbilityButton);
+		
 
 		//Create exit button
 		GameObject exitButton = new GameObject(

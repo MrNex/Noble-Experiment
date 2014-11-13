@@ -6,6 +6,9 @@ import java.awt.geom.Ellipse2D;
 import engine.Directory;
 import objects.Entity;
 
+
+
+
 /**
  * Defines a component of the engine
  * which keeps track of stats and instances of the player
@@ -18,7 +21,7 @@ public class ProfileManager extends Manager{
 	private static final int NUM_ABILITIES = 1; 
 	
 	//Enumerations
-	public static enum Abilities{
+	public enum Abilities{
 		ADDATIVE_DAMAGE
 	}
 	
