@@ -14,6 +14,15 @@ import objects.Entity;
  */
 public class ProfileManager extends Manager{
 
+	//Static variables
+	private static final int NUM_ABILITIES = 1; 
+	
+	//Enumerations
+	public enum Abilities{
+		ADDATIVE_DAMAGE
+	}
+	
+	
 	//Attributes
 	private Entity player;
 	private int equationsSolved;
@@ -22,6 +31,9 @@ public class ProfileManager extends Manager{
 	private int gold;
 	private int level;
 	private int currentExp, expNeeded;
+	
+	//ability attributes
+	private boolean abilities[];
 	
 	
 
@@ -45,6 +57,9 @@ public class ProfileManager extends Manager{
 		level = 0;
 		currentExp = 0;
 		expNeeded = generateNextExpTier();
+		
+		//Initialize abilities array
+		abilities = new boolean[NUM_ABILITIES];
 
 		//Create the player
 		player = new Entity(500, 0, 200, 300, 10, 1, 1);
@@ -71,6 +86,25 @@ public class ProfileManager extends Manager{
 	public Entity getPlayer(){
 		return player;
 	}
+	
+	/**
+	 * Gets whether or not an ability is unlocked
+	 * @param ability The ability to check
+	 * @return Whether the specified ability has been unlocked by the player
+	 */
+	public boolean isAbilityUnlocked(Abilities ability){
+		return abilities[ability.ordinal()];
+	}
+	
+	
+	/**
+	 * Unlocks a specified ability
+	 * @param abilityToUnlock The ability to unlock
+	 */
+	public void unlockAbility(Abilities abilityToUnlock){
+		abilities[abilityToUnlock.ordinal()] = true;
+	}
+	
 	
 	/**
 	 * Adds gold to the profile
