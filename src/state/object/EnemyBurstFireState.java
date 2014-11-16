@@ -84,20 +84,26 @@ public class EnemyBurstFireState extends TargetableState{
 
 		//Set position
 		Vector posVector = new Vector(2);
-		posVector.setComponent(0, Directory.screenManager.getPercentageWidth(85.0));
+		posVector.setComponent(0, Directory.screenManager.getPercentageWidth(80.0));
 		posVector.setComponent(1, Directory.screenManager.getPercentageHeight(45.0));
 
 		//Set position
-		attachedTo.setPos(posVector);
+		getAttachedEntity().setPos(posVector);
 		
 		//Refresh attached movable game object's previous position due to engine state change.
 		getAttachedEntity().refresh();
 
 		//Set battleState dimensions
-		attachedTo.setWidth(75);
-		attachedTo.setHeight(300);
+		attachedTo.setWidth(200);
+		attachedTo.setHeight(200);
 
 		attachedTo.updateShape();
+				
+		//Set players sprite
+		getAttachedEntity().setSprite(Directory.spriteLibrary.get("Werewolf"));
+						
+		//Run animation
+		attachedTo.getSprite().queueAnimation(0, true);
 
 		//Upon entering this state, start timing
 		//Set previousTime

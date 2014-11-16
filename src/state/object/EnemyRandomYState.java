@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Ellipse2D.Double;
+import java.util.Random;
 
 import javax.swing.Timer;
 
@@ -14,28 +15,27 @@ import objects.Entity;
 import sprites.Sprite;
 
 /**
- * An enemy state which fires several bullets at once
- * @author Robert Schrupp
+ * Defines basic test enemy behavior during battleState
+ * @author Nex
  *
  */
-public class EnemyScatterShotState extends TargetableState{
+public class EnemyRandomYState extends TargetableState{
 
 	//Static attributes
-	private static int attackSpeed = 7;				//Set enemy's attack speed to 10 seconds to start
-	private static double shotSpeed = 50;			//Set enemy's projectile speed to 50
+	private static int attackSpeed = 3;				//Set all basic enemys attack speeds to 5 seconds to start
+	private static double shotSpeed = 75;			//Set all basic enemys projectile speed to 50
 	
 	//Attributes
 	private Vector worldPos;
 	private Timer attackTimer;
 	private double previousTime;
 	private double elapsedTime;
-	private int numBulletsPerShot;
 
 	/**
 	 * Constructs an Enemies battle state
 	 * 
 	 */
-	public EnemyScatterShotState() {
+	public EnemyRandomYState() {
 		super(false);
 		
 	}
@@ -49,7 +49,6 @@ public class EnemyScatterShotState extends TargetableState{
 		
 		elapsedTime = 0;
 		previousTime = 0;
-		numBulletsPerShot = 3;
 	}
 
 	/**
@@ -70,24 +69,23 @@ public class EnemyScatterShotState extends TargetableState{
 		
 		//Set position
 		Vector posVector = new Vector(2);
-		posVector.setComponent(0, Directory.screenManager.getPercentageWidth(75.0));
+		posVector.setComponent(0, Directory.screenManager.getPercentageWidth(80.0));
 		posVector.setComponent(1, Directory.screenManager.getPercentageHeight(45.0));
 		
-		//Set position
 		getAttachedEntity().setPos(posVector);
 		
 		//Refresh attached movable game object's previous position due to engine state change.
 		getAttachedEntity().refresh();
 
 		//Set battleState dimensions
-		attachedTo.setWidth(200);
+		attachedTo.setWidth(150);
 		attachedTo.setHeight(200);
 
 		attachedTo.updateShape();
 		
 		//Set players sprite
-		getAttachedEntity().setSprite(Directory.spriteLibrary.get("Hydra"));
-				
+		getAttachedEntity().setSprite(Directory.spriteLibrary.get("Lich"));
+		
 		//Run animation
 		attachedTo.getSprite().queueAnimation(0, true);
 
@@ -112,18 +110,9 @@ public class EnemyScatterShotState extends TargetableState{
 		double currentTime = System.currentTimeMillis();
 		elapsedTime += (currentTime - previousTime) / 1000.0;
 		
-		if(elapsedTime > EnemyScatterShotState.attackSpeed){
+		if(elapsedTime > attackSpeed){
 			elapsedTime = 0;
-			
-			// TESTING
-			//shoot(attachedTo.getYPos() + 50.00);
-			
-			// shoot numBulletsPerShot
-			
-			for(int i=0; i<numBulletsPerShot; i++){
-				shoot(attachedTo.getYPos() + (50*i));
-			}
-			
+			shoot();
 		}
 		
 		previousTime = currentTime;
@@ -131,15 +120,20 @@ public class EnemyScatterShotState extends TargetableState{
 	}
 	
 	/**
-	 * Creates new projectiles and adds them to the current state:
-	 * Creates projectiles and sets them as solid
-	 * Sets image and visibility of projectiles
-	 * Sets the state of projectiles
-	 * Add the projectiles to the current state of engine
+	 * Creates a new projectile and adds the projectile to the current state:
+	 * Creates projectile and sets as solid
+	 * Sets image and visibility of projectile
+	 * Sets the state of projectile
+	 * Add the projectile to the current state of engine
 	 */
-	private void shoot(double yPos){
+	private void shoot(){
+		//Get random yPos
+		Random rn = new Random();
+		double randYPos = 150 * rn.nextDouble();
+		randYPos += attachedTo.getYPos() - 50;
+		
 		//Create a  projectile
-		Entity projectile = new Entity(attachedTo.getXPos(), yPos, 50, 50, 1, 1, 1);
+		Entity projectile = new Entity(attachedTo.getXPos(), randYPos, 50, 50, 1, 1, 1);
 		projectile.setSolid(true);
 		
 		//Attach sprite to projectile
@@ -152,7 +146,7 @@ public class EnemyScatterShotState extends TargetableState{
 		//Set visible
 		projectile.setVisible(true);
 		//Set the state
-		projectile.setState(new ProjectileState(Directory.profile.getPlayer(), attachedTo, EnemyScatterShotState.shotSpeed));
+		projectile.setState(new ProjectileState(Directory.profile.getPlayer(), attachedTo, EnemyRandomYState.shotSpeed));
 		//Add projectile to current engine state
 		Directory.engine.getCurrentState().addObj(projectile);
 	}
