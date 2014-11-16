@@ -1,21 +1,130 @@
 package state.engine;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.geom.Ellipse2D;
 import java.util.ArrayList;
 
+import mathematics.Vector;
 import engine.Directory;
+import objects.Entity;
 import objects.GameObject;
+import state.object.EnemyBattleState;
+import state.object.EnemyBurstFireState;
+import state.object.EnemyScatterShotState;
+import state.object.PlayerOverworldState;
+import triggers.BattleStartTrigger;
+import triggers.ShopStartTrigger;
 
 public class OverworldState extends EngineState {
 
 	public OverworldState() {
 		super();
-		
+
 	}
-	
+
 	@Override
 	public void init(){
 		super.init();
+
+		//Create enemy as entity
+		GameObject enemy = new Entity(Directory.screenManager.getPercentageWidth(85.0), Directory.screenManager.getPercentageHeight(45.0), 20, 20, 10, 1, 1);
+		//Set enemy shape and visibility
+		enemy.setShape(new Ellipse2D.Double(), Color.RED);
+		enemy.setVisible(true);
+		//Set the enemy as triggerable
+		enemy.setTriggerable(true);
+		//Set enemy trigger
+		enemy.addTrigger(new BattleStartTrigger(new EnemyBattleState()));
+
+		enemy.setSolid(true);
+
+		//Add enemy to state
+		addObj(enemy);
+
+
+
+		//Create second enemy: burstFireEnemy
+		GameObject burstEnemy = new Entity(
+				Directory.screenManager.getPercentageWidth(40),		//XPos
+				Directory.screenManager.getPercentageHeight(90),	//YPos
+				20,													//Width
+				20,													//Height
+				10,													//Health
+				2,													//Power
+				1													//Defense
+				);
+
+		burstEnemy.setShape(new Ellipse2D.Double(), Color.magenta);
+		burstEnemy.setVisible(true);
+
+		burstEnemy.setTriggerable(true);
+		burstEnemy.addTrigger(new BattleStartTrigger(new EnemyBurstFireState()));
+
+		burstEnemy.setSolid(true);
+
+		addObj(burstEnemy);
+
+
+
+		//Create third enemy: scatterShotEnemy
+		GameObject scatterEnemy = new Entity(
+				Directory.screenManager.getPercentageWidth(62),		//XPos
+				Directory.screenManager.getPercentageHeight(67),	//YPos
+				20,													//Width
+				20,													//Height
+				10,													//Health
+				1,													//Power
+				2													//Defense
+				);
+
+		scatterEnemy.setShape(new Ellipse2D.Double(), Color.black);
+		scatterEnemy.setVisible(true);
+
+		scatterEnemy.setTriggerable(true);
+		scatterEnemy.addTrigger(new BattleStartTrigger(new EnemyScatterShotState()));
+
+		scatterEnemy.setSolid(true);
+
+		addObj(scatterEnemy);
+
+
+
+
+		//Create shop as a gameObject
+		GameObject shop = new GameObject(Directory.screenManager.getPercentageWidth(55.0), Directory.screenManager.getPercentageHeight(20.0), 20, 20);
+		//Set shop shape and visibility
+		shop.setShape(new Ellipse2D.Double(), Color.BLUE);
+		shop.setVisible(true);
+		//Set the shop as triggerable
+		shop.setTriggerable(true);
+		//Set shop trigger
+		shop.addTrigger(new ShopStartTrigger());
+
+		shop.setSolid(true);
+
+		//Add shop to state
+		addObj(shop);
+
+
+
+		//Position player
+		Vector posVector = new Vector(2);
+		posVector.setComponent(0, Directory.screenManager.getPercentageWidth(15.0));
+		posVector.setComponent(1, Directory.screenManager.getPercentageHeight(45.0));
+		Directory.profile.getPlayer().setPos(new Vector(posVector));
+
+		//Update shape in case position has changed
+		Directory.profile.getPlayer().updateShape();
+
+		//Set player state
+		Directory.profile.getPlayer().setState(new PlayerOverworldState());
+		//Directory.profile.getPlayer().setRunning(true);
+
+		Directory.profile.getPlayer().setSolid(true);
+
+		//Add player
+		addObj(Directory.profile.getPlayer());
 	}
 
 	/**
@@ -32,7 +141,7 @@ public class OverworldState extends EngineState {
 		{
 			obj.update();
 		}
-		
+
 
 		//Get copyList (Avoid concurrent modification exceptions)
 		ArrayList<GameObject>copyList = new ArrayList<GameObject>(toRemove);
@@ -45,7 +154,7 @@ public class OverworldState extends EngineState {
 
 		//Check for collisions
 		Directory.collisionManager.update();
-		
+
 		//Get copyList
 		copyList = new ArrayList<GameObject>(toAdd);
 		//add every game object in toAdd
@@ -78,7 +187,7 @@ public class OverworldState extends EngineState {
 	@Override
 	public void enter() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	/**
@@ -87,7 +196,7 @@ public class OverworldState extends EngineState {
 	@Override
 	public void exit() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }
