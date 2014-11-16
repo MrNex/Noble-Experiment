@@ -29,6 +29,19 @@ abstract public class ButtonState extends ObjectState {
 		buttonText = newText;
 		measureString();
 	}
+	
+	/**
+	 * Sets the button as being pressed so it will
+	 * not register as pressed until the mouse is released
+	 * 
+	 * (Primarily used by PopStateButton to ensure when 
+	 * swapping from a menu state to another menu state,
+	 * buttons which appear where the PopStateButton was pressed
+	 * do not get pressed)
+	 */
+	public void setPressed(){
+		pressed = true;
+	}
 
 
 	/**
@@ -56,7 +69,7 @@ abstract public class ButtonState extends ObjectState {
 		font = ButtonState.defaultFont;
 		fontColor = ButtonState.defaultFontColor;
 		
-		pressed = false;
+		pressed = true;
 	}
 
 	/**
@@ -77,6 +90,7 @@ abstract public class ButtonState extends ObjectState {
 		//Get font metrics
 		FontMetrics fMetrics = Directory.screenManager.getGraphics().getFontMetrics(font);
 		textWidth = fMetrics.stringWidth(buttonText);
+		textHeight = fMetrics.getMaxAscent() - fMetrics.getMaxDescent();
 	}
 
 	/**
@@ -148,7 +162,7 @@ abstract public class ButtonState extends ObjectState {
 		g2d.setColor(fontColor);
 		g2d.drawString(buttonText, 
 				(int)(attachedTo.getXPos() + attachedTo.getWidth() / 2.0 - textWidth / 2.0), 
-				(int)(attachedTo.getYPos() + attachedTo.getHeight() / 2.0));
+				(int)(attachedTo.getYPos() + attachedTo.getHeight() / 2.0 + textHeight / 2.0));
 
 		g2d.setFont(save);
 	}

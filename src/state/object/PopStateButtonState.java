@@ -1,5 +1,8 @@
 package state.object;
 
+import objects.GameObject;
+import state.engine.EngineState;
+import state.engine.MenuEngineState;
 import engine.Directory;
 
 /**
@@ -32,7 +35,19 @@ public class PopStateButtonState extends ButtonState{
 	@Override
 	protected void action() {
 		Directory.engine.popState();
-		
+		//If the state underneath is a menustate
+		EngineState currentState = Directory.engine.getCurrentState();
+		if(currentState instanceof MenuEngineState){
+			//loop through objects
+			for(GameObject obj : currentState.getObjListCopy()){
+				ObjectState attachedState = obj.getState();
+				//If the object's state is a button
+				if(attachedState instanceof ButtonState){
+					//Set it as pressed so it doesn't accidently get clicked.
+					((ButtonState)attachedState).setPressed();
+				}
+			}
+		}
 	}
 
 }

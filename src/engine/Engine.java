@@ -3,11 +3,14 @@ package engine;
 import java.awt.Color;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Ellipse2D.Double;
+import java.util.EmptyStackException;
 import java.util.Stack;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.Timer;
+
+
 
 
 
@@ -30,6 +33,7 @@ import loaders.SpriteLoader;
 import mathematics.Vector;
 import objects.*;
 import state.engine.EngineState;
+import state.engine.MainMenuState;
 import state.engine.OverworldState;
 import state.object.EnemyBattleState;
 import state.object.EnemyBurstFireState;
@@ -48,10 +52,10 @@ import triggers.ShopStartTrigger;
 public class Engine {
 
 	//Attributes
-	private boolean running;
 	private Stack<EngineState> stateStack;
 	private Timer drawTimer;
 
+	
 	/**
 	 * Constructs an engine
 	 */
@@ -69,12 +73,7 @@ public class Engine {
 
 		//Initialize the stateStack
 		stateStack = new Stack<EngineState>();
-
-		//Set internal variables
-		running = false;
-
-		//Push current state on stack
-		stateStack.push(new OverworldState());
+		
 
 		//Initialize components
 		Directory.collisionManager = new CollisionManager();	//Create Collision manager
@@ -82,7 +81,6 @@ public class Engine {
 		Directory.screenManager = new ScreenManager();			//Create screen manager
 		Directory.spriteManager = new SpriteManager();			//Create sprite manager
 		Directory.profile = new ProfileManager();				//Create player profile & Constructs player
-
 
 		//Create draw loop
 		drawTimer = new Timer(1000/60, new ActionListener(){
@@ -116,12 +114,10 @@ public class Engine {
 	 */
 	public void start()
 	{
-		//Set running to true
-		running = true;
-
-		//Load the test screen
-		loadTestScreen();
-
+		//Push the main menu state
+		//Push current state on stack
+		stateStack.push(new MainMenuState());	//As long as a state s onthe stackthe engine is running
+		
 		//Start the drawLoop
 		drawTimer.start();
 		
@@ -129,113 +125,6 @@ public class Engine {
 		run();
 	}
 
-	/**
-	 * Loads a test screen or level.
-	 * Temporary for debugging purposes until a proper world-loading pipeline
-	 * is created.
-	 */
-	private void loadTestScreen(){
-		//Create enemy as entity
-		GameObject enemy = new Entity(Directory.screenManager.getPercentageWidth(85.0), Directory.screenManager.getPercentageHeight(45.0), 20, 20, 10, 1, 1);
-		//Set enemy shape and visibility
-		enemy.setShape(new Ellipse2D.Double(), Color.RED);
-		enemy.setVisible(true);
-		//Set the enemy as triggerable
-		enemy.setTriggerable(true);
-		//Set enemy trigger
-		enemy.addTrigger(new BattleStartTrigger(new EnemyBattleState()));
-
-		enemy.setSolid(true);
-
-		//Add enemy to state
-		Directory.engine.getCurrentState().addObj(enemy);
-		
-		
-		
-		//Create second enemy: burstFireEnemy
-		GameObject burstEnemy = new Entity(
-				Directory.screenManager.getPercentageWidth(40),		//XPos
-				Directory.screenManager.getPercentageHeight(90),	//YPos
-				20,													//Width
-				20,													//Height
-				10,													//Health
-				2,													//Power
-				1													//Defense
-				);
-		
-		burstEnemy.setShape(new Ellipse2D.Double(), Color.magenta);
-		burstEnemy.setVisible(true);
-		
-		burstEnemy.setTriggerable(true);
-		burstEnemy.addTrigger(new BattleStartTrigger(new EnemyBurstFireState()));
-		
-		burstEnemy.setSolid(true);
-		
-		Directory.engine.getCurrentState().addObj(burstEnemy);
-		
-		
-		
-		//Create third enemy: scatterShotEnemy
-		GameObject scatterEnemy = new Entity(
-				Directory.screenManager.getPercentageWidth(62),		//XPos
-				Directory.screenManager.getPercentageHeight(67),	//YPos
-				20,													//Width
-				20,													//Height
-				10,													//Health
-				1,													//Power
-				2													//Defense
-				);
-		
-		scatterEnemy.setShape(new Ellipse2D.Double(), Color.black);
-		scatterEnemy.setVisible(true);
-		
-		scatterEnemy.setTriggerable(true);
-		scatterEnemy.addTrigger(new BattleStartTrigger(new EnemyScatterShotState()));
-		
-		scatterEnemy.setSolid(true);
-		
-		Directory.engine.getCurrentState().addObj(scatterEnemy);
-		
-		
-		
-		
-		//Create shop as a gameObject
-		GameObject shop = new GameObject(Directory.screenManager.getPercentageWidth(55.0), Directory.screenManager.getPercentageHeight(20.0), 20, 20);
-		//Set shop shape and visibility
-		shop.setShape(new Ellipse2D.Double(), Color.BLUE);
-		shop.setVisible(true);
-		//Set the shop as triggerable
-		shop.setTriggerable(true);
-		//Set shop trigger
-		shop.addTrigger(new ShopStartTrigger());
-
-		shop.setSolid(true);
-
-		//Add shop to state
-		Directory.engine.getCurrentState().addObj(shop);
-
-
-
-		//Position player
-		Vector posVector = new Vector(2);
-		posVector.setComponent(0, Directory.screenManager.getPercentageWidth(15.0));
-		posVector.setComponent(1, Directory.screenManager.getPercentageHeight(45.0));
-		Directory.profile.getPlayer().setPos(new Vector(posVector));
-
-		//Update shape in case position has changed
-		Directory.profile.getPlayer().updateShape();
-
-		//Set player state
-		Directory.profile.getPlayer().setState(new PlayerOverworldState());
-		//Directory.profile.getPlayer().setRunning(true);
-
-		Directory.profile.getPlayer().setSolid(true);
-
-		//Add player
-		Directory.engine.getCurrentState().addObj(Directory.profile.getPlayer());
-		
-		//Directory.profile.addGold(200);
-	}
 
 	/**
 	 * This is the run loop for the engine.
@@ -243,15 +132,20 @@ public class Engine {
 	 */
 	private void run()
 	{
-		while(running)
+		while(isRunning())
 		{
 			Directory.inputManager.update();
 			getCurrentState().update();
 			Directory.spriteManager.update();
 			Directory.screenManager.updateHud();
-
-
 		}
+		
+		//When the engine is no longer running, close the application
+		System.exit(0);
+	}
+	
+	public boolean isRunning(){
+		return getCurrentState() != null;
 	}
 
 	/**
@@ -275,7 +169,14 @@ public class Engine {
 	 */
 	public EngineState getCurrentState()
 	{
-		return stateStack.peek();
+		EngineState returnState;
+		try{
+			returnState = stateStack.peek();
+		}
+		catch(EmptyStackException e){
+			returnState = null;
+		}
+		return returnState;
 	}
 
 	/**
