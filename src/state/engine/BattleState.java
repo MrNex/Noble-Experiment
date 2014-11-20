@@ -140,8 +140,10 @@ public class BattleState extends EngineState{
 		//Create operator displays
 		//Addition
 		GameObject additionDisplay = new GameObject(Directory.screenManager.getPercentageWidth(20.0), Directory.screenManager.getPercentageHeight(85.0),
-				Directory.screenManager.getPercentageWidth(5.0), Directory.screenManager.getPercentageHeight(15.0));
+				Directory.screenManager.getPercentageWidth(7.0), Directory.screenManager.getPercentageHeight(15.0));
 		additionDisplay.setShape(new Rectangle2D.Double(), new Color(255, 0, 0, 255));
+		additionDisplay.setSprite(Directory.spriteLibrary.get("CardAddition"));
+		additionDisplay.getSprite().queueAnimation(0, true);
 		additionDisplay.setVisible(true);
 		additionDisplay.pushState(new OperatorDisplayState("+"){
 
@@ -157,8 +159,10 @@ public class BattleState extends EngineState{
 		
 		//Subtraction
 		GameObject subtractionDisplay = new GameObject(Directory.screenManager.getPercentageWidth(40.0), Directory.screenManager.getPercentageHeight(85.0),
-				Directory.screenManager.getPercentageWidth(5.0), Directory.screenManager.getPercentageHeight(15.0));
+				Directory.screenManager.getPercentageWidth(7.0), Directory.screenManager.getPercentageHeight(15.0));
 		subtractionDisplay.setShape(new Rectangle2D.Double(), new Color(255, 0, 0, 255));
+		subtractionDisplay.setSprite(Directory.spriteLibrary.get("CardSubtraction"));
+		subtractionDisplay.getSprite().queueAnimation(0, true);
 		subtractionDisplay.setVisible(true);
 		subtractionDisplay.pushState(new OperatorDisplayState("-"){
 
@@ -175,8 +179,10 @@ public class BattleState extends EngineState{
 		
 		//Multiplication
 		GameObject multiplicationDisplay = new GameObject(Directory.screenManager.getPercentageWidth(60.0), Directory.screenManager.getPercentageHeight(85.0),
-				Directory.screenManager.getPercentageWidth(5.0), Directory.screenManager.getPercentageHeight(15.0));
+				Directory.screenManager.getPercentageWidth(7.0), Directory.screenManager.getPercentageHeight(15.0));
 		multiplicationDisplay.setShape(new Rectangle2D.Double(), new Color(255, 0, 0, 255));
+		multiplicationDisplay.setSprite(Directory.spriteLibrary.get("CardMultiplication"));
+		multiplicationDisplay.getSprite().queueAnimation(0, true);
 		multiplicationDisplay.setVisible(true);
 		multiplicationDisplay.pushState(new OperatorDisplayState("*"){
 
@@ -193,8 +199,10 @@ public class BattleState extends EngineState{
 		
 		//Division
 		GameObject divisionDisplay = new GameObject(Directory.screenManager.getPercentageWidth(80.0), Directory.screenManager.getPercentageHeight(85.0),
-				Directory.screenManager.getPercentageWidth(5.0), Directory.screenManager.getPercentageHeight(15.0));
+				Directory.screenManager.getPercentageWidth(7.0), Directory.screenManager.getPercentageHeight(15.0));
 		divisionDisplay.setShape(new Rectangle2D.Double(), new Color(255, 0, 0, 255));
+		divisionDisplay.setSprite(Directory.spriteLibrary.get("CardDivision"));
+		divisionDisplay.getSprite().queueAnimation(0, true);
 		divisionDisplay.setVisible(true);
 		divisionDisplay.pushState(new OperatorDisplayState("/"){
 
