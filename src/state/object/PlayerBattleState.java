@@ -18,6 +18,9 @@ import state.engine.BattleState;
  */
 public class PlayerBattleState extends TargetableState{
 
+	//Static attributes
+	private static int animationTime = 3;			//Set amount of time player animates after an attack to 3 seconds
+	
 	//attributes
 	private int numAddOp;
 	private int numSubOp;
@@ -26,6 +29,9 @@ public class PlayerBattleState extends TargetableState{
 	private String answerString;
 	private Entity currentTarget;
 	private int targetIndex;
+	private double previousTime;
+	private double elapsedTime;
+	private boolean hasAttacked;
 
 	//Accessors / Modifiers
 	/**
@@ -102,6 +108,8 @@ public class PlayerBattleState extends TargetableState{
 		answerString = "";
 		currentTarget = null;
 		targetIndex = -1;
+		elapsedTime = 0;
+		previousTime = 0;
 	}
 
 	/**
@@ -139,6 +147,12 @@ public class PlayerBattleState extends TargetableState{
 
 		//Toggle target to select first target
 		toggleTarget();
+		
+		//Set previousTime to currentTime
+		previousTime = System.currentTimeMillis();
+		
+		//Player has not yet attacked
+		hasAttacked = false;
 	}
 
 	/**
@@ -153,6 +167,24 @@ public class PlayerBattleState extends TargetableState{
 	@Override
 	public void update() {
 		super.update();
+		
+		if(hasAttacked){
+			//Reset player's stance if time has allotted
+			double currentTime = System.currentTimeMillis();
+			elapsedTime += (currentTime - previousTime) / 1000.0;
+			
+			if(elapsedTime > animationTime){
+				elapsedTime = 0;
+				hasAttacked = false;
+				// change player's stance
+				attachedTo.getSprite().queueAnimation(0, true);
+			}		
+			previousTime = currentTime;
+		}
+		else{
+			//Set previousTime to currentTime
+			previousTime = System.currentTimeMillis();
+		}
 
 		//If at any point there is no target or the target is dead, or the target is no longer targetable find a target
 		if(currentTarget == null || currentTarget.getCurrentHealth() <= 0 || !(currentTarget.getState() instanceof TargetableState)){
@@ -520,6 +552,10 @@ public class PlayerBattleState extends TargetableState{
 		if(targetState.submitAnswer(new Equation(answer), submitPower)){
 
 			System.out.println("Correct");
+			
+			// change player's stance
+			attachedTo.getSprite().queueAnimation(1, true);
+			hasAttacked = true;
 
 			//Add the operators from solved equation to the player
 			numAddOp += targetState.getEquation().getAdditionOperators();
@@ -539,9 +575,6 @@ public class PlayerBattleState extends TargetableState{
 				targetState.generateNewEquation();
 
 			}
-			
-			// change player's stance
-			attachedTo.getSprite().queueAnimation(1, false);
 		}
 		else{
 			System.out.println("Wrong");

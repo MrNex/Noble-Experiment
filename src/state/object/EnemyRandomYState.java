@@ -84,7 +84,7 @@ public class EnemyRandomYState extends TargetableState{
 		attachedTo.updateShape();
 		
 		//Set players sprite
-		getAttachedEntity().setSprite(Directory.spriteLibrary.get("Lich"));
+		getAttachedEntity().setSprite(Directory.spriteLibrary.get("Shade"));
 		
 		//Run animation
 		attachedTo.getSprite().queueAnimation(0, true);
