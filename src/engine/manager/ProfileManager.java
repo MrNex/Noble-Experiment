@@ -129,6 +129,13 @@ public class ProfileManager extends Manager{
 		gold -= goldToRemove;
 		return true;
 	}
+	
+	/**
+	 * Returns player's current amount of gold
+	 */
+	public int getGold(){
+		return gold;
+	}
 
 	/**
 	 * Generates the next amount of exp needed to level up

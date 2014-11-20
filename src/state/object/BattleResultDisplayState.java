@@ -84,13 +84,14 @@ public class BattleResultDisplayState extends ObjectState{
 		opponentStats[3] = "Defense:\t" + opponent.getDefense();
 		
 		//Declare profile stats
-		profileStats = new String[4];
+		profileStats = new String[5];
 		
 		//Write profile stats
 		profileStats[0] = "Profile Stats:";
 		profileStats[1] = "Equations solved:\t" + Directory.profile.getEquationsSolved();
 		profileStats[2] = "Equations made:\t" + Directory.profile.getEquationsMade();
 		profileStats[3] = "Wrong answers:\t" + Directory.profile.getWrongAnswers();
+		profileStats[4] = "Current Gold:\t" + Directory.profile.getGold();
 		
 	}
 

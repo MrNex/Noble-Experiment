@@ -264,6 +264,13 @@ public class BattleState extends EngineState{
 			//Check if the battle is over
 			if(isBattleOver()){
 				isBattleOver = true;
+				
+				// if player has won, give gold
+				if(isPlayerWinner()){
+					//Add gold to the player based on loser's stats
+					Directory.profile.addGold(competitor2.getTotalHealth() * competitor2.getPower() * competitor2.getDefense());
+				}
+				
 				displayResults();
 			}
 		}
@@ -295,6 +302,24 @@ public class BattleState extends EngineState{
 	 */
 	private boolean isBattleOver(){
 		if(competitor1.getCurrentHealth() <=0 || competitor2.getCurrentHealth() <= 0) return true;
+		return false;
+	}
+	
+	/**
+	 * Determines if player has won yet
+	 * @return true if player is winner
+	 */
+	private boolean isPlayerWinner(){
+		// if player's health is <=0, player has not won
+		if(competitor1.getCurrentHealth() <= 0){
+			return false;
+		}
+		// else if enemy's health is <=0, player has won
+		else if(competitor2.getCurrentHealth() <= 0){
+			return true;
+		}
+		
+		// else, player has not won yet
 		return false;
 	}
 	
@@ -342,7 +367,16 @@ public class BattleState extends EngineState{
 		//Determine winner and loser
 		Entity loser;
 		Entity winner;
-
+		
+		if(isPlayerWinner()){
+			loser = competitor2;
+			winner = competitor1;
+		} else {
+			loser = competitor1;
+			winner = competitor2;
+		}		
+		
+/*
 		if(competitor1.getCurrentHealth() <= 0){
 			loser = competitor1;
 			winner = competitor2;
@@ -357,7 +391,7 @@ public class BattleState extends EngineState{
 			//Add gold to the player based on losers stats
 			Directory.profile.addGold(loser.getTotalHealth() * loser.getPower() * loser.getDefense());
 		}
-
+*/
 		//Pop the state of the winner (Revert to whatever state was prior the battle)
 		winner.popState();
 
