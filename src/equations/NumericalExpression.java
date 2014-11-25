@@ -20,6 +20,6 @@ public class NumericalExpression extends Expression{
 	@Override
 	public String toString() {
 		//Return the value as string
-		return Double.toString(value);
+		return String.format("%d", (int)(value));
 	}
 }

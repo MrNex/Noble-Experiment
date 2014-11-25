@@ -41,6 +41,18 @@ public class AbilityPurchaseButtonState extends ButtonState {
 		// TODO Auto-generated method stub
 
 	}
+	
+	@Override
+	public void update()
+	{
+		super.update();
+		if(Directory.profile.isAbilityUnlocked(ability)){
+			//If the ability this button unlocks is already unlocked,
+			//Remove it from the current state
+			Directory.engine.getCurrentState().removeObj(attachedTo);
+		}
+		
+	}
 
 	/**
 	 * Actions performed when this button is clicked with the mouse
@@ -60,11 +72,7 @@ public class AbilityPurchaseButtonState extends ButtonState {
 				Directory.profile.unlockAbility(ability);
 			}
 		}
-		else{
-			//If the ability this button unlocks is already unlocked,
-			//Remove it from the current state
-			Directory.engine.getCurrentState().removeObj(attachedTo);
-		}
+
 
 	}
 

@@ -159,6 +159,8 @@ public class OverworldState extends EngineState {
 
 		//Add player
 		addObj(Directory.profile.getPlayer());
+		
+		Directory.profile.addGold(15);
 	}
 
 	/**
