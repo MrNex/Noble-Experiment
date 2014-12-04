@@ -17,9 +17,11 @@ import objects.GameObject;
 import state.object.AbilityPurchaseButtonState;
 import state.object.ButtonState;
 import state.object.DefenseUpgradeButtonState;
+import state.object.GoldTextDisplayState;
 import state.object.HealthUpgradeButtonState;
 import state.object.PopStateButtonState;
 import state.object.PowerUpgradeButtonState;
+import state.object.TextDisplayState;
 
 //TODO: add button, button selection, as means of leaving
 
@@ -67,6 +69,16 @@ public class ShopState extends EngineState {
 
 		//Add background
 		addObj(background);
+		
+		//Create label for player's gold
+		GameObject playerGold = new GameObject(
+				Directory.screenManager.getPercentageWidth(5.0), Directory.screenManager.getPercentageHeight(2.0),
+				Directory.screenManager.getPercentageWidth(15.0), Directory.screenManager.getPercentageHeight(5.0)
+				);
+		playerGold.setShape(new Rectangle2D.Double(), Color.white);
+		playerGold.setVisible(true);
+		playerGold.setState(new GoldTextDisplayState());
+		addObj(playerGold);
 
 		//Create health purchase button
 		GameObject healthUpgradeButton = new GameObject(
