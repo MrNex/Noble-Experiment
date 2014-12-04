@@ -111,7 +111,6 @@ abstract public class ButtonState extends ObjectState {
 			Vector mousePos = Directory.inputManager.getMousePosition();
 			//If the button contains the mouse
 			if(attachedTo.contains(mousePos.getComponent(0), mousePos.getComponent(1))){
-				System.out.println("Contains: " + mousePos.toString());
 				//If the LMB is being pressed
 				if(Directory.inputManager.isMouseButtonPressed(MouseEvent.BUTTON1)){
 					action();

@@ -31,8 +31,7 @@ import state.object.PowerUpgradeButtonState;
 public class ShopState extends EngineState {
 
 	//Attributes
-	private Entity player;
-	private GameObject shop;	
+	private GameObject shopKeeper;	
 
 	/**
 	 * Constructs shop state
@@ -42,8 +41,7 @@ public class ShopState extends EngineState {
 		super();
 
 		//Assign member variables
-		player = triggeredBy;
-		shop = attachedTo;
+		shopKeeper = attachedTo;
 
 	}
 
@@ -73,7 +71,7 @@ public class ShopState extends EngineState {
 		//Create health purchase button
 		GameObject healthUpgradeButton = new GameObject(
 				Directory.screenManager.getPercentageWidth(15.0), Directory.screenManager.getPercentageHeight(10.0),
-				Directory.screenManager.getPercentageWidth(25.0), Directory.screenManager.getPercentageHeight(5.0));
+				Directory.screenManager.getPercentageWidth(42.0), Directory.screenManager.getPercentageHeight(5.0));
 
 		healthUpgradeButton.setShape(new Rectangle2D.Double(), Color.white);
 		healthUpgradeButton.setVisible(true);
@@ -85,7 +83,7 @@ public class ShopState extends EngineState {
 		//Create power button
 		GameObject powerUpgradeButton = new GameObject(
 				Directory.screenManager.getPercentageWidth(15.0), Directory.screenManager.getPercentageHeight(20.0),
-				Directory.screenManager.getPercentageWidth(25.0), Directory.screenManager.getPercentageHeight(5.0));
+				Directory.screenManager.getPercentageWidth(42.0), Directory.screenManager.getPercentageHeight(5.0));
 
 		powerUpgradeButton.setShape(new Rectangle2D.Double(), Color.white);
 		powerUpgradeButton.setVisible(true);
@@ -96,7 +94,7 @@ public class ShopState extends EngineState {
 		//Create defense purchase button
 		GameObject defenseUpgradeButton = new GameObject(
 				Directory.screenManager.getPercentageWidth(15.0), Directory.screenManager.getPercentageHeight(30.0),
-				Directory.screenManager.getPercentageWidth(25.0), Directory.screenManager.getPercentageHeight(5.0));
+				Directory.screenManager.getPercentageWidth(42.0), Directory.screenManager.getPercentageHeight(5.0));
 
 		defenseUpgradeButton.setShape(new Rectangle2D.Double(), Color.white);
 		defenseUpgradeButton.setVisible(true);
@@ -107,7 +105,7 @@ public class ShopState extends EngineState {
 		//Create ability purchase buttons
 		GameObject addativeDamageAbilityButton = new GameObject(
 				Directory.screenManager.getPercentageWidth(15.0), Directory.screenManager.getPercentageHeight(40.0),
-				Directory.screenManager.getPercentageWidth(25.0), Directory.screenManager.getPercentageHeight(5.0));
+				Directory.screenManager.getPercentageWidth(42.0), Directory.screenManager.getPercentageHeight(5.0));
 		
 		addativeDamageAbilityButton.setShape(new Rectangle2D.Double(), Color.white);
 		addativeDamageAbilityButton.setVisible(true);
@@ -190,20 +188,13 @@ public class ShopState extends EngineState {
 	}
 
 	/**
-	 * Resolves shopState and pops state off stack, moving back to overworld state
-	 */
-	private void leaveShop(){
-		player.popState();
-		shop.popState();
-		Directory.engine.popState();
-	}
-
-	/**
 	 * Resolves shopState, moving back to overworld state
+	 * Pops shopKeeper's state and player's state.
 	 */
 	@Override
 	public void exit() {
-		player.popState();
-		shop.popState();		
+		System.out.println("Exiting");
+		Directory.profile.getPlayer().popState();
+		shopKeeper.popState();		
 	}
 }

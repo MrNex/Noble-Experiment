@@ -36,7 +36,7 @@ public class ShopStartTrigger extends Trigger {
 			//Push a shopState to the stateStack
 			Directory.engine.pushState(new ShopState((Entity)triggeredBy, (GameObject)attachedTo));
 			
-			//Set state of shop
+			//Set state of shopKeeper
 			attachedTo.pushState(new ObjectShopState());
 			
 			//Set state of player

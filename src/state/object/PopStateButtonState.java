@@ -4,6 +4,7 @@ import objects.GameObject;
 import state.engine.EngineState;
 import state.engine.MenuEngineState;
 import engine.Directory;
+import state.object.ButtonState;
 
 /**
  * Defines a button state which when pressed
@@ -43,8 +44,10 @@ public class PopStateButtonState extends ButtonState{
 				ObjectState attachedState = obj.getState();
 				//If the object's state is a button
 				if(attachedState instanceof ButtonState){
+					ButtonState bState = (ButtonState)attachedState;
 					//Set it as pressed so it doesn't accidently get clicked.
-					((ButtonState)attachedState).setPressed();
+					//((ButtonState)attachedState).setPressed();
+					bState.setPressed();
 				}
 			}
 		}
