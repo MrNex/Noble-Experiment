@@ -17,7 +17,7 @@ import state.engine.BattleState;
 public class EnemyBurstFireState extends TargetableState{
 
 	//STatic attributes
-	private static double shotSpeed = 100;		//Set all burst enemies projectile speed to 100
+	private static double shotSpeed = 50;		//Set all burst enemies projectile speed to 50
 	
 	//Attributes
 	private Vector worldPos;

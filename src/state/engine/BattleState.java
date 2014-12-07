@@ -273,10 +273,11 @@ public class BattleState extends EngineState{
 			if(isBattleOver()){
 				isBattleOver = true;
 				
-				// if player has won, give gold
+				// if player has won, give gold and increment enemiesDefeated
 				if(isPlayerWinner()){
 					//Add gold to the player based on loser's stats
 					Directory.profile.addGold(competitor2.getTotalHealth() * competitor2.getPower() * competitor2.getDefense());
+					Directory.profile.addEnemiesDefeated(1);
 				}
 				
 				displayResults();

@@ -34,6 +34,7 @@ public class ProfileManager extends Manager{
 	private int gold;
 	private int level;
 	private int currentExp, expNeeded;
+	private int enemiesDefeated;
 	
 	//ability attributes
 	private boolean abilities[];
@@ -60,6 +61,7 @@ public class ProfileManager extends Manager{
 		level = 0;
 		currentExp = 0;
 		expNeeded = generateNextExpTier();
+		enemiesDefeated = 0;
 		
 		//Initialize abilities array
 		abilities = new boolean[NUM_ABILITIES];
@@ -117,6 +119,16 @@ public class ProfileManager extends Manager{
 		gold += goldToAdd;
 	}
 	
+	
+	/**
+	 * Adds enemies to number of enemies defeated
+	 * @param enemies The amount of enemies to add
+	 */
+	public void addEnemiesDefeated(int enemies){
+		enemiesDefeated += enemies;
+	}
+	
+	
 	/**
 	 * Attempts to remove an amount of gold from the profile
 	 * Returns true if the transaction was a success,
@@ -143,6 +155,14 @@ public class ProfileManager extends Manager{
 	 */
 	private int generateNextExpTier(){
 		return (int)(100 + Math.pow(10, level));
+	}
+	
+	/**
+	 * Returns the number of enemies defeated by the player
+	 * @return the number of enemies defeated by the player
+	 */
+	public int getEnemiesDefeated(){
+		return enemiesDefeated;
 	}
 
 	/**

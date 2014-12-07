@@ -18,6 +18,9 @@ import triggers.BattleStartTrigger;
 import triggers.ShopStartTrigger;
 
 public class OverworldState extends EngineState {
+	
+	//Static Attributes
+	private static int numEnemies = 8;								// Number of enemies in the game
 
 	public OverworldState() {
 		super();
@@ -28,18 +31,16 @@ public class OverworldState extends EngineState {
 	public void init(){
 		super.init();
 
-		//Create enemy as entity
-		//GameObject enemy = new Entity(Directory.screenManager.getPercentageWidth(85.0), Directory.screenManager.getPercentageHeight(45.0), 20, 20, 10, 1, 1);
-		//Create second enemy: burstFireEnemy
-			GameObject enemy = new Entity(
-					Directory.screenManager.getPercentageWidth(20),		//XPos
-					Directory.screenManager.getPercentageHeight(80),	//YPos
-					20,													//Width
-					20,													//Height
-					10,													//Health
-					1,													//Power
-					1													//Defense
-					);		
+		//Create first enemy: enemy
+		GameObject enemy = new Entity(
+				Directory.screenManager.getPercentageWidth(20),		//XPos
+				Directory.screenManager.getPercentageHeight(80),	//YPos
+				20,													//Width
+				20,													//Height
+				10,													//Health
+				1,													//Power
+				1													//Defense
+				);		
 		
 		//Set enemy shape and visibility
 		enemy.setShape(new Ellipse2D.Double(), Color.black);
@@ -53,12 +54,31 @@ public class OverworldState extends EngineState {
 
 		//Add enemy to state
 		addObj(enemy);
-
-
-
-		//Create second enemy: burstFireEnemy
-		GameObject burstEnemy = new Entity(
+		
+		//Create second enemy: enemy1
+		GameObject enemy1 = new Entity(
 				Directory.screenManager.getPercentageWidth(40),		//XPos
+				Directory.screenManager.getPercentageHeight(80),	//YPos
+				20,													//Width
+				20,													//Height
+				10,													//Health
+				2,													//Power
+				1													//Defense
+				);
+
+		enemy1.setShape(new Ellipse2D.Double(), Color.black);
+		enemy1.setVisible(true);
+
+		enemy1.setTriggerable(true);
+		enemy1.addTrigger(new BattleStartTrigger(new EnemyBattleState()));
+
+		enemy1.setSolid(true);
+
+		addObj(enemy1);
+		
+		//Create third enemy: burstFireEnemy
+		GameObject burstEnemy = new Entity(
+				Directory.screenManager.getPercentageWidth(60),		//XPos
 				Directory.screenManager.getPercentageHeight(80),	//YPos
 				20,													//Width
 				20,													//Height
@@ -76,30 +96,6 @@ public class OverworldState extends EngineState {
 		burstEnemy.setSolid(true);
 
 		addObj(burstEnemy);
-
-
-
-		//Create third enemy: scatterShotEnemy
-		GameObject scatterEnemy = new Entity(
-				Directory.screenManager.getPercentageWidth(60),		//XPos
-				Directory.screenManager.getPercentageHeight(80),	//YPos
-				20,													//Width
-				20,													//Height
-				10,													//Health
-				1,													//Power
-				2													//Defense
-				);
-
-		scatterEnemy.setShape(new Ellipse2D.Double(), Color.red);
-		scatterEnemy.setVisible(true);
-
-		scatterEnemy.setTriggerable(true);
-		scatterEnemy.addTrigger(new BattleStartTrigger(new EnemyScatterShotState()));
-
-		scatterEnemy.setSolid(true);
-
-		addObj(scatterEnemy);
-		
 		
 		//Create fourth enemy: randomYEnemy
 		GameObject randomYEnemy = new Entity(
@@ -107,7 +103,7 @@ public class OverworldState extends EngineState {
 				Directory.screenManager.getPercentageHeight(80),	//YPos
 				20,													//Width
 				20,													//Height
-				10,													//Health
+				20,													//Health
 				1,													//Power
 				1													//Defense
 				);
@@ -121,12 +117,78 @@ public class OverworldState extends EngineState {
 		randomYEnemy.setSolid(true);
 
 		addObj(randomYEnemy);
+		
+		//Create fifth enemy: enemy2
+		GameObject enemy2 = new Entity(
+				Directory.screenManager.getPercentageWidth(80),		//XPos
+				Directory.screenManager.getPercentageHeight(60),	//YPos
+				20,													//Width
+				20,													//Height
+				30,													//Health
+				2,													//Power
+				1													//Defense
+				);
 
+		enemy2.setShape(new Ellipse2D.Double(), Color.black);
+		enemy2.setVisible(true);
 
+		enemy2.setTriggerable(true);
+		enemy2.addTrigger(new BattleStartTrigger(new EnemyBattleState()));
 
+		enemy2.setSolid(true);
+
+		addObj(enemy2);
+		
+		//Create sixth enemy: burstFireEnemy1
+		GameObject burstEnemy1 = new Entity(
+				Directory.screenManager.getPercentageWidth(80),		//XPos
+				Directory.screenManager.getPercentageHeight(40),	//YPos
+				20,													//Width
+				20,													//Height
+				20,													//Health
+				2,													//Power
+				1													//Defense
+				);
+
+		burstEnemy1.setShape(new Ellipse2D.Double(), Color.lightGray);
+		burstEnemy1.setVisible(true);
+
+		burstEnemy1.setTriggerable(true);
+		burstEnemy1.addTrigger(new BattleStartTrigger(new EnemyBurstFireState()));
+
+		burstEnemy1.setSolid(true);
+
+		addObj(burstEnemy1);
+		
+		//Create seventh enemy: randomYEnemy1
+		GameObject randomYEnemy1 = new Entity(
+				Directory.screenManager.getPercentageWidth(80),		//XPos
+				Directory.screenManager.getPercentageHeight(20),	//YPos
+				20,													//Width
+				20,													//Height
+				20,													//Health
+				2,													//Power
+				2													//Defense
+				);
+
+		randomYEnemy1.setShape(new Ellipse2D.Double(), Color.darkGray);
+		randomYEnemy1.setVisible(true);
+
+		randomYEnemy1.setTriggerable(true);
+		randomYEnemy1.addTrigger(new BattleStartTrigger(new EnemyRandomYState()));
+
+		randomYEnemy1.setSolid(true);
+
+		addObj(randomYEnemy1);
+		
 
 		//Create shop as a gameObject
-		GameObject shop = new GameObject(Directory.screenManager.getPercentageWidth(55.0), Directory.screenManager.getPercentageHeight(20.0), 20, 20);
+		GameObject shop = new GameObject(
+				Directory.screenManager.getPercentageWidth(55.0),	//XPos
+				Directory.screenManager.getPercentageHeight(20.0),	//YPos
+				20,													//Width
+				20													//Height
+				);
 		//Set shop shape and visibility
 		shop.setShape(new Ellipse2D.Double(), Color.BLUE);
 		shop.setVisible(true);
@@ -160,12 +222,12 @@ public class OverworldState extends EngineState {
 		//Add player
 		addObj(Directory.profile.getPlayer());
 		
-		Directory.profile.addGold(15);
+		Directory.profile.addGold(3000);//15);
 	}
 
 	/**
 	 * Updates every object in this state,
-	 * Checks for collsions
+	 * Checks for collisions
 	 * removes objects from the state which must be removed
 	 * Adds objects to the state that must be added
 	 * And clears the input manager
@@ -187,6 +249,30 @@ public class OverworldState extends EngineState {
 			objects.remove(obj);
 		}
 		toRemove.removeAll(copyList);
+		
+		// add in boss once all enemies are defeated
+		if(Directory.profile.getEnemiesDefeated() >= numEnemies-1){
+			//Create final enemy: scatterShotEnemy
+			GameObject scatterEnemy = new Entity(
+					Directory.screenManager.getPercentageWidth(80),		//XPos
+					Directory.screenManager.getPercentageHeight(20),	//YPos
+					20,													//Width
+					20,													//Height
+					30,													//Health
+					1,													//Power
+					2													//Defense
+					);
+	
+			scatterEnemy.setShape(new Ellipse2D.Double(), Color.red);
+			scatterEnemy.setVisible(true);
+	
+			scatterEnemy.setTriggerable(true);
+			scatterEnemy.addTrigger(new BattleStartTrigger(new EnemyScatterShotState()));
+	
+			scatterEnemy.setSolid(true);
+			
+			addObj(scatterEnemy);
+		}
 
 		//Check for collisions
 		Directory.collisionManager.update();
