@@ -481,7 +481,30 @@ public class PlayerBattleState extends TargetableState{
 				if(Directory.profile.isAbilityUnlocked(Abilities.ADDATIVE_DAMAGE)){
 					//Multiply power by the number of operators used
 					pow *= submission.getNumOperators();
+					
+					for(int i = 0; i < submission.getExpressionList().size(); i++){
+						System.out.println(submission.getExpressionList().get(i).toString());
+						if(submission.getExpressionList().get(i).toString().equals("0")){
+							pow -= getAttachedEntity().getPower();
+							System.out.println("Decrementing power: " + pow);
+
+						}
+						else if(submission.getExpressionList().get(i).toString().equals("1")){
+							if(i >= 2){
+								if(submission.getExpressionList().get(i - 1).toString().equals(" * ") ||
+										submission.getExpressionList().get(i - 1).toString().equals(" / ")
+										){
+									pow -= getAttachedEntity().getPower();
+									System.out.println("Decrementing power: " + pow);
+
+								}
+							}	
+						}
+					}
 				}
+				
+				//If the damage is 0, make it at least one
+				if(pow <= 0) pow = 1;
 								
 				//send answer to current target
 				if(targetState.submitAnswer(submission, pow)){
