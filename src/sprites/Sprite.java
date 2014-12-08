@@ -28,7 +28,9 @@ public class Sprite {
 	int frameXPos, frameYPos;
 	boolean repeating;
 	
-	
+	public void setRepeating(boolean r){
+		repeating = r;
+	}
 	
 	/**
 	 * Constructs a Sprite
@@ -62,6 +64,8 @@ public class Sprite {
 		frameYPos = currentRow * frameHeight;
 	}
 	
+	
+	
 	/**
 	 * Queues an animation to be played
 	 * 
@@ -74,6 +78,11 @@ public class Sprite {
 	public void queueAnimation(int row, boolean repeat){
 		//Create instruction set
 		animationQueue.add(new AnimationInstruction(row, repeat));
+	}
+	
+	public void playAnimation(int row, boolean repeat){
+		repeating = repeat;
+		currentRow = row;
 	}
 	
 	/**

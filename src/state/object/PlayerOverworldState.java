@@ -66,10 +66,10 @@ public class PlayerOverworldState extends MovableObjectState{
 		
 		//Set the sprite to testspritesheet (until image for overworld state is made)
 		//Now sets the sprite to a test spritesheet
-		attachedTo.setSprite(Directory.spriteLibrary.get("SpriteSheetTest"));
+		attachedTo.setSprite(Directory.spriteLibrary.get("HeroOverworld"));
 		
 		//Queue up an animation of row 0 in spritesheet to repeat
-		attachedTo.getSprite().queueAnimation(0, true);
+		attachedTo.getSprite().queueAnimation(0, false);
 		
 		//Start timing movement by getting previous time
 		previousTime = System.currentTimeMillis();
@@ -92,25 +92,38 @@ public class PlayerOverworldState extends MovableObjectState{
 		//Create a translation vector
 		Vector translation = new Vector(2);
 
+		boolean moving = false;
 		
 		//Determine which keys are pressed
 		if(Directory.inputManager.isKeyPressed('w')){
 			//Set translation Vector to move up
 			translation.setComponent(1, translation.getComponent(1)-movement);
+			attachedTo.getSprite().playAnimation(3, true);
+			moving = true;
 		}
 		if(Directory.inputManager.isKeyPressed('s')){
 			//Set translation vector to move down
 			translation.setComponent(1, translation.getComponent(1) + movement);
+			attachedTo.getSprite().playAnimation(2, true);
+			moving = true;
+
 		}
 		if(Directory.inputManager.isKeyPressed('a')){
 			//Set translation Vector to move left
 			translation.setComponent(0, translation.getComponent(0)-movement);
+			attachedTo.getSprite().playAnimation(0, true);
+			moving = true;
+
 		}
 		if(Directory.inputManager.isKeyPressed('d')){
 			//Set translation Vector to move right
 			translation.setComponent(0, translation.getComponent(0)+movement);
-		}
+			attachedTo.getSprite().playAnimation(1, true);
+			moving = true;
 
+		}
+		
+		if(!moving) attachedTo.getSprite().setRepeating(false);
 		
 		//Move this gameObject
 		getAttachedMObj().move(translation);
