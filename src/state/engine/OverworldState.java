@@ -30,11 +30,27 @@ public class OverworldState extends EngineState {
 	@Override
 	public void init(){
 		super.init();
+		
+		//Background object
+		GameObject background = new GameObject(
+				0, 
+				0, 
+				Directory.screenManager.getPercentageWidth(100), 
+				Directory.screenManager.getPercentageHeight(100)
+				);
+		
+		//Set background image
+		background.setSprite(Directory.spriteLibrary.get("Overworld"));
+		background.setVisible(true);
+		
+		//Add background to state
+		addObj(background);
+		
 
 		//Create first enemy: enemy
 		GameObject enemy = new Entity(
-				Directory.screenManager.getPercentageWidth(20),		//XPos
-				Directory.screenManager.getPercentageHeight(80),	//YPos
+				Directory.screenManager.getPercentageWidth(14),		//XPos
+				Directory.screenManager.getPercentageHeight(67),	//YPos
 				20,													//Width
 				20,													//Height
 				10,													//Health
@@ -57,8 +73,8 @@ public class OverworldState extends EngineState {
 		
 		//Create second enemy: enemy1
 		GameObject enemy1 = new Entity(
-				Directory.screenManager.getPercentageWidth(40),		//XPos
-				Directory.screenManager.getPercentageHeight(80),	//YPos
+				Directory.screenManager.getPercentageWidth(45),		//XPos
+				Directory.screenManager.getPercentageHeight(75),	//YPos
 				20,													//Width
 				20,													//Height
 				10,													//Health
@@ -78,8 +94,8 @@ public class OverworldState extends EngineState {
 		
 		//Create third enemy: burstFireEnemy
 		GameObject burstEnemy = new Entity(
-				Directory.screenManager.getPercentageWidth(60),		//XPos
-				Directory.screenManager.getPercentageHeight(80),	//YPos
+				Directory.screenManager.getPercentageWidth(62),		//XPos
+				Directory.screenManager.getPercentageHeight(84.5),	//YPos
 				20,													//Width
 				20,													//Height
 				10,													//Health
@@ -99,8 +115,8 @@ public class OverworldState extends EngineState {
 		
 		//Create fourth enemy: randomYEnemy
 		GameObject randomYEnemy = new Entity(
-				Directory.screenManager.getPercentageWidth(80),		//XPos
-				Directory.screenManager.getPercentageHeight(80),	//YPos
+				Directory.screenManager.getPercentageWidth(62),		//XPos
+				Directory.screenManager.getPercentageHeight(11.5),	//YPos
 				20,													//Width
 				20,													//Height
 				20,													//Health
@@ -120,8 +136,8 @@ public class OverworldState extends EngineState {
 		
 		//Create fifth enemy: enemy2
 		GameObject enemy2 = new Entity(
-				Directory.screenManager.getPercentageWidth(80),		//XPos
-				Directory.screenManager.getPercentageHeight(60),	//YPos
+				Directory.screenManager.getPercentageWidth(48.3),		//XPos
+				Directory.screenManager.getPercentageHeight(28),	//YPos
 				20,													//Width
 				20,													//Height
 				30,													//Health
@@ -141,8 +157,8 @@ public class OverworldState extends EngineState {
 		
 		//Create sixth enemy: burstFireEnemy1
 		GameObject burstEnemy1 = new Entity(
-				Directory.screenManager.getPercentageWidth(80),		//XPos
-				Directory.screenManager.getPercentageHeight(40),	//YPos
+				Directory.screenManager.getPercentageWidth(75.6),		//XPos
+				Directory.screenManager.getPercentageHeight(30),	//YPos
 				20,													//Width
 				20,													//Height
 				20,													//Health
@@ -162,8 +178,8 @@ public class OverworldState extends EngineState {
 		
 		//Create seventh enemy: randomYEnemy1
 		GameObject randomYEnemy1 = new Entity(
-				Directory.screenManager.getPercentageWidth(80),		//XPos
-				Directory.screenManager.getPercentageHeight(20),	//YPos
+				Directory.screenManager.getPercentageWidth(21),		//XPos
+				Directory.screenManager.getPercentageHeight(29),	//YPos
 				20,													//Width
 				20,													//Height
 				20,													//Health
@@ -184,13 +200,13 @@ public class OverworldState extends EngineState {
 
 		//Create shop as a gameObject
 		GameObject shop = new GameObject(
-				Directory.screenManager.getPercentageWidth(55.0),	//XPos
-				Directory.screenManager.getPercentageHeight(20.0),	//YPos
+				Directory.screenManager.getPercentageWidth(83),		//XPos
+				Directory.screenManager.getPercentageHeight(65),	//YPos
 				20,													//Width
 				20													//Height
 				);
 		//Set shop shape and visibility
-		shop.setShape(new Ellipse2D.Double(), Color.BLUE);
+		shop.setShape(new Ellipse2D.Double(), Color.green);
 		shop.setVisible(true);
 		//Set the shop as triggerable
 		shop.setTriggerable(true);
@@ -206,8 +222,8 @@ public class OverworldState extends EngineState {
 
 		//Position player
 		Vector posVector = new Vector(2);
-		posVector.setComponent(0, Directory.screenManager.getPercentageWidth(15.0));
-		posVector.setComponent(1, Directory.screenManager.getPercentageHeight(45.0));
+		posVector.setComponent(0, Directory.screenManager.getPercentageWidth(5.0));
+		posVector.setComponent(1, Directory.screenManager.getPercentageHeight(11.5));
 		Directory.profile.getPlayer().setPos(new Vector(posVector));
 
 		//Update shape in case position has changed
@@ -222,7 +238,7 @@ public class OverworldState extends EngineState {
 		//Add player
 		addObj(Directory.profile.getPlayer());
 		
-		Directory.profile.addGold(3000);//15);
+		Directory.profile.addGold(15);
 	}
 
 	/**
