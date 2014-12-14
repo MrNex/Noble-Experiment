@@ -56,8 +56,8 @@ public class PlayerOverworldState extends MovableObjectState{
 	@Override
 	public void enter() {
 		//Update dimensions
-		attachedTo.setWidth(100);
-		attachedTo.setHeight(100);
+		attachedTo.setWidth(20);
+		attachedTo.setHeight(20);
 		
 		//set image of player to overworld image
 		attachedTo.setShape(new Ellipse2D.Double(), Color.green);
