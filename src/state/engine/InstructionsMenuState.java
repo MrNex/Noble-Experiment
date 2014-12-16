@@ -33,19 +33,16 @@ public class InstructionsMenuState extends MenuEngineState {
 	public void init(){
 		super.init();		
 
-		//Add instruction text
-		GameObject instructionsHeader1 = new GameObject(
-				Directory.screenManager.getPercentageWidth(50.0) - Directory.screenManager.getPercentageWidth(5.0),
-				Directory.screenManager.getPercentageHeight(15.0) - Directory.screenManager.getPercentageHeight(2.5),
+		//Add instruction image
+		GameObject battleInstructions = new GameObject(
 				Directory.screenManager.getPercentageWidth(10.0),
-				Directory.screenManager.getPercentageHeight(5.0)
+				Directory.screenManager.getPercentageHeight(15.0) - Directory.screenManager.getPercentageHeight(2.5),
+				Directory.screenManager.getPercentageWidth(75.0),
+				Directory.screenManager.getPercentageHeight(75.0)
 				);
-		
-		instructionsHeader1.setShape(new Rectangle2D.Double(), new Color(255, 255, 255, 0));
-		instructionsHeader1.setVisible(true);
-		instructionsHeader1.setState(new TextDisplayState("How to play..."));
-		addObj(instructionsHeader1);
-		
+		battleInstructions.setSprite(Directory.spriteLibrary.get("Instructions"));
+		battleInstructions.setVisible(true);
+		addObj(battleInstructions);
 		
 	}
 
